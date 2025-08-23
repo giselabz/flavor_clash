@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flavor Clash - Configuració</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="settingsSection">
+        <h2>Configuració</h2>
+        <label>Volum: <input type="range" id="volumeSetting" min="0" max="100" value="50"></label><br>
+        <label>Idioma: 
+            <select id="languageSetting">
+                <option value="ca">Català</option>
+                <option value="es">Español</option>
+                <option value="en">English</option>
+            </select>
+        </label><br>
+        <label><input type="checkbox" id="musicSetting" checked> Música</label><br>
+        <button id="saveSettingsBtn">Desa</button>
+        <a href="mainMenu.html" id="backToMenuFromSettings">Torna al menú</a>
+        <div id="settingsError" style="color:red;"></div>
+    </div>
+    <script src="user.js" defer></script>
+    <script src="script.js" defer></script>
+</body>
+</html>

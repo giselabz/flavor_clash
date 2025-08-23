@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Flavor Clash - Menú Principal</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <!-- MODAL SELECCIÓ DE BARALLA -->
+  <div id="deckModal" style="display:none;position:fixed;z-index:1000;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.35);align-items:center;justify-content:center;">
+    <div style="background:#fffbe7;padding:32px 28px 24px 28px;border-radius:18px;box-shadow:0 4px 32px #b85c0030;max-width:420px;width:90vw;">
+      <h2 style="color:#b85c00;margin-bottom:18px;">Escull la teva baralla</h2>
+      <form id="deckForm">
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <label><input type="radio" name="deck" value="classic" checked> <b>Clàssic</b> <span style="color:#b85c00b0;font-size:0.95em;">Combinacions tradicionals i segures</span></label>
+          <label><input type="radio" name="deck" value="spicy-sweet"> <b>Picant-dolç</b> <span style="color:#b85c00b0;font-size:0.95em;">Explosió de sabors oposats</span></label>
+          <label><input type="radio" name="deck" value="healthy"> <b>Saludable</b> <span style="color:#b85c00b0;font-size:0.95em;">Ingredients naturals i nutritius</span></label>
+          <label><input type="radio" name="deck" value="umami"> <b>Umami</b> <span style="color:#b85c00b0;font-size:0.95em;">Rics en umami i fermentats</span></label>
+          <label><input type="radio" name="deck" value="sensorial"> <b>Sensorial</b> <span style="color:#b85c00b0;font-size:0.95em;">Contrast visual, textura o temperatura</span></label>
+        </div>
+        <button type="submit" class="btn" style="margin-top:22px;width:100%;">Inicia Partida</button>
+      </form>
+    </div>
+  </div>
+
+  <div style="height:100vh;display:grid;grid-template-rows:1fr 2fr 2fr 1fr;grid-template-columns:1fr 2fr 1fr;gap:0;">
+    <!-- Menú lateral -->
+    <div style="grid-row:1/2;grid-column:1/2;display:flex;align-items:end;justify-content:start;padding-left:32px;">
+      <a href="settings.html" title="Ajustes" class="btn" style="padding:10px 22px;font-size:1.1em;display:flex;align-items:center;gap:8px;">
+        <span style="font-size:1.5em;">&#9881;</span> Ajustes
+      </a>
+    </div>
+
+    <!-- Perfil -->
+    <div style="grid-row:1/2;grid-column:3/4;display:flex;align-items:end;justify-content:end;padding-right:32px;gap:12px;">
+      <div id="profileWidget"></div>
+    </div>
+
+    <!-- Logo superior central -->
+    <div style="grid-row:1/2;grid-column:2/3;display:flex;justify-content:center;align-items:end;">
+      <img src="https://img.icons8.com/color/128/000000/cocktail.png" alt="Flavor Clash Logo" style="margin-bottom:8px;">
+    </div>
+
+    <!-- Título y progreso -->
+    <div style="grid-row:2/3;grid-column:2/3;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+      <h1 style="font-size:2.5em;letter-spacing:2px;color:#b85c00;margin-bottom:10px;">Menú Principal</h1>
+      <div style="color:#b85c00b0;font-size:1.1em;margin-bottom:8px;">Progrés: <span id="progress">0%</span></div>
+    </div>
+
+    <!-- Botón principal -->
+    <div style="grid-row:3/4;grid-column:2/3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:32px;">
+      <a href="#" id="startGameBtn" class="btn" style="font-size:1.5em;padding:22px 60px;">Inicia Partida</a>
+      <div style="display:flex;gap:36px;justify-content:center;">
+        <a href="shop.html" class="btn" style="font-size:1.1em;padding:14px 36px;display:flex;align-items:center;gap:8px;">
+          <img src="https://img.icons8.com/color/32/000000/shopping-cart.png" alt="Tienda" style="width:24px;height:24px;">Tienda
+        </a>
+        <a href="minigames.html" class="btn" style="font-size:1.1em;padding:14px 36px;display:flex;align-items:center;gap:8px;">
+          <img src="https://img.icons8.com/color/32/000000/controller.png" alt="Minijuegos" style="width:24px;height:24px;">Minijuegos
+        </a>
+      </div>
+    </div>
+
+    <!-- Cerrar sesión pie de página (botón real) -->
+    <div style="grid-row:4/5;grid-column:2/3;display:flex;justify-content:center;align-items:start;">
+      <button class="btn" data-logout="login.html"
+              style="background:#ffe6e6;color:#b85c00;font-size:1em;padding:10px 28px;">
+        Cerrar sesión
+      </button>
+    </div>
+  </div>
+
+  <!-- LÓGICA: sesión + perfil + modal -->
+  <script type="module">
+    import { requireAuth } from './session.js';
+    import UserService from './api/UserService.js';
+
+    // 1) Exigir sesión
+    await requireAuth('login.html');
+
+    // 2) Cargar perfil
+    const me = await UserService.getMyRow(); // { name, avatar_url, flavor_points, progress, ... }
+    const profile = document.getElementById('profileWidget');
+    const name = me?.name ?? 'Player';
+    const points = me?.flavor_points ?? 0;
+    const avatar = me?.avatar_url || '';
+
+    profile.innerHTML = `
+      <div style="display:flex;align-items:center;gap:10px;">
+        <img src="${avatar}" alt="" onerror="this.style.display='none'"
+             style="width:34px;height:34px;border-radius:50%;object-fit:cover;border:1px solid #0001;">
+        <div style="display:flex;flex-direction:column;line-height:1.1;">
+          <strong style="font-size:14px">${name}</strong>
+          <span style="font-size:12px;opacity:.7">🍊 ${points} pts</span>
+        </div>
+        <button id="btnLogout" class="btn" style="padding:6px 10px;">Salir</button>
+      </div>
+    `;
+
+    // Progreso (si guardas texto/porcentaje en users.progress)
+    const progressEl = document.getElementById('progress');
+    if (me?.progress) { progressEl.textContent = me.progress; }
+
+    // 3) Logout (header y footer)
+    const doLogout = async () => { await UserService.signOut(); location.href = 'login.html'; };
+    document.getElementById('btnLogout').addEventListener('click', doLogout);
+    document.getElementById('logoutFooter').addEventListener('click', doLogout);
+
+    // 4) Modal de baraja y navegación al juego
+    const startBtn = document.getElementById('startGameBtn');
+    const deckModal = document.getElementById('deckModal');
+    const deckForm = document.getElementById('deckForm');
+
+    startBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      deckModal.style.display = 'flex';
+    });
+
+    deckForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const deck = deckForm.deck.value;
+      localStorage.setItem('selectedDeck', deck);
+      window.location.href = 'game.html';
+    });
+
+    deckModal.addEventListener('click', (ev) => {
+      if (ev.target === deckModal) deckModal.style.display = 'none';
+    });
+  </script>
+</body>
+</html>

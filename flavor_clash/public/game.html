@@ -1,0 +1,49 @@
+<!-- /public/game.html -->
+<!doctype html>
+<html lang="ca">
+<head>
+  <meta charset="utf-8" />
+  <title>Flavor Clash · Partida</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body{font:14px/1.4 system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial; background:#fff8ef;}
+    .wrap{max-width:980px;margin:0 auto;padding:18px}
+    .hud{display:flex;justify-content:space-between;align-items:center;background:#fff;border:1px solid #0001;border-radius:14px;padding:10px 14px;margin-bottom:12px}
+    .pill{background:#ffefe0;border:1px solid #0002;border-radius:999px;padding:6px 10px;margin-right:6px}
+    .grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+    .card{background:#fff;border:1px solid #0002;border-radius:12px;padding:10px;cursor:pointer;display:flex;flex-direction:column;gap:6px}
+    .card:hover{box-shadow:0 6px 18px #00000014; transform:translateY(-1px)}
+    .plate{display:flex;gap:8px;flex-wrap:wrap;background:#fff;border:1px solid #0002;border-radius:12px;padding:10px;min-height:68px}
+    .btn{border:1px solid #0002;background:#fff;border-radius:10px;padding:10px 14px;cursor:pointer}
+    .btn.primary{background:#ffe6c7}
+    .muted{opacity:.7}
+    .row{display:flex;gap:10px;align-items:center}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hud">
+      <div class="row">
+        <span class="pill">Baralla: <b id="deckLbl">classic</b></span>
+        <span class="pill">Torn: <b id="turnLbl">1</b></span>
+        <span class="pill">Punts: <b id="scoreLbl">0</b></span>
+      </div>
+      <div class="row">
+        <button id="btnServe" class="btn primary">Servir 🍽️</button>
+        <button id="btnEnd" class="btn">Acabar partida</button>
+      </div>
+    </div>
+
+    <h3>Plat (selecciona cartes i prem “Servir”)</h3>
+    <div id="plate" class="plate"></div>
+
+    <h3 style="margin-top:14px">Mà</h3>
+    <div id="hand" class="grid"></div>
+
+    <p class="muted" style="margin-top:12px">Consell: fes clic a les cartes per afegir-les al plat. “Servir” puntua i neteja el plat.</p>
+  </div>
+
+  <script type="module" src="./game.js"></script>
+</body>
+</html>

@@ -1,0 +1,174 @@
+/* --- FLAVOR CLASH: ESTILO MODERNO Y ATRACTIVO --- */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+    background: linear-gradient(120deg, #fffbe7 0%, #ffe6e6 100%);
+    color: #222;
+    min-height: 100vh;
+}
+
+h1, h2, h3 {
+    font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #b85c00;
+    margin-bottom: 0.5em;
+}
+
+a {
+    color: #b85c00;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+a:hover {
+    color: #ff8800;
+    text-decoration: underline;
+}
+
+button, .btn {
+    background: linear-gradient(90deg, #ffb347, #ffcc33);
+    color: #222;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 32px;
+    font-size: 1.1em;
+    font-weight: bold;
+    box-shadow: 0 2px 8px #0002;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+}
+button:hover, .btn:hover {
+    background: linear-gradient(90deg, #ffcc33, #ffb347);
+    box-shadow: 0 4px 16px #ffb34744;
+}
+
+input, select, textarea {
+    border: 1.5px solid #ffb347;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 1em;
+    margin: 6px 0 12px 0;
+    background: #fffbe7;
+    transition: border 0.2s;
+}
+input:focus, select:focus, textarea:focus {
+    border-color: #ff8800;
+    outline: none;
+}
+
+nav {
+    background: #fffbe7cc;
+    border-radius: 16px;
+    box-shadow: 0 2px 12px #0001;
+    padding: 18px 32px;
+    margin: 32px auto 24px auto;
+    max-width: 600px;
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+}
+
+#mainMenu, #gameSection, #settingsSection, #shopSection, #minigamesSection, #editProfileForm {
+    background: #fffbe7ee;
+    border-radius: 24px;
+    box-shadow: 0 4px 32px #ffb34733;
+    margin: 32px auto;
+    padding: 32px 40px;
+    max-width: 900px;
+}
+
+#mainMenu a, #gameSection a, #settingsSection a, #shopSection a, #minigamesSection a {
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 8px 18px;
+    margin: 0 8px;
+    background: #fff3;
+    transition: background 0.2s;
+}
+#mainMenu a:hover, #gameSection a:hover, #settingsSection a:hover, #shopSection a:hover, #minigamesSection a:hover {
+    background: #ffb34733;
+}
+
+#profileAvatar {
+    border: 3px solid #ffb347;
+    background: #fff;
+}
+
+/* Cartas y áreas de juego */
+#playArea {
+    background: #fffbe7;
+    border: 2px dashed #ffb347;
+    border-radius: 16px;
+    min-height: 120px;
+    box-shadow: 0 2px 12px #ffb34722;
+    font-size: 1.1em;
+}
+#hand {
+    margin-top: 12px;
+}
+#hand > div, .card {
+    background: #fff;
+    border: 2px solid #ffb347;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px #ffb34722;
+    padding: 16px 12px;
+    min-width: 80px;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 1em;
+    margin: 0 6px;
+    transition: box-shadow 0.2s, border 0.2s;
+    cursor: grab;
+    user-select: none;
+    pointer-events: auto !important;
+}
+#hand > div:hover, .card:hover {
+    box-shadow: 0 4px 16px #ffb34744;
+    border-color: #ff8800;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+    #mainMenu, #gameSection, #settingsSection, #shopSection, #minigamesSection, #editProfileForm {
+        padding: 16px 4vw;
+        margin: 12px 0;
+        max-width: 98vw;
+    }
+    nav {
+        flex-direction: column;
+        gap: 12px;
+        padding: 12px 8px;
+    }
+}
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+h1 {
+    color: #333;
+}
+button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    background: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+button:hover {
+    background: #388e3c;
+}

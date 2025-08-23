@@ -1,0 +1,68 @@
+<!-- /public/login.html -->
+<!doctype html>
+<html lang="ca">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Iniciar sessió · Flavor Clash</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .auth-card{max-width:520px;margin:10vh auto;background:#fff;border-radius:16px;box-shadow:0 8px 30px #0001;padding:28px;}
+    .field{display:flex;flex-direction:column;gap:6px;margin:10px 0}
+    .actions{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-top:14px}
+    .btn{border:1px solid #00000022;background:#fff;border-radius:10px;padding:10px 14px;cursor:pointer}
+    .btn.primary{background:#ffefe0}
+    .error{color:#b00020;margin-top:8px;min-height:20px}
+    .muted{opacity:.7}
+  </style>
+</head>
+<body>
+  <nav style="display:flex;justify-content:space-between;align-items:center;padding:18px 24px">
+    <a href="index.html" style="text-decoration:none;font-weight:700">🍽️ Flavor Clash</a>
+    <div class="muted">No tens compte? <a href="register.html">Registra't</a></div>
+  </nav>
+
+  <main class="auth-card">
+    <h1>Inicia sessió</h1>
+    <form id="loginForm">
+      <div class="field">
+        <label for="loginEmail">Email</label>
+        <input id="loginEmail" type="email" required placeholder="tu@exemple.com" />
+      </div>
+      <div class="field">
+        <label for="loginPassword">Contrasenya</label>
+        <input id="loginPassword" type="password" required placeholder="••••••" />
+      </div>
+      <div class="actions">
+        <button type="submit" class="btn primary">Entrar</button>
+        <a class="btn" href="index.html">Cancel·lar</a>
+      </div>
+      <div id="loginError" class="error"></div>
+    </form>
+  </main>
+
+<script type="module">
+  import UserService from './api/UserService.js';
+
+  const form = document.getElementById('loginForm');
+  const errEl = document.getElementById('loginError');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    errEl.textContent = '';
+
+    const email = document.getElementById('loginEmail').value.trim();s
+    const password = document.getElementById('loginPassword').value;
+
+    try {
+      await UserService.signIn(email, password);   // crea sesión y asegura fila en public.users
+      const next = new URLSearchParams(location.search).get('next') || 'mainMenu.html';
+      location.href = next;                        // ← redirige al menú principal
+    } catch (e) {
+      errEl.textContent = e?.message || 'No se pudo iniciar sesión';
+    }
+  });
+</script>
+
+</body>
+</html>
