@@ -28,6 +28,8 @@
         <span class="pill">Baralla: <b id="deckLbl">classic</b></span>
         <span class="pill">Torn: <b id="turnLbl">1</b></span>
         <span class="pill">Punts: <b id="scoreLbl">0</b></span>
+        <span class="pill">Robatori: <b id="drawLbl">0</b></span>
+        <span class="pill">Descart: <b id="discardLbl">0</b></span>
       </div>
       <div class="row">
         <button id="btnServe" class="btn primary">Servir 🍽️</button>
@@ -35,13 +37,16 @@
       </div>
     </div>
 
-    <h3>Plat (selecciona cartes i prem “Servir”)</h3>
+    <h3>Objectius</h3>
+    <ul id="objectives"></ul>
+
+    <h3>Plat (arrossega cartes aquí i prem “Servir”)</h3>
     <div id="plate" class="plate"></div>
 
     <h3 style="margin-top:14px">Mà</h3>
     <div id="hand" class="grid"></div>
 
-    <p class="muted" style="margin-top:12px">Consell: fes clic a les cartes per afegir-les al plat. “Servir” puntua i neteja el plat.</p>
+    <p class="muted" style="margin-top:12px">Consell: arrossega les cartes des de la mà fins al plat. “Servir” puntua i neteja el plat.</p>
   </div>
 
   <script type="module" src="./game.js"></script>

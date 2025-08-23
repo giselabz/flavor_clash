@@ -84,3 +84,27 @@ export function scoreCombination(plate) {
   s += applyEffects(plate);
   return s;
 }
+
+export function explainCombination(plate) {
+  if (!plate || plate.length < 2) return null;
+
+  for (let i=0;i<plate.length;i++)
+    for (let j=i+1;j<plate.length;j++)
+      if (hardConflict(plate[i], plate[j]))
+        return 'Hi ha un conflicte entre ingredients';
+
+  const lines = [];
+  for (let i=0;i<plate.length;i++) {
+    for (let j=i+1;j<plate.length;j++) {
+      const s = pairScore(plate[i], plate[j]);
+      if (s > 0) lines.push(`${plate[i].name} i ${plate[j].name} combinen bé (+${s})`);
+      else if (s < 0) lines.push(`${plate[i].name} i ${plate[j].name} no combinen (${s})`);
+    }
+  }
+
+  const eff = applyEffects(plate);
+  if (eff > 0) lines.push(`Bonificació d'efectes: +${eff}`);
+  if (eff < 0) lines.push(`Penalització d'efectes: ${eff}`);
+
+  return lines.length ? lines.join('\n') : null;
+}
