@@ -56,7 +56,8 @@
 
     try {
       await UserService.signIn(email, password);   // crea sesión y asegura fila en public.users
-      const next = new URLSearchParams(location.search).get('next') || 'mainMenu.html';
+      const nextParam = new URLSearchParams(location.search).get('next');
+      const next = nextParam ? (nextParam.startsWith('/') ? nextParam : '/' + nextParam) : 'mainMenu.html';
       location.href = next;                        // ← redirige al menú principal
     } catch (e) {
       errEl.textContent = e?.message || 'No se pudo iniciar sesión';

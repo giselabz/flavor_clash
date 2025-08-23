@@ -4,7 +4,7 @@ import UserService from './api/UserService.js';
 export async function requireAuth(redirectTo = 'login.html') {
   const session = await UserService.getSession().catch(() => null);
   if (!session) {
-    const next = encodeURIComponent(location.pathname.replace(/^\/+/, '') + location.search);
+    const next = encodeURIComponent(location.pathname + location.search);
     location.href = `${redirectTo}?next=${next}`;
     return false;
   }
