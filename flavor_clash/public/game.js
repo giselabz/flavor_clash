@@ -2,7 +2,8 @@
 import { supabase } from './supabaseClient.js';
 import { requireAuth } from './session.js';
 import GameSessionService from './api/GameSessionService.js';
-import { scoreCombination, explainCombination } from './api/scoring.js';
+import { calculatePlateScore, explainPlateScore } from './api/scoring.js';
+import './flavorDecks.js';
 
 const state = {
   session: null,
@@ -13,8 +14,11 @@ const state = {
   hand: [],
   drawPile: [],
   discardPile: [],
-  objectives: ['Arriba 20 punts', 'Serveix un plat picant'],
+  objectives: [],
   allCards: [],
+  energy: 3,
+  maxEnergy: 3,
+  actionUsed: false,
 };
 
 const $ = (s) => document.querySelector(s);
@@ -33,6 +37,8 @@ function updateHUD() {
   $('#scoreLbl').textContent = state.score;
   $('#drawLbl').textContent = state.drawPile.length;
   $('#discardLbl').textContent = state.discardPile.length;
+  const energyLbl = $('#energyLbl');
+  if (energyLbl) energyLbl.textContent = state.energy;
 }
 
 function chipList(values = []) {
@@ -48,6 +54,10 @@ function renderCard(c) {
     e.dataTransfer.setData('text/plain', c.id);
   });
   el.onclick = () => addToPlateFromHand(c.id);
+  el.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+    discardFromHand(c.id);
+  });
   const icon = c.icon_url
     ? `<img src="${c.icon_url}" onerror="this.style.display='none'" style="width:42px;height:42px;object-fit:cover;border-radius:8px;border:1px solid #0001;">`
     : `<div style="width:42px;height:42px;border-radius:8px;border:1px solid #0001;display:grid;place-items:center;">🍽️</div>`;
@@ -105,31 +115,83 @@ function renderObjectives() {
   el.innerHTML = '';
   state.objectives.forEach((o) => {
     const li = document.createElement('li');
-    li.textContent = o;
+    li.textContent = `${o.name}${o.condition ? ` - ${o.condition}` : ''}`;
     el.appendChild(li);
   });
 }
 
 function canPlayCard(card) {
-  return state.plate.length < 5;
+  if (card.type === 'accio') {
+    return !state.actionUsed;
+  }
+  if (card.type === 'beguda') {
+    return state.plate.some((c) => c.type === 'ingredient');
+  }
+  return state.plate.length < 5 && state.energy > 0;
 }
 
 function addToPlate(card) {
+  if (card.type !== 'beguda') {
+    state.energy -= 1;
+  }
   state.plate.push(card);
   renderPlate();
+  updateHUD();
+}
+
+function playActionCard(idx) {
+  if (state.actionUsed) {
+    alert('Ja has jugat una carta d\'acció aquest torn.');
+    return;
+  }
+  const card = state.hand[idx];
+  state.hand.splice(idx, 1);
+  state.discardPile.push(card);
+  state.actionUsed = true;
+  alert(card.effect || 'Efecte aplicat');
+  renderHand();
+  updateHUD();
 }
 
 function addToPlateFromHand(id) {
   const idx = state.hand.findIndex((c) => c.id == id);
   if (idx === -1) return;
   const card = state.hand[idx];
+  if (card.type === 'accio') {
+    playActionCard(idx);
+    return;
+  }
   if (!canPlayCard(card)) {
     alert('La carta no es pot jugar en aquest moment.');
     return;
   }
+  if (card.type === 'beguda') {
+    const ingredientIds = state.plate.filter((c) => c.type === 'ingredient').map((c) => c.id);
+    if (!window.isDrinkCompatible || !window.isDrinkCompatible(ingredientIds, card.id)) {
+      alert('La beguda no és compatible amb el plat.');
+      return;
+    }
+  }
   state.hand.splice(idx, 1);
   addToPlate(card);
   renderHand();
+}
+
+function discardFromHand(id) {
+  const idx = state.hand.findIndex((c) => c.id == id);
+  if (idx === -1) return;
+  const card = state.hand[idx];
+  if (card.protected) {
+    alert('Aquesta carta està protegida i no es pot descartar.');
+    return;
+  }
+  state.hand.splice(idx, 1);
+  state.discardPile.push(card);
+  if (window.isCardForbidden && window.isCardForbidden(state.deckId, card.id)) {
+    state.score += 1;
+  }
+  renderHand();
+  updateHUD();
 }
 
 function handleDrop(e) {
@@ -138,14 +200,59 @@ function handleDrop(e) {
   addToPlateFromHand(id);
 }
 
-function dealHand() {
-  if (state.drawPile.length < 6) {
-    state.drawPile = shuffle([...state.drawPile, ...state.discardPile]);
-    state.discardPile = [];
+function drawPhase() {
+  while (state.hand.length < 5) {
+    if (!state.drawPile.length) {
+      state.drawPile = shuffle([...state.discardPile]);
+      state.discardPile = [];
+    }
+    if (!state.drawPile.length) break;
+    state.hand.push(state.drawPile.shift());
   }
-  state.hand = state.drawPile.splice(0, 6);
   renderHand();
   updateHUD();
+}
+
+function startTurn() {
+  state.energy = state.maxEnergy;
+  state.actionUsed = false;
+  drawPhase();
+  renderPlate();
+}
+
+const OBJECTIVE_REWARD = 5;
+
+function checkObjective(o, plate) {
+  switch (o.id) {
+    case 'vegan-feast': {
+      const vegCount = plate.filter((c) => c.category && c.category.includes('veg')).length;
+      return vegCount >= 5;
+    }
+    case 'meat-feast': {
+      const meatCount = plate.filter((c) => c.category && c.category.includes('meat')).length;
+      return meatCount >= 3;
+    }
+    case 'seafood-platter': {
+      const seaCount = plate.filter((c) => c.category && c.category.includes('seafood')).length;
+      return seaCount >= 2;
+    }
+    default:
+      return false;
+  }
+}
+
+function verifyObjectives(servedPlate) {
+  const remaining = [];
+  state.objectives.forEach((o) => {
+    if (checkObjective(o, servedPlate)) {
+      state.score += OBJECTIVE_REWARD;
+      alert(`Objectiu assolit: ${o.name} (+${OBJECTIVE_REWARD} punts)`);
+    } else {
+      remaining.push(o);
+    }
+  });
+  state.objectives = remaining;
+  renderObjectives();
 }
 
 async function servePlate() {
@@ -153,11 +260,13 @@ async function servePlate() {
     alert('Afegeix almenys 2 cartes al plat per puntuar.');
     return;
   }
-  const delta = scoreCombination(state.plate);
-  const info = explainCombination(state.plate);
-  state.score += delta;
+  const servedPlate = [...state.plate];
+  const plateScore = calculatePlateScore(servedPlate);
+  const info = explainPlateScore(servedPlate);
+  state.score += plateScore;
+  verifyObjectives(servedPlate);
   state.turn += 1;
-  state.discardPile.push(...state.plate, ...state.hand);
+  state.discardPile.push(...servedPlate, ...state.hand);
   state.plate = [];
   state.hand = [];
   updateHUD();
@@ -179,7 +288,7 @@ async function servePlate() {
     }
   }
 
-  dealHand();
+  startTurn();
 }
 
 async function endMatch() {
@@ -200,7 +309,10 @@ async function endMatch() {
 async function loadCards() {
   const { data, error } = await supabase.from('cards').select('*');
   if (error) throw error;
-  state.allCards = data || [];
+  const cards = data || [];
+  const objectiveCards = cards.filter((c) => c.type === 'objectiu');
+  state.objectives = shuffle(objectiveCards).slice(0, 2);
+  state.allCards = cards.filter((c) => c.type !== 'objectiu');
   state.drawPile = shuffle([...state.allCards]);
 }
 
@@ -223,8 +335,7 @@ async function init() {
   }
 
   renderObjectives();
-  dealHand();
-  renderPlate();
+  startTurn();
 
   const plateEl = $('#plate');
   plateEl.addEventListener('dragover', (e) => e.preventDefault());
