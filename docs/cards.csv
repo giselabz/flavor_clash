@@ -1,0 +1,11 @@
+id,name,type,flavor,texture,category,tags,effect,condition,icon_url
+avocado,Alvocat,ingredient,"[""umami"",""sweet""]","[""creamy"",""soft""]","[""veg"",""fat""]","[""fresh""]","+1 amb llima","",icons/avocado.png
+chili,Bitxo,ingredient,"[""spicy"",""umami""]","[""fibrous""]","[""veg""]","[""spicy""]","","",icons/chili.png
+corn-tortilla,Tortilla de blat de moro,ingredient,"[""umami""]","[""soft""]","[""carb""]","[""mexican"",""classic""]","","",icons/corn-tortilla.png
+black-beans,Mongetes negres,ingredient,"[""umami""]","[""soft""]","[""legume""]","[""veg"",""protein"",""mexican""]","","",icons/black-beans.png
+lime,Llima,condiment,"[""acid""]","[""juicy""]","[""fruit""]","[""fresh""]","","",icons/lime.png
+tequila,Tequila,beguda,"[""sweet"",""spicy""]","[""liquid""]","[""alcohol""]","[""mexican""]","","",icons/tequila.png
+horchata,Orxata,beguda,"[""sweet""]","[""liquid""]","[""plant-based""]","[""valencia"",""classic""]","","",icons/horchata.png
+stir,Remenar,accio,"[]","[]","[]","[]","barreja les cartes de la mà","",icons/stir.png
+draw-two,Roba dos,accio,"[]","[]","[]","[]","roba dues cartes addicionals","",icons/draw-two.png
+vegan-feast,Banquet vegà,objectiu,"[]","[]","[]","[]","","Fes servir 5 ingredients vegetals",icons/vegan-feast.png
