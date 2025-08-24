@@ -17,7 +17,7 @@ const state = {
   objectives: [],
   allCards: [],
   energy: 3,
-  maxEnergy: 3,
+  maxEnergy: 12,
   actionUsed: false,
 };
 
@@ -161,6 +161,7 @@ function addToPlateFromHand(id) {
     playActionCard(idx);
     return;
   }
+
   if (!canPlayCard(card)) {
     alert('La carta no es pot jugar en aquest moment.');
     return;
