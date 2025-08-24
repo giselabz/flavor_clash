@@ -2,7 +2,7 @@
 import { supabase } from './supabaseClient.js';
 import { requireAuth } from './session.js';
 import GameSessionService from './api/GameSessionService.js';
-import { scoreCombination, explainCombination } from './api/scoring.js';
+import { calculatePlateScore, explainPlateScore } from './api/scoring.js';
 import './flavorDecks.js';
 
 const state = {
@@ -241,9 +241,9 @@ async function servePlate() {
     return;
   }
   const servedPlate = [...state.plate];
-  const delta = scoreCombination(servedPlate);
-  const info = explainCombination(servedPlate);
-  state.score += delta;
+  const plateScore = calculatePlateScore(servedPlate);
+  const info = explainPlateScore(servedPlate);
+  state.score += plateScore;
   verifyObjectives(servedPlate);
   state.turn += 1;
   state.discardPile.push(...servedPlate, ...state.hand);
