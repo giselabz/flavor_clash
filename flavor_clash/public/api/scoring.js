@@ -78,16 +78,15 @@ function applyCardEffects(plate) {
 export function calculatePlateScore(plate) {
   if (!plate || plate.length < 2) return 0;
 
-  for (let i = 0; i < plate.length; i++) {
-    for (let j = i + 1; j < plate.length; j++) {
-      if (hasConflict(plate[i], plate[j])) return -5;
-    }
-  }
-
   let total = 0;
   for (let i = 0; i < plate.length; i++) {
     for (let j = i + 1; j < plate.length; j++) {
-      total += calculatePairScore(plate[i], plate[j]);
+      const pairScore = calculatePairScore(plate[i], plate[j]);
+      if (hasConflict(plate[i], plate[j])) {
+        total -= Math.abs(pairScore);
+      } else {
+        total += pairScore;
+      }
     }
   }
 
@@ -101,22 +100,19 @@ export function calculatePlateScore(plate) {
 export function explainPlateScore(plate) {
   if (!plate || plate.length < 2) return null;
 
-  for (let i = 0; i < plate.length; i++) {
-    for (let j = i + 1; j < plate.length; j++) {
-      if (hasConflict(plate[i], plate[j])) {
-        return 'Hi ha un conflicte entre ingredients';
-      }
-    }
-  }
-
   const lines = [];
   for (let i = 0; i < plate.length; i++) {
     for (let j = i + 1; j < plate.length; j++) {
       const pairScore = calculatePairScore(plate[i], plate[j]);
-      if (pairScore > 0)
+      if (hasConflict(plate[i], plate[j])) {
+        lines.push(
+          `${plate[i].name} i ${plate[j].name} tenen un conflicte (-${Math.abs(pairScore)})`
+        );
+      } else if (pairScore > 0) {
         lines.push(`${plate[i].name} i ${plate[j].name} combinen bé (+${pairScore})`);
-      else if (pairScore < 0)
+      } else if (pairScore < 0) {
         lines.push(`${plate[i].name} i ${plate[j].name} no combinen (${pairScore})`);
+      }
     }
   }
 
