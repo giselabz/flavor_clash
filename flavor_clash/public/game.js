@@ -102,8 +102,9 @@ function renderPlate() {
     pill.textContent = c.name + ' ✕';
     pill.title = 'Treure del plat';
     pill.onclick = () => {
-      state.plate.splice(idx, 1);
+      state.hand.push(state.plate.splice(idx, 1)[0]);
       renderPlate();
+      renderHand();
     };
     el.appendChild(pill);
   });

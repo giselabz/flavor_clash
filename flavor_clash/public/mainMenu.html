@@ -74,12 +74,12 @@
   <script type="module">
     import { requireAuth } from './session.js';
     import UserService from './api/UserService.js';
-
+    
     // 1) Exigir sesión
     await requireAuth('login.html');
-
+    
     // 2) Cargar perfil
-    const me = await UserService.getMyRow(); // { name, avatar_url, flavor_points, progress, ... }
+    const me = await UserService.getMyProfile(); // { name, avatar_url, flavor_points, progress, ... }
     const profile = document.getElementById('profileWidget');
     const name = me?.name ?? 'Player';
     const points = me?.flavor_points ?? 0;
