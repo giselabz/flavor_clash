@@ -24,7 +24,11 @@ const MUTUALLY_EXCLUSIVE_TAGS = [
   ['raw_fish', 'cheese'],
 ];
 
-const toArray = (value) => (Array.isArray(value) ? value : value ? [value] : []);
+function toArray(value) {
+  if (Array.isArray(value)) return value;
+  if (value) return [value];
+  return [];
+}
 
 function calculatePairScore(cardA, cardB) {
   let total = 0;
