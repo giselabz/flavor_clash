@@ -245,12 +245,12 @@ function checkObjective(o, plate) {
 
 function verifyObjectives(servedPlate) {
   const remaining = [];
-  state.objectives.forEach((o) => {
-    if (checkObjective(o, servedPlate)) {
+  state.objectives.forEach((objective) => {
+    if (checkObjective(objective, servedPlate)) {
       state.score += OBJECTIVE_REWARD;
-      alert(`Objectiu assolit: ${o.name} (+${OBJECTIVE_REWARD} punts)`);
+      alert(`Objectiu assolit: ${objective.name} (+${OBJECTIVE_REWARD} punts)`);
     } else {
-      remaining.push(o);
+      remaining.push(objective);
     }
   });
   state.objectives = remaining;
@@ -312,7 +312,7 @@ async function loadCards() {
   if (error) throw error;
   const cards = data || [];
   const objectiveCards = cards.filter((c) => c.type === 'objectiu');
-  state.objectives = shuffle(objectiveCards).slice(0, 2);
+  state.objectives = shuffle(objectiveCards).slice(0, 1);
   state.allCards = cards.filter((c) => c.type !== 'objectiu');
   state.drawPile = shuffle([...state.allCards]);
 }
