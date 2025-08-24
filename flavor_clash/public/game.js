@@ -14,7 +14,7 @@ const state = {
   hand: [],
   drawPile: [],
   discardPile: [],
-  objectives: ['Arriba 20 punts', 'Serveix un plat picant'],
+  objectives: [],
   allCards: [],
   energy: 3,
   maxEnergy: 3,
@@ -114,7 +114,7 @@ function renderObjectives() {
   el.innerHTML = '';
   state.objectives.forEach((o) => {
     const li = document.createElement('li');
-    li.textContent = o;
+    li.textContent = `${o.name}${o.condition ? ` - ${o.condition}` : ''}`;
     el.appendChild(li);
   });
 }
@@ -219,14 +219,33 @@ function startTurn() {
   renderPlate();
 }
 
+const OBJECTIVE_REWARD = 5;
+
+function checkObjective(o, plate) {
+  switch (o.id) {
+    case 'vegan-feast': {
+      const vegCount = plate.filter((c) => c.category && c.category.includes('veg')).length;
+      return vegCount >= 5;
+    }
+    case 'meat-feast': {
+      const meatCount = plate.filter((c) => c.category && c.category.includes('meat')).length;
+      return meatCount >= 3;
+    }
+    case 'seafood-platter': {
+      const seaCount = plate.filter((c) => c.category && c.category.includes('seafood')).length;
+      return seaCount >= 2;
+    }
+    default:
+      return false;
+  }
+}
+
 function verifyObjectives(servedPlate) {
   const remaining = [];
   state.objectives.forEach((o) => {
-    if (o === 'Arriba 20 punts') {
-      if (state.score < 20) remaining.push(o);
-    } else if (o === 'Serveix un plat picant') {
-      const spicy = servedPlate.some((c) => c.flavor && c.flavor.includes('spicy'));
-      if (!spicy) remaining.push(o);
+    if (checkObjective(o, servedPlate)) {
+      state.score += OBJECTIVE_REWARD;
+      alert(`Objectiu assolit: ${o.name} (+${OBJECTIVE_REWARD} punts)`);
     } else {
       remaining.push(o);
     }
@@ -289,7 +308,10 @@ async function endMatch() {
 async function loadCards() {
   const { data, error } = await supabase.from('cards').select('*');
   if (error) throw error;
-  state.allCards = data || [];
+  const cards = data || [];
+  const objectiveCards = cards.filter((c) => c.type === 'objectiu');
+  state.objectives = shuffle(objectiveCards).slice(0, 2);
+  state.allCards = cards.filter((c) => c.type !== 'objectiu');
   state.drawPile = shuffle([...state.allCards]);
 }
 
