@@ -103,6 +103,7 @@ function renderPlate() {
     pill.title = 'Treure del plat';
     pill.onclick = () => {
       state.hand.push(state.plate.splice(idx, 1)[0]);
+      state.energy = Math.min(state.energy + 1, state.maxEnergy);
       renderPlate();
       renderHand();
     };
@@ -267,9 +268,8 @@ async function servePlate() {
   state.score += plateScore;
   verifyObjectives(servedPlate);
   state.turn += 1;
-  state.discardPile.push(...servedPlate, ...state.hand);
+  state.discardPile.push(...servedPlate);
   state.plate = [];
-  state.hand = [];
   updateHUD();
   renderPlate();
   if (info) {

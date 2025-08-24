@@ -68,7 +68,7 @@ function applyEffects(plate) {
 
 export function scoreCombination(plate) {
   if (!plate || plate.length < 2) return 0;
-
+}
 const FLAVOR_COMPATIBILITY = {
   sweet: { sweet: 0, salty: 2, sour: 1, bitter: 0, spicy: 1, umami: 1 },
   salty: { sweet: 2, salty: 0, sour: 0, bitter: 0, spicy: 1, umami: 2 },
