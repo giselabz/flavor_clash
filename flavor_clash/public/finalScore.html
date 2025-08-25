@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ca">
+<head>
+  <meta charset="utf-8" />
+  <title>Flavor Clash · Resultats</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body{font:14px/1.4 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial;background:#fff8ef;}
+    .wrap{max-width:600px;margin:40px auto;padding:18px;text-align:center}
+    .btn{border:1px solid #0002;background:#fff;border-radius:10px;padding:10px 14px;cursor:pointer}
+    ul{list-style:none;padding:0}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Resultats de la partida</h1>
+    <p>Puntuació final: <b id="finalScore">0</b></p>
+    <p>Torns jugats: <b id="turnsPlayed">0</b></p>
+    <div id="objectivesBlock"></div>
+    <p>Rang obtingut: <b id="rank">-</b></p>
+    <button id="btnMenu" class="btn" style="margin-top:20px">Torna al menú</button>
+  </div>
+  <script type="module" src="./finalScore.js"></script>
+</body>
+</html>
