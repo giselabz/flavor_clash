@@ -133,14 +133,14 @@ const CARDS = [
 ];
 
 // Lògica de penalització i bonificació (ara per a qualsevol carta de tipus ingredient o beguda)
-function isCardForbidden(deckId, cardId) {
+export function isCardForbidden(deckId, cardId) {
   const deck = DECKS.find(d => d.id === deckId);
   const card = CARDS.find(i => i.id === cardId);
   if (!deck || !card) return false;
   return card.tags && card.tags.some(tag => deck.forbiddenTags.includes(tag));
 }
 
-function isCardBonus(deckId, cardId) {
+export function isCardBonus(deckId, cardId) {
   const deck = DECKS.find(d => d.id === deckId);
   const card = CARDS.find(i => i.id === cardId);
   if (!deck || !card) return false;

@@ -3,6 +3,7 @@ import { supabase } from './supabaseClient.js';
 import { requireAuth } from './session.js';
 import GameSessionService from './api/GameSessionService.js';
 import { scoreCombination, explainCombination } from './api/scoring.js';
+import { isCardForbidden } from './flavorDecks.js';
 
 const state = {
   session: null,
@@ -48,6 +49,10 @@ function renderCard(c) {
     e.dataTransfer.setData('text/plain', c.id);
   });
   el.onclick = () => addToPlateFromHand(c.id);
+  el.oncontextmenu = (e) => {
+    e.preventDefault();
+    discardFromHand(c.id);
+  };
   const icon = c.icon_url
     ? `<img src="${c.icon_url}" onerror="this.style.display='none'" style="width:42px;height:42px;object-fit:cover;border-radius:8px;border:1px solid #0001;">`
     : `<div style="width:42px;height:42px;border-radius:8px;border:1px solid #0001;display:grid;place-items:center;">🍽️</div>`;
@@ -129,7 +134,23 @@ function addToPlateFromHand(id) {
   }
   state.hand.splice(idx, 1);
   addToPlate(card);
+  if (isCardForbidden(state.deckId, card.id)) {
+    state.score -= 10;
+    updateHUD();
+  }
   renderHand();
+}
+
+function discardFromHand(id) {
+  const idx = state.hand.findIndex((c) => c.id == id);
+  if (idx === -1) return;
+  const [card] = state.hand.splice(idx, 1);
+  state.discardPile.push(card);
+  if (isCardForbidden(state.deckId, card.id)) {
+    state.score += 5;
+  }
+  renderHand();
+  updateHUD();
 }
 
 function handleDrop(e) {
@@ -153,7 +174,8 @@ async function servePlate() {
     alert('Afegeix almenys 2 cartes al plat per puntuar.');
     return;
   }
-  const delta = scoreCombination(state.plate);
+  const forbiddenCount = state.plate.filter((c) => isCardForbidden(state.deckId, c.id)).length;
+  let delta = scoreCombination(state.plate) - forbiddenCount * 10;
   const info = explainCombination(state.plate);
   state.score += delta;
   state.turn += 1;

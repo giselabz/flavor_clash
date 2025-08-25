@@ -66,7 +66,7 @@ function applyEffects(plate) {
   return bonus;
 }
 
-export function scoreCombination(plate) {
+function scoreCombination(plate) {
   if (!plate || plate.length < 2) return 0;
 
   for (let i=0;i<plate.length;i++)
@@ -85,7 +85,7 @@ export function scoreCombination(plate) {
   return s;
 }
 
-export function explainCombination(plate) {
+function explainCombination(plate) {
   if (!plate || plate.length < 2) return null;
 
   for (let i=0;i<plate.length;i++)
@@ -108,3 +108,5 @@ export function explainCombination(plate) {
 
   return lines.length ? lines.join('\n') : null;
 }
+
+export { scoreCombination, explainCombination };
