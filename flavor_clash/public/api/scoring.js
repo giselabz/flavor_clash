@@ -43,7 +43,9 @@ function hardConflict(a, b) {
   const B = new Set([...arr(b.tags), ...arr(b.category)]);
   return HARD_CONFLICTS.some(([x,y]) => (A.has(x) && B.has(y)) || (A.has(y) && B.has(x)));
 }
-
+function explainCombination(plate) {
+  if (!plate || plate.length < 2) return null;
+}
 function applyEffects(plate) {
   let bonus = 0;
   for (const c of plate) {
@@ -66,7 +68,7 @@ function applyEffects(plate) {
   return bonus;
 }
 
-export function scoreCombination(plate) {
+function scoreCombination(plate) {
   if (!plate || plate.length < 2) return 0;
 }
 const FLAVOR_COMPATIBILITY = {
@@ -194,3 +196,5 @@ export function explainPlateScore(plate) {
 
   return lines.length ? lines.join('\n') : null;
 }
+
+export { scoreCombination, explainCombination };
