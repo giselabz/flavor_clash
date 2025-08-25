@@ -261,11 +261,15 @@ async function servePlate() {
     alert('Afegeix almenys 2 cartes al plat per puntuar.');
     return;
   }
-  const forbiddenCount = state.plate.filter((c) => isCardForbidden(state.deckId, c.id)).length;
-  let delta = scoreCombination(state.plate) - forbiddenCount * 10;
-  const info = explainCombination(state.plate);
+  const servedPlate = [...state.plate];
+  const forbiddenCount = servedPlate.filter((c) =>
+    isCardForbidden(state.deckId, c.id)
+  ).length;
+  let delta = scoreCombination(servedPlate) - forbiddenCount * 10;
+  const info = explainCombination(servedPlate);
   state.score += delta;
   state.turn += 1;
+  verifyObjectives(servedPlate);
   state.discardPile.push(...servedPlate);
   state.plate = [];
   updateHUD();
