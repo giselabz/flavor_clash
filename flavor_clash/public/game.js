@@ -15,6 +15,9 @@ const state = {
   discardPile: [],
   objectives: ['Arriba 20 punts', 'Serveix un plat picant'],
   allCards: [],
+  servedPlates: 0,
+  maxPlates: 10,
+  timerEnd: null,
 };
 
 const $ = (s) => document.querySelector(s);
@@ -148,6 +151,11 @@ function dealHand() {
   updateHUD();
 }
 
+function startTurn() {
+  dealHand();
+  renderPlate();
+}
+
 async function servePlate() {
   if (state.plate.length < 2) {
     alert('Afegeix almenys 2 cartes al plat per puntuar.');
@@ -157,6 +165,7 @@ async function servePlate() {
   const info = explainCombination(state.plate);
   state.score += delta;
   state.turn += 1;
+  state.servedPlates += 1;
   state.discardPile.push(...state.plate, ...state.hand);
   state.plate = [];
   state.hand = [];
@@ -179,7 +188,15 @@ async function servePlate() {
     }
   }
 
-  dealHand();
+  const deckEmpty = state.drawPile.length === 0 && state.discardPile.length === 0;
+  const platesLimit = state.servedPlates >= state.maxPlates;
+  const timeUp = state.timerEnd && Date.now() >= state.timerEnd;
+
+  if (deckEmpty || platesLimit || timeUp) {
+    await endMatch();
+  } else {
+    startTurn();
+  }
 }
 
 async function endMatch() {
@@ -223,8 +240,7 @@ async function init() {
   }
 
   renderObjectives();
-  dealHand();
-  renderPlate();
+  startTurn();
 
   const plateEl = $('#plate');
   plateEl.addEventListener('dragover', (e) => e.preventDefault());
