@@ -24,6 +24,9 @@ const HARD_CONFLICTS = [
   ['raw_fish','cheese'],
 ];
 
+// Puntuació base segons la mida del plat (nombre de cartes)
+const BASE_SCORE = { 2:1, 3:3, 4:6, 5:10 };
+
 const arr = (x) => Array.isArray(x) ? x : (x ? [x] : []);
 const has = (card, key, val) => new Set(arr(card[key])).has(val);
 
@@ -73,7 +76,8 @@ export function scoreCombination(plate) {
     for (let j=i+1;j<plate.length;j++)
       if (hardConflict(plate[i], plate[j])) return -5;
 
-  let s = 0;
+  const base = BASE_SCORE[plate.length] ?? 0;
+  let s = base;
   for (let i=0;i<plate.length;i++)
     for (let j=i+1;j<plate.length;j++)
       s += pairScore(plate[i], plate[j]);
@@ -93,7 +97,9 @@ export function explainCombination(plate) {
       if (hardConflict(plate[i], plate[j]))
         return 'Hi ha un conflicte entre ingredients';
 
+  const base = BASE_SCORE[plate.length] ?? 0;
   const lines = [];
+  if (base) lines.push(`Puntuació base per ${plate.length} cartes: +${base}`);
   for (let i=0;i<plate.length;i++) {
     for (let j=i+1;j<plate.length;j++) {
       const s = pairScore(plate[i], plate[j]);
