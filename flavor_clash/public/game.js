@@ -3,6 +3,7 @@ import { supabase } from './supabaseClient.js';
 import { requireAuth } from './session.js';
 import GameSessionService from './api/GameSessionService.js';
 import { scoreCombination, explainCombination } from './api/scoring.js';
+import { canPlayCard, addToPlate } from './gameLogic.js';
 
 const state = {
   session: null,
@@ -15,6 +16,7 @@ const state = {
   discardPile: [],
   objectives: ['Arriba 20 punts', 'Serveix un plat picant'],
   allCards: [],
+  energy: 10,
 };
 
 const $ = (s) => document.querySelector(s);
@@ -33,6 +35,7 @@ function updateHUD() {
   $('#scoreLbl').textContent = state.score;
   $('#drawLbl').textContent = state.drawPile.length;
   $('#discardLbl').textContent = state.discardPile.length;
+  $('#energyLbl').textContent = state.energy;
 }
 
 function chipList(values = []) {
@@ -92,9 +95,12 @@ function renderPlate() {
     pill.textContent = c.name + ' ✕';
     pill.title = 'Treure del plat';
     pill.onclick = () => {
-      state.hand.push(state.plate.splice(idx, 1)[0]);
+      const card = state.plate.splice(idx, 1)[0];
+      state.energy += card.cost ?? 0;
+      state.hand.push(card);
       renderPlate();
       renderHand();
+      updateHUD();
     };
     el.appendChild(pill);
   });
@@ -110,26 +116,19 @@ function renderObjectives() {
   });
 }
 
-function canPlayCard(card) {
-  return state.plate.length < 5;
-}
-
-function addToPlate(card) {
-  state.plate.push(card);
-  renderPlate();
-}
-
 function addToPlateFromHand(id) {
   const idx = state.hand.findIndex((c) => c.id == id);
   if (idx === -1) return;
   const card = state.hand[idx];
-  if (!canPlayCard(card)) {
+  if (!canPlayCard(state, card)) {
     alert('La carta no es pot jugar en aquest moment.');
     return;
   }
   state.hand.splice(idx, 1);
-  addToPlate(card);
+  addToPlate(state, card);
+  renderPlate();
   renderHand();
+  updateHUD();
 }
 
 function handleDrop(e) {
@@ -144,6 +143,7 @@ function dealHand() {
     state.discardPile = [];
   }
   state.hand = state.drawPile.splice(0, 6);
+  state.energy = 10;
   renderHand();
   updateHUD();
 }
