@@ -15,6 +15,8 @@ const state = {
   discardPile: [],
   objectives: ['Arriba 20 punts', 'Serveix un plat picant'],
   allCards: [],
+  objectivePool: [],
+  servedPlates: 0,
 };
 
 const $ = (s) => document.querySelector(s);
@@ -110,6 +112,14 @@ function renderObjectives() {
   });
 }
 
+function maybeAddObjective() {
+  if (state.servedPlates > 0 && state.servedPlates % 3 === 0 && state.objectivePool.length) {
+    const next = state.objectivePool.shift();
+    state.objectives.push(next);
+    renderObjectives();
+  }
+}
+
 function canPlayCard(card) {
   return state.plate.length < 5;
 }
@@ -160,6 +170,7 @@ async function servePlate() {
   state.discardPile.push(...state.plate, ...state.hand);
   state.plate = [];
   state.hand = [];
+  state.servedPlates += 1;
   updateHUD();
   renderPlate();
   if (info) {
@@ -179,6 +190,7 @@ async function servePlate() {
     }
   }
 
+  maybeAddObjective();
   dealHand();
 }
 
@@ -200,7 +212,12 @@ async function endMatch() {
 async function loadCards() {
   const { data, error } = await supabase.from('cards').select('*');
   if (error) throw error;
-  state.allCards = data || [];
+  const cards = data || [];
+  const objectives = cards.filter((c) => (c.type || '').toLowerCase() === 'objective');
+  state.objectivePool = objectives
+    .map((o) => o.name)
+    .filter((o) => !state.objectives.includes(o));
+  state.allCards = cards.filter((c) => (c.type || '').toLowerCase() !== 'objective');
   state.drawPile = shuffle([...state.allCards]);
 }
 
@@ -234,4 +251,8 @@ async function init() {
   $('#btnEnd').onclick = endMatch;
 }
 
-init();
+if (typeof window !== 'undefined') {
+  init();
+}
+
+export { state, loadCards, servePlate, renderObjectives, maybeAddObjective };
