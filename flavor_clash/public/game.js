@@ -3,12 +3,15 @@ import { supabase } from './supabaseClient.js';
 import { requireAuth } from './session.js';
 import GameSessionService from './api/GameSessionService.js';
 import { scoreCombination, explainCombination } from './api/scoring.js';
+import { swapHands, superMultiplier } from './actionEffects.js';
 
 const state = {
   session: null,
   deckId: localStorage.getItem('selectedDeck') || 'classic',
   turn: 1,
   score: 0,
+  multiplier: 1,
+  multiplierTurns: 0,
   plate: [],
   hand: [],
   drawPile: [],
@@ -42,12 +45,17 @@ function chipList(values = []) {
 function renderCard(c) {
   const el = document.createElement('div');
   el.className = 'card';
-  el.draggable = true;
   el.dataset.id = c.id;
-  el.addEventListener('dragstart', (e) => {
-    e.dataTransfer.setData('text/plain', c.id);
-  });
-  el.onclick = () => addToPlateFromHand(c.id);
+  if (c.type === 'accio') {
+    el.draggable = false;
+    el.onclick = () => playActionCard(c.id);
+  } else {
+    el.draggable = true;
+    el.addEventListener('dragstart', (e) => {
+      e.dataTransfer.setData('text/plain', c.id);
+    });
+    el.onclick = () => addToPlateFromHand(c.id);
+  }
   const icon = c.icon_url
     ? `<img src="${c.icon_url}" onerror="this.style.display='none'" style="width:42px;height:42px;object-fit:cover;border-radius:8px;border:1px solid #0001;">`
     : `<div style="width:42px;height:42px;border-radius:8px;border:1px solid #0001;display:grid;place-items:center;">🍽️</div>`;
@@ -138,6 +146,27 @@ function handleDrop(e) {
   addToPlateFromHand(id);
 }
 
+function playActionCard(id) {
+  const idx = state.hand.findIndex((c) => c.id == id);
+  if (idx === -1) return;
+  const card = state.hand[idx];
+  if (card.type !== 'accio') return;
+  state.hand.splice(idx, 1);
+  state.discardPile.push(card);
+  const handlers = {
+    swap: swapHands,
+    'super-multiplier': superMultiplier,
+  };
+  const fn = handlers[card.id];
+  if (fn) {
+    fn(state, { dealHand });
+  } else {
+    alert('Efecte no implementat.');
+  }
+  renderHand();
+  updateHUD();
+}
+
 function dealHand() {
   if (state.drawPile.length < 6) {
     state.drawPile = shuffle([...state.drawPile, ...state.discardPile]);
@@ -153,13 +182,18 @@ async function servePlate() {
     alert('Afegeix almenys 2 cartes al plat per puntuar.');
     return;
   }
-  const delta = scoreCombination(state.plate);
+  const base = scoreCombination(state.plate);
   const info = explainCombination(state.plate);
+  const delta = base * state.multiplier;
   state.score += delta;
   state.turn += 1;
   state.discardPile.push(...state.plate, ...state.hand);
   state.plate = [];
   state.hand = [];
+  if (state.multiplierTurns > 0) {
+    state.multiplierTurns -= 1;
+    if (state.multiplierTurns === 0) state.multiplier = 1;
+  }
   updateHUD();
   renderPlate();
   if (info) {
