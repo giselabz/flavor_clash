@@ -132,6 +132,15 @@ const CARDS = [
   { id: 'three-textures', name: '3 textures diferents', type: 'objectiu', condition: 'Fes servir 3 textures diferents en un mateix plat', icon: 'icons/three-textures.png' },
 ];
 
+// Assign default energy cost to cards and customize some special cases
+CARDS.forEach(card => {
+  if (typeof card.cost !== 'number') card.cost = 1;
+});
+const multiplier = CARDS.find(c => c.id === 'multiplier');
+if (multiplier) multiplier.cost = 2;
+const superMultiplier = CARDS.find(c => c.id === 'super-multiplier');
+if (superMultiplier) superMultiplier.cost = 3;
+
 // Lògica de penalització i bonificació (ara per a qualsevol carta de tipus ingredient o beguda)
 function isCardForbidden(deckId, cardId) {
   const deck = DECKS.find(d => d.id === deckId);
