@@ -41,7 +41,7 @@ function chipList(values = []) {
 
 function renderCard(c) {
   const el = document.createElement('div');
-  el.className = 'card';
+  el.className = 'p-3 flex flex-col gap-2 border-2 border-gray-200 rounded-lg bg-white hover:shadow-md cursor-grab';
   el.draggable = true;
   el.dataset.id = c.id;
   el.addEventListener('dragstart', (e) => {
@@ -49,19 +49,17 @@ function renderCard(c) {
   });
   el.onclick = () => addToPlateFromHand(c.id);
   const icon = c.icon_url
-    ? `<img src="${c.icon_url}" onerror="this.style.display='none'" style="width:42px;height:42px;object-fit:cover;border-radius:8px;border:1px solid #0001;">`
-    : `<div style="width:42px;height:42px;border-radius:8px;border:1px solid #0001;display:grid;place-items:center;">🍽️</div>`;
+    ? `<img src="${c.icon_url}" onerror="this.style.display='none'" class="w-10 h-10 object-cover rounded-md border" />`
+    : `<div class="w-10 h-10 rounded-md border grid place-items-center">🍽️</div>`;
   el.innerHTML = `
-    <div class="row" style="justify-content:space-between">
-      <div class="row" style="gap:8px">
-        ${icon}
-        <div>
-          <div style="font-weight:700">${c.name}</div>
-          <div class="muted" style="font-size:12px">${c.type}</div>
-        </div>
+    <div class="flex items-center gap-2">
+      ${icon}
+      <div>
+        <div class="font-semibold">${c.name}</div>
+        <div class="text-xs text-gray-500">${c.type}</div>
       </div>
     </div>
-    <div style="font-size:12px;margin-top:6px">
+    <div class="text-xs text-gray-600 mt-2 space-y-1">
       <div><b>Sabor:</b> ${chipList(c.flavor)}</div>
       <div><b>Textura:</b> ${chipList(c.texture)}</div>
       <div><b>Categoria:</b> ${chipList(c.category)}</div>
@@ -82,13 +80,12 @@ function renderPlate() {
   const el = $('#plate');
   el.innerHTML = '';
   if (!state.plate.length) {
-    el.innerHTML = '<span class="muted">Cap carta al plat.</span>';
+    el.innerHTML = '<span class="text-sm text-gray-500">Cap carta al plat.</span>';
     return;
   }
   state.plate.forEach((c, idx) => {
     const pill = document.createElement('button');
-    pill.className = 'btn';
-    pill.style.padding = '6px 10px';
+    pill.className = 'px-3 py-1 rounded-lg border bg-white text-sm hover:bg-gray-50';
     pill.textContent = c.name + ' ✕';
     pill.title = 'Treure del plat';
     pill.onclick = () => {
