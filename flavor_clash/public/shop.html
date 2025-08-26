@@ -55,10 +55,12 @@
 
     function renderCard(c) {
       const el = document.createElement('div');
-      el.className = 'bg-white border border-green-200 rounded-lg p-4 flex flex-col gap-2 shadow-sm';
+      el.className = 'bg-white/90 border border-green-200 rounded-lg p-4 flex flex-col gap-3 shadow-sm hover:shadow-md transition-shadow';
       const icon = c.icon_url
         ? `<img src="${c.icon_url}" onerror="this.style.display='none'" class="w-14 h-14 object-cover rounded-md border" />`
         : `<div class="w-14 h-14 grid place-items-center border rounded-md">🍽️</div>`;
+      const badge = (arr = [], color = '') =>
+        arr.map(v => `<span class="px-2 py-0.5 rounded-full ${color}">${v}</span>`).join(' ');
       el.innerHTML = `
         <div class="flex items-center justify-between gap-2">
           <div class="flex items-center gap-3">
@@ -70,7 +72,10 @@
           </div>
           <button class="buy-btn bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white text-xs font-semibold px-3 py-1.5 rounded-md" data-buy>Comprar · ${PRICE} pts</button>
         </div>
-        <div class="text-gray-500 text-xs">Sabor: ${(c.flavor||[]).join(', ')} · Textura: ${(c.texture||[]).join(', ')}</div>
+        <div class="mt-2 space-y-1 text-xs text-gray-600">
+          <div class="flex items-start gap-1"><span class="font-semibold">Sabor:</span><div class="flex flex-wrap gap-1">${badge(c.flavor, 'bg-orange-100 text-orange-800')}</div></div>
+          <div class="flex items-start gap-1"><span class="font-semibold">Textura:</span><div class="flex flex-wrap gap-1">${badge(c.texture, 'bg-blue-100 text-blue-800')}</div></div>
+        </div>
       `;
       el.querySelector('[data-buy]').onclick = async () => {
         try {

@@ -39,9 +39,17 @@ function chipList(values = []) {
   return (values || []).join(', ');
 }
 
+function badgeRow(label, values = [], colorClasses = '') {
+  if (!values || !values.length) return '';
+  const badges = values
+    .map((v) => `<span class="px-2 py-0.5 rounded-full ${colorClasses}">${v}</span>`)
+    .join(' ');
+  return `<div class="flex items-start gap-1"><span class="font-semibold">${label}:</span><div class="flex flex-wrap gap-1">${badges}</div></div>`;
+}
+
 function renderCard(c) {
   const el = document.createElement('div');
-  el.className = 'p-3 flex flex-col gap-2 border-2 border-gray-200 rounded-lg bg-white hover:shadow-md cursor-grab';
+  el.className = 'p-4 flex flex-col gap-3 border-2 border-gray-200 rounded-lg bg-white/90 backdrop-blur-sm hover:shadow-md transition-shadow cursor-grab';
   el.draggable = true;
   el.dataset.id = c.id;
   el.addEventListener('dragstart', (e) => {
@@ -52,19 +60,19 @@ function renderCard(c) {
     ? `<img src="${c.icon_url}" onerror="this.style.display='none'" class="w-10 h-10 object-cover rounded-md border" />`
     : `<div class="w-10 h-10 rounded-md border grid place-items-center">🍽️</div>`;
   el.innerHTML = `
-    <div class="flex items-center gap-2">
+    <div class="flex items-center gap-3">
       ${icon}
-      <div>
-        <div class="font-semibold">${c.name}</div>
+      <div class="flex-1">
+        <div class="font-semibold text-gray-900">${c.name}</div>
         <div class="text-xs text-gray-500">${c.type}</div>
       </div>
     </div>
-    <div class="text-xs text-gray-600 mt-2 space-y-1">
-      <div><b>Sabor:</b> ${chipList(c.flavor)}</div>
-      <div><b>Textura:</b> ${chipList(c.texture)}</div>
-      <div><b>Categoria:</b> ${chipList(c.category)}</div>
-      ${c.effect ? `<div><b>Efecte:</b> ${c.effect}</div>` : ''}
-      ${c.condition ? `<div><b>Conditió:</b> ${c.condition}</div>` : ''}
+    <div class="mt-2 space-y-1 text-xs text-gray-600">
+      ${badgeRow('Sabor', c.flavor, 'bg-orange-100 text-orange-800')}
+      ${badgeRow('Textura', c.texture, 'bg-blue-100 text-blue-800')}
+      ${badgeRow('Categoria', c.category, 'bg-gray-100 text-gray-800')}
+      ${c.effect ? `<div><span class="font-semibold">Efecte:</span> ${c.effect}</div>` : ''}
+      ${c.condition ? `<div><span class="font-semibold">Condició:</span> ${c.condition}</div>` : ''}
     </div>
   `;
   return el;
