@@ -5,6 +5,7 @@
   <title>Flavor Clash · Tenda</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="ingredient-card.css" />
 </head>
 <body class="min-h-screen bg-gradient-to-br from-orange-50 to-red-50">
   <div class="flex w-full min-h-svh" style="--sidebar-width:16rem;">
@@ -99,29 +100,39 @@
       }
     }
 
+    function getTheme(card){
+      const tags = card.tags || [];
+      if(tags.includes('spicy') || tags.includes('spicy-sweet')) return 'theme-spicy';
+      if(tags.includes('healthy')) return 'theme-healthy';
+      if(tags.includes('umami') || tags.includes('fermented')) return 'theme-umami';
+      if(tags.includes('sensorial')) return 'theme-sensorial';
+      return 'theme-classic';
+    }
+
     function renderCard(c) {
-      const el = document.createElement('div');
-      el.className = 'bg-white/90 border border-green-200 rounded-lg p-4 flex flex-col gap-3 shadow-sm hover:shadow-md transition-shadow';
+      const el = document.createElement('article');
+      el.className = `card ${getTheme(c)}`;
       const icon = c.icon_url
-        ? `<img src="${c.icon_url}" onerror="this.style.display='none'" class="w-14 h-14 object-cover rounded-md border" />`
-        : `<div class="w-14 h-14 grid place-items-center border rounded-md">🍽️</div>`;
-      const badge = (arr = [], color = '') =>
-        arr.map(v => `<span class="px-2 py-0.5 rounded-full ${color}">${v}</span>`).join(' ');
+        ? `<img src="${c.icon_url}" onerror="this.style.display='none'" alt="${c.name}">`
+        : '<span>🍽️</span>';
+      const tagsHtml = [...(c.flavor||[]), ...(c.texture||[])]
+        .map(v=>`<span class="tag">${v}</span>`).join('');
       el.innerHTML = `
-        <div class="flex items-center justify-between gap-2">
-          <div class="flex items-center gap-3">
-            ${icon}
-            <div>
-              <div class="font-bold">${c.name}</div>
-              <div class="text-gray-600 text-xs">${(c.category||[]).join(', ')}</div>
-            </div>
-          </div>
-          <button class="buy-btn bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white text-xs font-semibold px-3 py-1.5 rounded-md" data-buy>Comprar · ${PRICE} pts</button>
-        </div>
-        <div class="mt-2 space-y-1 text-xs text-gray-600">
-          <div class="flex items-start gap-1"><span class="font-semibold">Sabor:</span><div class="flex flex-wrap gap-1">${badge(c.flavor, 'bg-orange-100 text-orange-800')}</div></div>
-          <div class="flex items-start gap-1"><span class="font-semibold">Textura:</span><div class="flex flex-wrap gap-1">${badge(c.texture, 'bg-blue-100 text-blue-800')}</div></div>
-        </div>
+        <div class="rays"></div>
+        <div class="frame"></div>
+        <div class="corner tl"></div><div class="corner tr"></div>
+        <div class="corner bl"></div><div class="corner br"></div>
+        <div class="edge"></div>
+        <div class="hero"><div class="hero-ring">${icon}</div></div>
+        <h2 class="title">${c.name}</h2>
+        <div class="tags">${tagsHtml}</div>
+        <div class="foot"><div class="rows"><div class="row">
+          <span class="pill">Sabor: ${(c.flavor||[]).join(', ')}</span>
+          <span class="pill">Categoria: ${(c.category||[]).join(', ')}</span>
+        </div></div>
+        <div class="row">
+          <button class="buy-btn pill" data-buy>Comprar · ${PRICE} pts</button>
+        </div></div>
       `;
       el.querySelector('[data-buy]').onclick = async () => {
         try {

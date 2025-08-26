@@ -47,9 +47,18 @@ function badgeRow(label, values = [], colorClasses = '') {
   return `<div class="flex items-start gap-1"><span class="font-semibold">${label}:</span><div class="flex flex-wrap gap-1">${badges}</div></div>`;
 }
 
+function getTheme(card) {
+  const tags = card.tags || [];
+  if (tags.includes('spicy') || tags.includes('spicy-sweet')) return 'theme-spicy';
+  if (tags.includes('healthy')) return 'theme-healthy';
+  if (tags.includes('umami') || tags.includes('fermented')) return 'theme-umami';
+  if (tags.includes('sensorial')) return 'theme-sensorial';
+  return 'theme-classic';
+}
+
 function renderCard(c) {
-  const el = document.createElement('div');
-  el.className = 'p-4 flex flex-col gap-3 border-2 border-gray-200 rounded-lg bg-white/90 backdrop-blur-sm hover:shadow-md transition-shadow cursor-grab';
+  const el = document.createElement('article');
+  el.className = `card ${getTheme(c)} cursor-grab`;
   el.draggable = true;
   el.dataset.id = c.id;
   el.addEventListener('dragstart', (e) => {
@@ -57,23 +66,24 @@ function renderCard(c) {
   });
   el.onclick = () => addToPlateFromHand(c.id);
   const icon = c.icon_url
-    ? `<img src="${c.icon_url}" onerror="this.style.display='none'" class="w-10 h-10 object-cover rounded-md border" />`
-    : `<div class="w-10 h-10 rounded-md border grid place-items-center">🍽️</div>`;
+    ? `<img src="${c.icon_url}" onerror="this.style.display='none'" alt="${c.name}">`
+    : '<span>🍽️</span>';
+  const tagsHtml = [...(c.flavor || []), ...(c.texture || [])]
+    .map((t) => `<span class="tag">${t}</span>`)
+    .join('');
   el.innerHTML = `
-    <div class="flex items-center gap-3">
-      ${icon}
-      <div class="flex-1">
-        <div class="font-semibold text-gray-900">${c.name}</div>
-        <div class="text-xs text-gray-500">${c.type}</div>
-      </div>
-    </div>
-    <div class="mt-2 space-y-1 text-xs text-gray-600">
-      ${badgeRow('Sabor', c.flavor, 'bg-orange-100 text-orange-800')}
-      ${badgeRow('Textura', c.texture, 'bg-blue-100 text-blue-800')}
-      ${badgeRow('Categoria', c.category, 'bg-gray-100 text-gray-800')}
-      ${c.effect ? `<div><span class="font-semibold">Efecte:</span> ${c.effect}</div>` : ''}
-      ${c.condition ? `<div><span class="font-semibold">Condició:</span> ${c.condition}</div>` : ''}
-    </div>
+    <div class="rays"></div>
+    <div class="frame"></div>
+    <div class="corner tl"></div><div class="corner tr"></div>
+    <div class="corner bl"></div><div class="corner br"></div>
+    <div class="edge"></div>
+    <div class="hero"><div class="hero-ring">${icon}</div></div>
+    <h2 class="title">${c.name}</h2>
+    <div class="tags">${tagsHtml}</div>
+    <div class="foot"><div class="rows"><div class="row">
+      <span class="pill">Sabor: ${chipList(c.flavor)}</span>
+      <span class="pill">Categoria: ${chipList(c.category)}</span>
+    </div></div></div>
   `;
   return el;
 }
