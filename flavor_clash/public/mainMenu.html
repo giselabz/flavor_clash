@@ -1,97 +1,130 @@
 <!DOCTYPE html>
 <html lang="ca">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Flavor Clash - Menú Principal</title>
-  <link rel="stylesheet" href="style.css"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flavor Clash</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-  <!-- L'antiga selecció de baralla s'ha traslladat a una pàgina dedicada -->
-
-  <div style="height:100vh;display:grid;grid-template-rows:1fr 2fr 2fr 1fr;grid-template-columns:1fr 2fr 1fr;gap:0;">
-    <!-- Menú lateral -->
-    <div style="grid-row:1/2;grid-column:1/2;display:flex;align-items:end;justify-content:start;padding-left:32px;">
-      <a href="settings.html" title="Ajustes" class="btn" style="padding:10px 22px;font-size:1.1em;display:flex;align-items:center;gap:8px;">
-        <span style="font-size:1.5em;">&#9881;</span> Ajustes
-      </a>
-    </div>
-
-    <!-- Perfil -->
-    <div style="grid-row:1/2;grid-column:3/4;display:flex;align-items:end;justify-content:end;padding-right:32px;gap:12px;">
-      <div id="profileWidget"></div>
-    </div>
-
-    <!-- Logo superior central -->
-    <div style="grid-row:1/2;grid-column:2/3;display:flex;justify-content:center;align-items:end;">
-      <img src="https://img.icons8.com/color/128/000000/cocktail.png" alt="Flavor Clash Logo" style="margin-bottom:8px;">
-    </div>
-
-    <!-- Título y progreso -->
-    <div style="grid-row:2/3;grid-column:2/3;display:flex;flex-direction:column;align-items:center;justify-content:center;">
-      <h1 style="font-size:2.5em;letter-spacing:2px;color:#b85c00;margin-bottom:10px;">Menú Principal</h1>
-      <div style="color:#b85c00b0;font-size:1.1em;margin-bottom:8px;">Progrés: <span id="progress">0%</span></div>
-    </div>
-
-    <!-- Botón principal -->
-    <div style="grid-row:3/4;grid-column:2/3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:32px;">
-      <a href="deck-selector.html" class="btn" style="font-size:1.5em;padding:22px 60px;">Inicia Partida</a>
-      <div style="display:flex;gap:36px;justify-content:center;">
-        <a href="shop.html" class="btn" style="font-size:1.1em;padding:14px 36px;display:flex;align-items:center;gap:8px;">
-          <img src="https://img.icons8.com/color/32/000000/shopping-cart.png" alt="Tienda" style="width:24px;height:24px;">Tienda
-        </a>
-        <a href="minigames.html" class="btn" style="font-size:1.1em;padding:14px 36px;display:flex;align-items:center;gap:8px;">
-          <img src="https://img.icons8.com/color/32/000000/controller.png" alt="Minijuegos" style="width:24px;height:24px;">Minijuegos
-        </a>
-      </div>
-    </div>
-
-    <!-- Cerrar sesión pie de página (botón real) -->
-    <div style="grid-row:4/5;grid-column:2/3;display:flex;justify-content:center;align-items:start;">
-      <button id="logoutFooter" class="btn" data-logout="login.html"
-              style="background:#ffe6e6;color:#b85c00;font-size:1em;padding:10px 28px;">
-        Cerrar sesión
+<body class="min-h-screen bg-gradient-to-br from-orange-50 to-red-50">
+<main class="flex-1 flex flex-col">
+  <header class="bg-white/80 backdrop-blur-sm border-b border-orange-200 px-6 py-4 md:hidden">
+    <div class="flex items-center gap-4">
+      <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:text-accent-foreground h-7 w-7 hover:bg-orange-100 p-2 rounded-lg transition-colors duration-200" data-sidebar="trigger">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-panel-left"><rect width="18" height="18" x="3" y="3" rx="2"></rect><path d="M9 3v18"></path></svg>
+        <span class="sr-only">Toggle Sidebar</span>
       </button>
+      <h1 class="text-xl font-bold text-orange-600">Flavor Clash</h1>
+    </div>
+  </header>
+  <div class="flex-1 overflow-auto">
+    <div class="min-h-screen p-4 md:p-8">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-12">
+          <div class="mb-6">
+            <div class="w-24 h-24 bg-gradient-to-br from-orange-400 to-red-500 rounded-full mx-auto flex items-center justify-center shadow-xl mb-6">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chef-hat w-12 h-12 text-white"><path d="M17 21a1 1 0 0 0 1-1v-5.35c0-.457.316-.844.727-1.041a4 4 0 0 0-2.134-7.589 5 5 0 0 0-9.186 0 4 4 0 0 0-2.134 7.588c.411.198.727.585.727 1.041V20a1 1 0 0 0 1 1Z"></path><path d="M6 17h12"></path></svg>
+            </div>
+            <h1 class="text-5xl font-bold bg-gradient-to-r from-orange-600 via-red-500 to-pink-500 bg-clip-text text-transparent mb-4">Flavor Clash</h1>
+            <p class="text-xl text-gray-600 max-w-2xl mx-auto mb-8">Descobreix l'art del food pairing i crea combinacions de sabors extraordinàries. Aprèn maridatges exòtics mentre jugues!</p>
+          </div>
+          <a href="deck-selector.html">
+            <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary hover:bg-primary/90 h-11 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-play w-6 h-6 mr-2"><polygon points="6 3 20 12 6 21 6 3"></polygon></svg>
+              Inicia Partida
+            </button>
+          </a>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+          <div class="rounded-lg border text-card-foreground shadow-sm bg-white/80 backdrop-blur-sm border-orange-200 hover:shadow-lg transition-all duration-200">
+            <div class="flex flex-col space-y-1.5 p-6 pb-2">
+              <h3 class="tracking-tight text-sm font-medium text-gray-600 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trophy w-4 h-4 text-orange-500"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg>
+                Punts de Sabor
+              </h3>
+            </div>
+            <div class="p-6 pt-0">
+              <div class="text-2xl font-bold text-orange-600">0</div>
+            </div>
+          </div>
+          <div class="rounded-lg border text-card-foreground shadow-sm bg-white/80 backdrop-blur-sm border-green-200 hover:shadow-lg transition-all duration-200">
+            <div class="flex flex-col space-y-1.5 p-6 pb-2">
+              <h3 class="tracking-tight text-sm font-medium text-gray-600 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chef-hat w-4 h-4 text-green-500"><path d="M17 21a1 1 0 0 0 1-1v-5.35c0-.457.316-.844.727-1.041a4 4 0 0 0-2.134-7.589 5 5 0 0 0-9.186 0 4 4 0 0 0-2.134 7.588c.411.198.727.585.727 1.041V20a1 1 0 0 0 1 1Z"></path><path d="M6 17h12"></path></svg>
+                Plats Creats
+              </h3>
+            </div>
+            <div class="p-6 pt-0">
+              <div class="text-2xl font-bold text-green-600">0</div>
+            </div>
+          </div>
+          <div class="rounded-lg border text-card-foreground shadow-sm bg-white/80 backdrop-blur-sm border-purple-200 hover:shadow-lg transition-all duration-200">
+            <div class="flex flex-col space-y-1.5 p-6 pb-2">
+              <h3 class="tracking-tight text-sm font-medium text-gray-600 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sparkles w-4 h-4 text-purple-500"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"></path><path d="M20 3v4"></path><path d="M22 5h-4"></path><path d="M4 17v2"></path><path d="M5 18H3"></path></svg>
+                Maridatges
+              </h3>
+            </div>
+            <div class="p-6 pt-0">
+              <div class="text-2xl font-bold text-purple-600">0</div>
+            </div>
+          </div>
+          <div class="rounded-lg border text-card-foreground shadow-sm bg-white/80 backdrop-blur-sm border-blue-200 hover:shadow-lg transition-all duration-200">
+            <div class="flex flex-col space-y-1.5 p-6 pb-2">
+              <h3 class="tracking-tight text-sm font-medium text-gray-600 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user w-4 h-4 text-blue-500"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                Nivell
+              </h3>
+            </div>
+            <div class="p-6 pt-0">
+              <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 bg-blue-50 text-blue-700 border-blue-200">Xef Novell</div>
+            </div>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="rounded-lg border bg-card text-card-foreground shadow-sm bg-gradient-to-br from-orange-50 to-red-50 border-orange-200 hover:shadow-lg transition-all duration-200 cursor-pointer group">
+            <a href="deck-selector.html">
+              <div class="flex flex-col space-y-1.5 p-6">
+                <h3 class="text-2xl font-semibold leading-none tracking-tight flex items-center gap-3 text-orange-700 group-hover:text-orange-600">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-play w-6 h-6"><polygon points="6 3 20 12 6 21 6 3"></polygon></svg>
+                  Jugar Ara
+                </h3>
+              </div>
+              <div class="p-6 pt-0">
+                <p class="text-gray-600">Comença una nova partida i crea combinacions de sabors únics</p>
+              </div>
+            </a>
+          </div>
+          <div class="rounded-lg border bg-card text-card-foreground shadow-sm bg-gradient-to-br from-green-50 to-emerald-50 border-green-200 hover:shadow-lg transition-all duration-200 cursor-pointer group">
+            <a href="shop.html">
+              <div class="flex flex-col space-y-1.5 p-6">
+                <h3 class="text-2xl font-semibold leading-none tracking-tight flex items-center gap-3 text-green-700 group-hover:text-green-600">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shopping-bag w-6 h-6"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path><path d="M3 6h18"></path><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                  Botiga
+                </h3>
+              </div>
+              <div class="p-6 pt-0">
+                <p class="text-gray-600">Desbloqueja nous ingredients i cartes d'acció especials</p>
+              </div>
+            </a>
+          </div>
+          <div class="rounded-lg border bg-card text-card-foreground shadow-sm bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200 hover:shadow-lg transition-all duration-200 cursor-pointer group">
+            <a href="editProfile.html">
+              <div class="flex flex-col space-y-1.5 p-6">
+                <h3 class="text-2xl font-semibold leading-none tracking-tight flex items-center gap-3 text-blue-700 group-hover:text-blue-600">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user w-6 h-6"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                  Perfil
+                </h3>
+              </div>
+              <div class="p-6 pt-0">
+                <p class="text-gray-600">Revisa les teves estadístiques i personalitza el teu avatar</p>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-
-  <!-- LÓGICA: sesión + perfil + modal -->
-  <script type="module">
-    import { requireAuth } from './session.js';
-    import UserService from './api/UserService.js';
-    
-    // 1) Exigir sesión
-    await requireAuth('login.html');
-    
-    // 2) Cargar perfil
-    const me = await UserService.getMyProfile(); // { name, avatar_url, flavor_points, progress, ... }
-    const profile = document.getElementById('profileWidget');
-    const name = me?.name ?? 'Player';
-    const points = me?.flavor_points ?? 0;
-    const avatar = me?.avatar_url || '';
-
-    profile.innerHTML = `
-      <div style="display:flex;align-items:center;gap:10px;">
-        <img src="${avatar}" alt="" onerror="this.style.display='none'"
-             style="width:34px;height:34px;border-radius:50%;object-fit:cover;border:1px solid #0001;">
-        <div style="display:flex;flex-direction:column;line-height:1.1;">
-          <strong style="font-size:14px">${name}</strong>
-          <span style="font-size:12px;opacity:.7">🍊 ${points} pts</span>
-        </div>
-        <button id="btnLogout" class="btn" style="padding:6px 10px;">Salir</button>
-      </div>
-    `;
-
-    // Progreso (si guardas texto/porcentaje en users.progress)
-    const progressEl = document.getElementById('progress');
-    if (me?.progress) { progressEl.textContent = me.progress; }
-
-    // 3) Logout (header y footer)
-    const doLogout = async () => { await UserService.signOut(); location.href = 'login.html'; };
-    document.getElementById('btnLogout').addEventListener('click', doLogout);
-    document.getElementById('logoutFooter').addEventListener('click', doLogout);
-
-    // 4) El botó "Inicia Partida" dirigeix al selector de baralla
-  </script>
+</main>
 </body>
 </html>
