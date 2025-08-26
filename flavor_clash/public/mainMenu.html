@@ -7,22 +7,7 @@
   <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-  <!-- MODAL SELECCIÓ DE BARALLA -->
-  <div id="deckModal" style="display:none;position:fixed;z-index:1000;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.35);align-items:center;justify-content:center;">
-    <div style="background:#fffbe7;padding:32px 28px 24px 28px;border-radius:18px;box-shadow:0 4px 32px #b85c0030;max-width:420px;width:90vw;">
-      <h2 style="color:#b85c00;margin-bottom:18px;">Escull la teva baralla</h2>
-      <form id="deckForm">
-        <div style="display:flex;flex-direction:column;gap:12px;">
-          <label><input type="radio" name="deck" value="classic" checked> <b>Clàssic</b> <span style="color:#b85c00b0;font-size:0.95em;">Combinacions tradicionals i segures</span></label>
-          <label><input type="radio" name="deck" value="spicy-sweet"> <b>Picant-dolç</b> <span style="color:#b85c00b0;font-size:0.95em;">Explosió de sabors oposats</span></label>
-          <label><input type="radio" name="deck" value="healthy"> <b>Saludable</b> <span style="color:#b85c00b0;font-size:0.95em;">Ingredients naturals i nutritius</span></label>
-          <label><input type="radio" name="deck" value="umami"> <b>Umami</b> <span style="color:#b85c00b0;font-size:0.95em;">Rics en umami i fermentats</span></label>
-          <label><input type="radio" name="deck" value="sensorial"> <b>Sensorial</b> <span style="color:#b85c00b0;font-size:0.95em;">Contrast visual, textura o temperatura</span></label>
-        </div>
-        <button type="submit" class="btn" style="margin-top:22px;width:100%;">Inicia Partida</button>
-      </form>
-    </div>
-  </div>
+  <!-- L'antiga selecció de baralla s'ha traslladat a una pàgina dedicada -->
 
   <div style="height:100vh;display:grid;grid-template-rows:1fr 2fr 2fr 1fr;grid-template-columns:1fr 2fr 1fr;gap:0;">
     <!-- Menú lateral -->
@@ -50,7 +35,7 @@
 
     <!-- Botón principal -->
     <div style="grid-row:3/4;grid-column:2/3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:32px;">
-      <a href="#" id="startGameBtn" class="btn" style="font-size:1.5em;padding:22px 60px;">Inicia Partida</a>
+      <a href="deck-selector.html" class="btn" style="font-size:1.5em;padding:22px 60px;">Inicia Partida</a>
       <div style="display:flex;gap:36px;justify-content:center;">
         <a href="shop.html" class="btn" style="font-size:1.1em;padding:14px 36px;display:flex;align-items:center;gap:8px;">
           <img src="https://img.icons8.com/color/32/000000/shopping-cart.png" alt="Tienda" style="width:24px;height:24px;">Tienda
@@ -106,26 +91,7 @@
     document.getElementById('btnLogout').addEventListener('click', doLogout);
     document.getElementById('logoutFooter').addEventListener('click', doLogout);
 
-    // 4) Modal de baraja y navegación al juego
-    const startBtn = document.getElementById('startGameBtn');
-    const deckModal = document.getElementById('deckModal');
-    const deckForm = document.getElementById('deckForm');
-
-    startBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      deckModal.style.display = 'flex';
-    });
-
-    deckForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const deck = deckForm.deck.value;
-      localStorage.setItem('selectedDeck', deck);
-      window.location.href = 'game.html';
-    });
-
-    deckModal.addEventListener('click', (ev) => {
-      if (ev.target === deckModal) deckModal.style.display = 'none';
-    });
+    // 4) El botó "Inicia Partida" dirigeix al selector de baralla
   </script>
 </body>
 </html>
