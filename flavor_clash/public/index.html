@@ -23,19 +23,19 @@
         <li>
           <a href="index.html" class="flex items-center gap-3 h-8 py-3 px-4 rounded-xl bg-orange-100 text-orange-700 shadow-sm">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-house w-5 h-5"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
-            <span class="font-medium">Inici</span>
+            <span class="font-medium" data-i18n="nav_home">Inici</span>
           </a>
         </li>
         <li>
           <a href="deck-selector.html" class="flex items-center gap-3 h-8 py-3 px-4 rounded-xl hover:bg-orange-100 hover:text-orange-700 transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-play w-5 h-5"><polygon points="6 3 20 12 6 21 6 3"></polygon></svg>
-            <span class="font-medium">Jugar</span>
+            <span class="font-medium" data-i18n="nav_play">Jugar</span>
           </a>
         </li>
         <li>
           <a href="shop.html" class="flex items-center gap-3 h-8 py-3 px-4 rounded-xl hover:bg-orange-100 hover:text-orange-700 transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shopping-bag w-5 h-5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path><path d="M3 6h18"></path><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
-            <span class="font-medium">Botiga</span>
+            <span class="font-medium" data-i18n="nav_shop">Botiga</span>
           </a>
         </li>
         <li>
@@ -47,7 +47,7 @@
         <li>
           <a href="profile.html" class="flex items-center gap-3 h-8 py-3 px-4 rounded-xl hover:bg-orange-100 hover:text-orange-700 transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user w-5 h-5"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <span class="font-medium">Perfil</span>
+            <span class="font-medium" data-i18n="nav_profile">Perfil</span>
           </a>
         </li>
       </ul>
@@ -66,6 +66,10 @@
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings w-4 h-4"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
         <span>Ajustos</span>
       </button>
+      <select id="lang-select" class="mt-4 w-full border border-orange-200 rounded-lg p-2">
+        <option value="ca">Català</option>
+        <option value="en">English</option>
+      </select>
     </div>
   </div>
 
@@ -93,7 +97,7 @@
             <a href="deck-selector.html">
               <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary hover:bg-primary/90 h-11 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-play w-6 h-6 mr-2"><polygon points="6 3 20 12 6 21 6 3"></polygon></svg>
-                Inicia Partida
+                <span data-i18n="start_game">Inicia Partida</span>
               </button>
             </a>
           </div>
@@ -186,8 +190,9 @@
           </div>
         </div>
       </div>
-    </div>
-  </main>
 </div>
+</main>
+</div>
+  <script src="i18n.js"></script>
 </body>
 </html>

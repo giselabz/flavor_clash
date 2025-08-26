@@ -6,18 +6,63 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
-  <div class="max-w-6xl mx-auto p-4 md:p-8">
-    <div class="flex items-center justify-between mb-8">
-      <a href="mainMenu.html" class="inline-flex items-center gap-2 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-medium px-4 py-2 rounded-lg shadow">
-        ← Menú
-      </a>
-      <button id="editBtn" class="border border-blue-200 text-blue-700 hover:bg-blue-50 px-4 py-2 rounded-lg">
-        Editar Perfil
-      </button>
+<body class="min-h-screen bg-gradient-to-br from-orange-50 to-red-50">
+  <div class="flex w-full min-h-svh" style="--sidebar-width:16rem;">
+    <div class="hidden md:flex flex-col w-[--sidebar-width] border-r border-orange-200 bg-white/95 backdrop-blur-sm">
+      <div class="flex items-center gap-3 p-6 border-b border-orange-200">
+        <div class="w-12 h-12 bg-gradient-to-br from-orange-400 to-red-500 rounded-xl flex items-center justify-center shadow-lg">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chef-hat w-7 h-7 text-white"><path d="M17 21a1 1 0 0 0 1-1v-5.35c0-.457.316-.844.727-1.041a4 4 0 0 0-2.134-7.589 5 5 0 0 0-9.186 0 4 4 0 0 0-2.134 7.588c.411.198.727.585.727 1.041V20a1 1 0 0 0 1 1Z"></path><path d="M6 17h12"></path></svg>
+        </div>
+        <div>
+          <h2 class="text-xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">Flavor Clash</h2>
+          <p class="text-sm text-orange-600 font-medium">L'Art del Maridatge</p>
+        </div>
+      </div>
+      <nav class="p-4 flex-1 overflow-auto">
+        <ul class="flex flex-col gap-2 text-sm">
+          <li>
+            <a href="index.html" class="flex items-center gap-3 h-8 py-3 px-4 rounded-xl hover:bg-orange-100 hover:text-orange-700 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-house w-5 h-5"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+              <span class="font-medium" data-i18n="nav_home">Inici</span>
+            </a>
+          </li>
+          <li>
+            <a href="deck-selector.html" class="flex items-center gap-3 h-8 py-3 px-4 rounded-xl hover:bg-orange-100 hover:text-orange-700 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-play w-5 h-5"><polygon points="6 3 20 12 6 21 6 3"></polygon></svg>
+              <span class="font-medium" data-i18n="nav_play">Jugar</span>
+            </a>
+          </li>
+          <li>
+            <a href="shop.html" class="flex items-center gap-3 h-8 py-3 px-4 rounded-xl hover:bg-orange-100 hover:text-orange-700 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shopping-bag w-5 h-5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path><path d="M3 6h18"></path><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+              <span class="font-medium" data-i18n="nav_shop">Botiga</span>
+            </a>
+          </li>
+          <li>
+            <a href="profile.html" class="flex items-center gap-3 h-8 py-3 px-4 rounded-xl bg-orange-100 text-orange-700 shadow-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user w-5 h-5"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              <span class="font-medium" data-i18n="nav_profile">Perfil</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <div class="p-4 border-t border-orange-200">
+        <select id="lang-select" class="w-full border border-orange-200 rounded-lg p-2">
+          <option value="ca">Català</option>
+          <option value="en">English</option>
+        </select>
+      </div>
     </div>
+    <main class="flex-1 flex flex-col p-4 md:p-8">
+      <div class="max-w-6xl mx-auto">
+        <div class="flex items-center justify-between mb-8">
+          <h1 class="text-3xl font-bold text-gray-900" data-i18n="profile_title">El Meu Perfil</h1>
+          <button id="editBtn" class="border border-blue-200 text-blue-700 hover:bg-blue-50 px-4 py-2 rounded-lg">
+            Editar Perfil
+          </button>
+        </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <div class="lg:col-span-1 space-y-6">
         <div class="bg-gradient-to-br from-blue-50 to-indigo-100 border border-blue-200 rounded-lg p-6 text-center">
           <div id="avatarEmoji" class="text-6xl mb-4">👨‍🍳</div>
@@ -76,6 +121,8 @@
         </div>
       </div>
     </div>
+      </div>
+    </main>
   </div>
 
   <script type="module">
@@ -169,5 +216,6 @@
       });
     }
   </script>
+  <script src="i18n.js"></script>
 </body>
 </html>
