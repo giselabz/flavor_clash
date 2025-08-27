@@ -22,6 +22,19 @@ const state = {
   bestServe: 0,
 };
 
+const FLAVOR_MAP = {
+  'dolç': 'sweet',
+  'dolc': 'sweet',
+  'salat': 'salty',
+  'àcid': 'sour',
+  'acid': 'sour',
+  'amarg': 'bitter',
+  'picant': 'spicy',
+  'umami': 'umami',
+};
+
+const normFlavor = (f = '') => FLAVOR_MAP[f.toLowerCase()] || f.toLowerCase();
+
 const $ = (s) => document.querySelector(s);
 
 function shuffle(arr) {
@@ -145,15 +158,20 @@ function checkObjectives(served) {
 
   // Objective 2: sweet + sour combo
   if (!state.objectives[1].completed) {
-    const flavors = served.flatMap((c) => (c.flavor || []).map((f) => f.toLowerCase()));
-    const hasSweet = flavors.some((f) => f.includes('dolç') || f.includes('sweet'));
-    const hasSour = flavors.some((f) => f.includes('àcid') || f.includes('acid') || f.includes('sour'));
-    if (hasSweet && hasSour) state.objectives[1].completed = true;
+    const flavors = served.flatMap((c) => (c.flavor || []).map((f) => normFlavor(f)));
+    if (flavors.includes('sweet') && flavors.includes('sour')) {
+      state.objectives[1].completed = true;
+    }
   }
 
   // Objective 3: no processed ingredients
   if (!state.objectives[2].completed) {
-    const hasProcessed = served.some((c) => (c.tags || []).some((t) => t.toLowerCase().includes('processat') || t.toLowerCase().includes('processed')));
+    const hasProcessed = served.some((c) =>
+      (c.tags || []).some((t) => {
+        const v = t.toLowerCase();
+        return v.includes('processat') || v.includes('processada') || v.includes('processed');
+      })
+    );
     if (!hasProcessed) state.objectives[2].completed = true;
   }
 
