@@ -27,12 +27,47 @@ const HARD_CONFLICTS = [
 const arr = (x) => Array.isArray(x) ? x : (x ? [x] : []);
 const has = (card, key, val) => new Set(arr(card[key])).has(val);
 
+// Map localised flavor/texture names to the keys used in the synergy tables
+const FLAVOR_MAP = {
+  'dolç': 'sweet',
+  'salat': 'salty',
+  'àcid': 'sour',
+  'acid': 'sour',
+  'amarg': 'bitter',
+  'picant': 'spicy',
+  'umami': 'umami',
+};
+
+const TEXTURE_MAP = {
+  'cruixent': 'crunchy',
+  'cremós': 'creamy',
+  'cremos': 'creamy',
+  'suau': 'soft',
+  'fibrós': 'soft',
+  'fibros': 'soft',
+  'líquid': 'liquid',
+  'liquid': 'liquid',
+  'gasosa': 'liquid',
+  'densa': 'creamy',
+};
+
+const normFlavor = (f) => FLAVOR_MAP[f] || f;
+const normTexture = (t) => TEXTURE_MAP[t] || t;
+
 function pairScore(a, b) {
   let s = 0;
-  for (const fa of arr(a.flavor)) for (const fb of arr(b.flavor))
-    s += (FLAVOR_SYNERGY[fa]?.[fb] ?? 0);
-  for (const ta of arr(a.texture)) for (const tb of arr(b.texture))
-    s += (TEXTURE_SYNERGY[ta]?.[tb] ?? 0);
+  for (const fa of arr(a.flavor))
+    for (const fb of arr(b.flavor)) {
+      const A = normFlavor(fa);
+      const B = normFlavor(fb);
+      s += (FLAVOR_SYNERGY[A]?.[B] ?? 0);
+    }
+  for (const ta of arr(a.texture))
+    for (const tb of arr(b.texture)) {
+      const A = normTexture(ta);
+      const B = normTexture(tb);
+      s += (TEXTURE_SYNERGY[A]?.[B] ?? 0);
+    }
   for (const t of arr(a.tags)) s += (TAG_BONUS[t] ?? 0);
   for (const t of arr(b.tags)) s += (TAG_BONUS[t] ?? 0);
   return s;
