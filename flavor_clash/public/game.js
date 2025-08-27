@@ -128,12 +128,36 @@ function renderObjectives() {
     const wrap = document.createElement('div');
     const done = o.completed;
     wrap.className = `flex items-start gap-3 p-3 rounded-lg border-2 transition-all ${done ? 'bg-green-50 border-green-200' : 'bg-gray-50 border-gray-200'}`;
-    const icon = done
-      ? '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check w-5 h-5 text-green-500 mt-0.5 flex-shrink-0"><polyline points="20 6 9 17 4 12"></polyline></svg>'
-      : '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle w-5 h-5 text-gray-400 mt-0.5 flex-shrink-0"><circle cx="12" cy="12" r="10"></circle></svg>';
+    const icon = `<div class="obj-circle ${done ? 'done' : ''}"></div>`;
     wrap.innerHTML = `${icon}<div class="flex-1"><p class="text-sm font-medium text-gray-700">${o.text}</p><p class="text-xs text-gray-500 mt-1">+${o.points} punts</p></div>`;
     grid.appendChild(wrap);
   });
+}
+
+function checkObjectives(served) {
+  if (!served || !served.length) return;
+
+  // Objective 1: at least 3 different ingredients
+  if (!state.objectives[0].completed) {
+    const unique = new Set(served.map((c) => c.id || c.name));
+    if (unique.size >= 3) state.objectives[0].completed = true;
+  }
+
+  // Objective 2: sweet + sour combo
+  if (!state.objectives[1].completed) {
+    const flavors = served.flatMap((c) => (c.flavor || []).map((f) => f.toLowerCase()));
+    const hasSweet = flavors.some((f) => f.includes('dolç') || f.includes('sweet'));
+    const hasSour = flavors.some((f) => f.includes('àcid') || f.includes('acid') || f.includes('sour'));
+    if (hasSweet && hasSour) state.objectives[1].completed = true;
+  }
+
+  // Objective 3: no processed ingredients
+  if (!state.objectives[2].completed) {
+    const hasProcessed = served.some((c) => (c.tags || []).some((t) => t.toLowerCase().includes('processat') || t.toLowerCase().includes('processed')));
+    if (!hasProcessed) state.objectives[2].completed = true;
+  }
+
+  renderObjectives();
 }
 
 function canPlayCard(card) {
@@ -259,15 +283,17 @@ async function servePlate() {
     alert('Afegeix almenys 2 cartes al plat per puntuar.');
     return;
   }
-  const delta = scoreCombination(state.plate);
-  const info = explainCombination(state.plate);
-  await playServeAnimation(state.plate, delta, delta > state.bestServe);
+  const served = [...state.plate];
+  const delta = scoreCombination(served);
+  const info = explainCombination(served);
+  await playServeAnimation(served, delta, delta > state.bestServe);
   state.score += delta;
   if (delta > state.bestServe) state.bestServe = delta;
   state.turn += 1;
-  state.discardPile.push(...state.plate);
+  state.discardPile.push(...served);
   state.plate = [];
   renderPlate();
+  checkObjectives(served);
   if (info) {
     alert(info);
   } else {

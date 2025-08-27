@@ -6,6 +6,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="./ingredient-card.css" />
+  <style>
+    .obj-circle{
+      width:20px;height:20px;border-radius:9999px;border:2px solid #d1d5db;overflow:hidden;position:relative;flex-shrink:0;margin-top:2px;
+    }
+    .obj-circle::after{
+      content:"";position:absolute;inset:0;background-color:#16a34a;transform:scale(0);transform-origin:center;border-radius:inherit;
+    }
+    .obj-circle.done{border-color:#16a34a;}
+    .obj-circle.done::after{animation:fill-circle .3s ease-out forwards;}
+    @keyframes fill-circle{from{transform:scale(0);}to{transform:scale(1);}}
+  </style>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-orange-50 to-red-50">
   <div class="flex w-full min-h-svh" style="--sidebar-width:16rem;">
