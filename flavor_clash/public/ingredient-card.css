@@ -1,8 +1,8 @@
 :root{
-  --card-w:310px; --card-h:460px; --radius:20px;
+  --card-w:240px; --card-h:360px; --radius:20px;
   --frame:rgba(255,255,255,.55);
   --ink-alpha:.18; --text:#0f172a; --muted:#334155;
-  --hero-top:56px;
+  --hero-top:44px;
 }
 .theme-classic{--c1:#DBEAFE;--c2:#3B82F6;--cEdge:#1E40AF;}
 .theme-spicy{--c1:#FFE3C2;--c2:#F97316;--cEdge:#B45309;}
@@ -25,10 +25,10 @@
 .corner.br{bottom:8px;right:8px}
 .rays{position:absolute;inset:0;z-index:1;background:repeating-conic-gradient(from -3deg,rgba(255,255,255,var(--ink-alpha))0 2deg,transparent 2deg 9deg),radial-gradient(120% 60% at 50% 20%,rgba(255,255,255,.25),transparent 60%);mask:radial-gradient(circle at 50% 42%,rgba(0,0,0,.95)0 34%,rgba(0,0,0,.6)56%,transparent 78%),linear-gradient(#000,#000);mix-blend-mode:overlay}
 .hero{position:relative;z-index:3;display:grid;place-items:center;margin-top:0}
-.hero-ring{width:124px;height:124px;border-radius:50%;background:linear-gradient(180deg,rgba(255,255,255,.92),rgba(255,255,255,.78));box-shadow:0 8px 24px rgba(0,0,0,.18),inset 0 0 0 2px rgba(255,255,255,.85),0 0 0 6px var(--c1);display:grid;place-items:center}
+.hero-ring{width:96px;height:96px;border-radius:50%;background:linear-gradient(180deg,rgba(255,255,255,.92),rgba(255,255,255,.78));box-shadow:0 6px 20px rgba(0,0,0,.18),inset 0 0 0 2px rgba(255,255,255,.85),0 0 0 5px var(--c1);display:grid;place-items:center}
 .hero img,.hero svg{width:70%;height:70%;object-fit:contain;filter:drop-shadow(0 6px 10px rgba(0,0,0,.18))}
 .title{position:relative;z-index:3;text-align:center;font-weight:900;margin:12px 16px 8px;font-size:1.4rem;color:#0b1220;text-shadow:0 1px 0 rgba(255,255,255,.7)}
-.tags{position:absolute;left:18px;right:18px;bottom:92px;display:flex;gap:8px;justify-content:center;z-index:3}
+.tags{position:absolute;left:18px;right:18px;bottom:72px;display:flex;gap:8px;justify-content:center;z-index:3}
 .tag{padding:6px 10px;border-radius:999px;font-weight:700;font-size:.78rem;background:rgba(255,255,255,.82);color:var(--muted);border:1px solid rgba(0,0,0,.06);backdrop-filter:saturate(1.2) blur(2px)}
 .foot{position:absolute;left:0;right:0;bottom:0;z-index:3;padding:14px 16px 18px;background:linear-gradient(180deg,rgba(255,255,255,0),rgba(255,255,255,.65)40%,rgba(255,255,255,.9));border-top:1px solid rgba(255,255,255,.7)}
 .rows{display:grid;gap:6px;font-size:.9rem}
