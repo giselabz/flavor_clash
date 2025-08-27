@@ -4,6 +4,9 @@ import { requireAuth } from './session.js';
 import GameSessionService from './api/GameSessionService.js';
 import { scoreCombination, explainCombination } from './api/scoring.js';
 
+const MAX_PLATES = 5;
+const TIME_LIMIT = 120; // segons
+
 const state = {
   session: null,
   deckId: localStorage.getItem('selectedDeck') || 'classic',
@@ -20,6 +23,9 @@ const state = {
   ],
   allCards: [],
   bestServe: 0,
+  timeLeft: TIME_LIMIT,
+  timer: null,
+  finished: false,
 };
 
 const FLAVOR_MAP = {
@@ -51,6 +57,8 @@ function updateHUD() {
   $('#scoreLbl').textContent = state.score;
   $('#drawLbl').textContent = state.drawPile.length;
   $('#discardLbl').textContent = state.discardPile.length;
+  const t = $('#timeLbl');
+  if (t) t.textContent = state.timeLeft;
 }
 
 function chipList(values = []) {
@@ -330,6 +338,48 @@ async function servePlate() {
   }
 
   refillHand();
+  checkEndConditions();
+}
+
+function bonusFromObjectives() {
+  return state.objectives
+    .filter((o) => o.completed)
+    .reduce((sum, o) => sum + o.points, 0);
+}
+
+async function finalizeGame() {
+  if (state.finished) return;
+  state.finished = true;
+  try {
+    const bonus = bonusFromObjectives();
+    const total = state.score + bonus;
+    alert(`Puntuació final:\nSabor: ${state.score}\nBonificacions: ${bonus}\nTotal: ${total}`);
+    state.score = total;
+    if (state.timer) clearInterval(state.timer);
+    await endMatch();
+  } catch (err) {
+    console.error(err);
+    if (confirm('Error en calcular la puntuació. Vols reiniciar?')) {
+      window.location.reload();
+    }
+  }
+}
+
+function checkEndConditions() {
+  if (state.finished) return true;
+  if (state.drawPile.length === 0 && state.hand.length === 0) {
+    finalizeGame();
+    return true;
+  }
+  if (state.turn > MAX_PLATES) {
+    finalizeGame();
+    return true;
+  }
+  if (state.timeLeft <= 0) {
+    finalizeGame();
+    return true;
+  }
+  return false;
 }
 
 async function endMatch() {
@@ -354,6 +404,16 @@ async function loadCards() {
   state.drawPile = shuffle([...state.allCards]);
 }
 
+function startTimer() {
+  state.timer = setInterval(() => {
+    state.timeLeft -= 1;
+    updateHUD();
+    if (state.timeLeft <= 0) {
+      finalizeGame();
+    }
+  }, 1000);
+}
+
 async function init() {
   await requireAuth('login.html');
   updateHUD();
@@ -375,13 +435,14 @@ async function init() {
   renderObjectives();
   dealHand();
   renderPlate();
+  startTimer();
 
   const plateEl = $('#plate');
   plateEl.addEventListener('dragover', (e) => e.preventDefault());
   plateEl.addEventListener('drop', handleDrop);
 
   $('#btnServe').onclick = servePlate;
-  $('#btnEnd').onclick = endMatch;
+  $('#btnEnd').onclick = finalizeGame;
 }
 
 init();
