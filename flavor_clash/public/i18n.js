@@ -7,7 +7,14 @@ const translations = {
     start_game: "Inicia Partida",
     play_now: "Jugar Ara",
     shop_title: "Botiga",
-    profile_title: "El Meu Perfil"
+    profile_title: "El Meu Perfil",
+    login_title: "Inicia sessió",
+    login_email: "Email",
+    login_password: "Contrasenya",
+    login_submit: "Entrar",
+    login_cancel: "Cancel·lar",
+    login_no_account: "No tens compte?",
+    login_register: "Registra't"
   },
   en: {
     nav_home: "Home",
@@ -17,7 +24,14 @@ const translations = {
     start_game: "Start Game",
     play_now: "Play Now",
     shop_title: "Shop",
-    profile_title: "My Profile"
+    profile_title: "My Profile",
+    login_title: "Sign In",
+    login_email: "Email",
+    login_password: "Password",
+    login_submit: "Sign In",
+    login_cancel: "Cancel",
+    login_no_account: "No account?",
+    login_register: "Register"
   }
 };
 
