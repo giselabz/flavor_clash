@@ -168,7 +168,7 @@
       btn.addEventListener('click', () => {
         const id = btn.dataset.deckId;
         localStorage.setItem('selectedDeck', id);
-        window.location.href = 'game.html';
+        window.location.href = 'loading.html?next=game.html';
       });
     });
   </script>
