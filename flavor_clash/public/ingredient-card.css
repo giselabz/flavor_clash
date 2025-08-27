@@ -37,14 +37,14 @@
 .edge{position:absolute;inset:0;border-radius:var(--radius);box-shadow:inset 0 0 0 2px var(--cEdge),0 1px 0 rgba(255,255,255,.55);opacity:.22;pointer-events:none;z-index:2}
 
 /* Serve animation */
-.serve-anim-layer{z-index:50;pointer-events:none;}
+.serve-anim-layer{z-index:1000;pointer-events:none;overflow:visible;}
 .score-bubble{position:absolute;transform:translate(-50%,-50%) scale(0);opacity:0;font-size:2rem;font-weight:700;animation:scorePop 1s forwards;}
 .score-bubble-high{color:#16a34a;}
 .score-bubble-low{color:#dc2626;}
 @keyframes scorePop{0%{transform:translate(-50%,-50%) scale(0);opacity:0;}50%{transform:translate(-50%,-50%) scale(1.2);opacity:1;}100%{transform:translate(-50%,-50%) scale(1);opacity:0;}}
 
 /* sparkle and smoke particles */
-.spark{position:absolute;width:6px;height:6px;border-radius:50%;animation:spark 0.8s forwards;}
+.spark{position:absolute;width:8px;height:8px;border-radius:50%;pointer-events:none;box-shadow:0 0 6px currentColor;animation:spark 0.8s forwards;}
 .spark-high{background:#16a34a;}
 .spark-low{background:#dc2626;}
 @keyframes spark{0%{transform:translate(-50%,-50%) scale(1);opacity:1;}100%{transform:translate(calc(var(--dx) - 50%),calc(var(--dy) - 50%)) scale(0.3);opacity:0;}}
