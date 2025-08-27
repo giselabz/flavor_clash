@@ -153,14 +153,22 @@ function handleDrop(e) {
   addToPlateFromHand(id);
 }
 
-function dealHand() {
-  if (state.drawPile.length < 6) {
-    state.drawPile = shuffle([...state.drawPile, ...state.discardPile]);
-    state.discardPile = [];
+function refillHand() {
+  while (state.hand.length < 6) {
+    if (!state.drawPile.length) {
+      if (!state.discardPile.length) break;
+      state.drawPile = shuffle([...state.discardPile]);
+      state.discardPile = [];
+    }
+    state.hand.push(state.drawPile.shift());
   }
-  state.hand = state.drawPile.splice(0, 6);
   renderHand();
   updateHUD();
+}
+
+function dealHand() {
+  state.hand = [];
+  refillHand();
 }
 
 async function servePlate() {
@@ -172,10 +180,8 @@ async function servePlate() {
   const info = explainCombination(state.plate);
   state.score += delta;
   state.turn += 1;
-  state.discardPile.push(...state.plate, ...state.hand);
+  state.discardPile.push(...state.plate);
   state.plate = [];
-  state.hand = [];
-  updateHUD();
   renderPlate();
   if (info) {
     alert(info);
@@ -194,7 +200,7 @@ async function servePlate() {
     }
   }
 
-  dealHand();
+  refillHand();
 }
 
 async function endMatch() {
