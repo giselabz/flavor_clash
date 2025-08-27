@@ -221,6 +221,31 @@ function playServeAnimation(cards, delta, isHigh) {
       bubble.style.left = cx + 'px';
       bubble.style.top = cy + 'px';
       layer.appendChild(bubble);
+
+      const sparkCount = isHigh ? 12 : 8;
+      for (let i = 0; i < sparkCount; i++) {
+        const s = document.createElement('div');
+        s.className = 'spark ' + (isHigh ? 'spark-high' : 'spark-low');
+        const angle = Math.random() * Math.PI * 2;
+        const dist = 60 + Math.random() * 40;
+        s.style.left = cx + 'px';
+        s.style.top = cy + 'px';
+        s.style.setProperty('--dx', Math.cos(angle) * dist + 'px');
+        s.style.setProperty('--dy', Math.sin(angle) * dist + 'px');
+        layer.appendChild(s);
+      }
+      for (let i = 0; i < 3; i++) {
+        const m = document.createElement('div');
+        m.className = 'smoke';
+        const angle = Math.random() * Math.PI * 2;
+        const dist = 30 + Math.random() * 20;
+        m.style.left = cx + 'px';
+        m.style.top = cy + 'px';
+        m.style.setProperty('--sx', Math.cos(angle) * dist + 'px');
+        m.style.setProperty('--sy', Math.sin(angle) * dist + 'px');
+        layer.appendChild(m);
+      }
+
       setTimeout(() => {
         document.body.removeChild(layer);
         resolve();
