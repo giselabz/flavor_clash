@@ -15,6 +15,7 @@ const state = {
   discardPile: [],
   objectives: ['Arriba 20 punts', 'Serveix un plat picant'],
   allCards: [],
+  bestServe: 0,
 };
 
 const $ = (s) => document.querySelector(s);
@@ -171,6 +172,53 @@ function dealHand() {
   refillHand();
 }
 
+function playServeAnimation(cards, delta, isHigh) {
+  return new Promise((resolve) => {
+    const plateEl = $('#plate');
+    if (!plateEl) return resolve();
+    const rect = plateEl.getBoundingClientRect();
+    const layer = document.createElement('div');
+    layer.className = 'serve-anim-layer';
+    layer.style.position = 'fixed';
+    layer.style.left = rect.left + 'px';
+    layer.style.top = rect.top + 'px';
+    layer.style.width = rect.width + 'px';
+    layer.style.height = rect.height + 'px';
+    document.body.appendChild(layer);
+    const cx = rect.width / 2;
+    const cy = rect.height / 2;
+
+    [...plateEl.children].forEach((pill) => {
+      const pRect = pill.getBoundingClientRect();
+      const clone = pill.cloneNode(true);
+      clone.style.position = 'absolute';
+      clone.style.left = pRect.left - rect.left + 'px';
+      clone.style.top = pRect.top - rect.top + 'px';
+      clone.style.transition = 'all 0.5s ease';
+      layer.appendChild(clone);
+      requestAnimationFrame(() => {
+        const dx = cx - (pRect.left - rect.left) - pRect.width / 2;
+        const dy = cy - (pRect.top - rect.top) - pRect.height / 2;
+        clone.style.transform = `translate(${dx}px, ${dy}px) scale(0.5)`;
+        clone.style.opacity = '0';
+      });
+    });
+
+    setTimeout(() => {
+      const bubble = document.createElement('div');
+      bubble.textContent = (delta >= 0 ? '+' : '') + delta;
+      bubble.className = 'score-bubble ' + (isHigh ? 'score-bubble-high' : 'score-bubble-low');
+      bubble.style.left = cx + 'px';
+      bubble.style.top = cy + 'px';
+      layer.appendChild(bubble);
+      setTimeout(() => {
+        document.body.removeChild(layer);
+        resolve();
+      }, 1000);
+    }, 500);
+  });
+}
+
 async function servePlate() {
   if (state.plate.length < 2) {
     alert('Afegeix almenys 2 cartes al plat per puntuar.');
@@ -178,7 +226,9 @@ async function servePlate() {
   }
   const delta = scoreCombination(state.plate);
   const info = explainCombination(state.plate);
+  await playServeAnimation(state.plate, delta, delta > state.bestServe);
   state.score += delta;
+  if (delta > state.bestServe) state.bestServe = delta;
   state.turn += 1;
   state.discardPile.push(...state.plate);
   state.plate = [];
