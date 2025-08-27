@@ -5,8 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Flavor Clash</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .animated-bg {
+      background-size: 200% 200%;
+      animation: gradientShift 15s ease infinite;
+    }
+  </style>
 </head>
-<body class="min-h-screen bg-gradient-to-br from-orange-50 to-red-50">
+<body class="min-h-screen bg-gradient-to-br from-orange-50 via-pink-50 to-red-50 animated-bg">
 <div class="flex w-full min-h-svh" style="--sidebar-width:16rem;">
   <div class="hidden md:flex flex-col w-[--sidebar-width] border-r border-orange-200 bg-white/95 backdrop-blur-sm">
     <div class="flex items-center gap-3 p-6 border-b border-orange-200">
@@ -88,7 +99,7 @@
         <div class="max-w-screen-2xl w-full mx-auto">
           <div class="text-center mb-12">
             <div class="mb-6">
-              <div class="w-24 h-24 bg-gradient-to-br from-orange-400 to-red-500 rounded-full mx-auto flex items-center justify-center shadow-xl mb-6">
+              <div class="w-24 h-24 bg-gradient-to-br from-orange-400 to-red-500 rounded-full mx-auto flex items-center justify-center shadow-xl mb-6 animate-bounce">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chef-hat w-12 h-12 text-white"><path d="M17 21a1 1 0 0 0 1-1v-5.35c0-.457.316-.844.727-1.041a4 4 0 0 0-2.134-7.589 5 5 0 0 0-9.186 0 4 4 0 0 0-2.134 7.588c.411.198.727.585.727 1.041V20a1 1 0 0 0 1 1Z"></path><path d="M6 17h12"></path></svg>
               </div>
               <h1 class="text-5xl font-bold bg-gradient-to-r from-orange-600 via-red-500 to-pink-500 bg-clip-text text-transparent mb-4">Flavor Clash</h1>
