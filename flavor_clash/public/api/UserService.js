@@ -1,7 +1,7 @@
 import { supabase } from '../supabaseClient.js';
 const UserService = {
-  async signUp(email, password, name, avatarUrl) {
-    const { data, error } = await supabase.auth.signUp({ email, password, options:{ data:{ name, avatar_url: avatarUrl } } });
+  async signUp(email, password, name, avatar) {
+    const { data, error } = await supabase.auth.signUp({ email, password, options:{ data:{ name, avatar } } });
     if (error) throw error; return data;
   },
   async signIn(email, password) {
