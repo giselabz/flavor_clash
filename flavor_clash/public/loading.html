@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Carregant...</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @keyframes fadePop {
+      0%,100% { opacity: 0.3; transform: scale(0.9); }
+      50% { opacity: 1; transform: scale(1.05); }
+    }
+    .fade-pop {
+      animation: fadePop 1.2s infinite ease-in-out;
+    }
+  </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const next = params.get('next');
+      if (next) {
+        setTimeout(() => {
+          window.location.href = next;
+        }, 1000);
+      }
+    });
+  </script>
+</head>
+<body class="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-100 via-yellow-100 to-pink-100">
+  <div class="flex flex-col items-center gap-4 text-orange-600">
+    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fade-pop">
+      <path d="M17 21a1 1 0 0 0 1-1v-5.35c0-.457.316-.844.727-1.041a4 4 0 0 0-2.134-7.589 5 5 0 0 0-9.186 0 4 4 0 0 0-2.134 7.588c.411.198.727.585.727 1.041V20a1 1 0 0 0 1 1Z"></path>
+      <path d="M6 17h12"></path>
+    </svg>
+    <span class="text-lg font-medium text-gray-700">Carregant...</span>
+  </div>
+</body>
+</html>
