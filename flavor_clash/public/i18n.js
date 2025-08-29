@@ -24,7 +24,12 @@ const translations = {
     register_submit: "Crear compte",
     register_cancel: "Cancel·lar",
     register_have_account: "Ja tens compte?",
-    register_login: "Inicia sessió"
+    register_login: "Inicia sessió",
+    rules_title: "Com es juga",
+    rules_point1: "Arrossega ingredients al plat i serveix-los.",
+    rules_point2: "Completa objectius per punts extra.",
+    rules_point3: "La partida acaba quan s'acaba la baralla, serveixes 5 plats o s'esgota el temps.",
+    rules_start: "Entesos!"
   },
   en: {
     nav_home: "Home",
@@ -51,7 +56,12 @@ const translations = {
     register_submit: "Create account",
     register_cancel: "Cancel",
     register_have_account: "Already have an account?",
-    register_login: "Sign In"
+    register_login: "Sign In",
+    rules_title: "How to play",
+    rules_point1: "Drag ingredients to your plate and serve them.",
+    rules_point2: "Complete objectives for bonus points.",
+    rules_point3: "Game ends when the deck is empty, you serve 5 plates, or time runs out.",
+    rules_start: "Got it!"
   }
 };
 

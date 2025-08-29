@@ -61,6 +61,19 @@ function updateHUD() {
   if (t) t.textContent = state.timeLeft;
 }
 
+function showRulesIfFirstTime() {
+  if (!localStorage.getItem('seenRules')) {
+    const modal = $('#rulesModal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    $('#rulesClose').onclick = () => {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      localStorage.setItem('seenRules', '1');
+    };
+  }
+}
+
 function chipList(values = []) {
   return (values || []).join(', ');
 }
@@ -443,6 +456,8 @@ async function init() {
 
   $('#btnServe').onclick = servePlate;
   $('#btnEnd').onclick = finalizeGame;
+
+  showRulesIfFirstTime();
 }
 
 init();
