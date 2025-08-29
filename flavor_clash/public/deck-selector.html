@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flavor Clash - Selector de Baralla</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-orange-50 to-red-50">
+  <div class="flex w-full min-h-svh" style="--sidebar-width:16rem;">
+    <div class="hidden md:flex flex-col w-[--sidebar-width] border-r border-orange-200 bg-white/95 backdrop-blur-sm">
+      <div class="flex items-center gap-3 p-6 border-b border-orange-200">
+        <div class="w-12 h-12 bg-gradient-to-br from-orange-400 to-red-500 rounded-xl flex items-center justify-center shadow-lg">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chef-hat w-7 h-7 text-white"><path d="M17 21a1 1 0 0 0 1-1v-5.35c0-.457.316-.844.727-1.041a4 4 0 0 0-2.134-7.589 5 5 0 0 0-9.186 0 4 4 0 0 0-2.134 7.588c.411.198.727.585.727 1.041V20a1 1 0 0 0 1 1Z"></path><path d="M6 17h12"></path></svg>
+        </div>
+        <div>
+          <h2 class="text-xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">Flavor Clash</h2>
+          <p class="text-sm text-orange-600 font-medium">L'Art del Maridatge</p>
+        </div>
+      </div>
+      <nav class="p-4 flex-1 overflow-auto">
+        <ul class="flex flex-col gap-2 text-sm">
+          <li>
+            <a href="index.html" class="flex items-center gap-3 h-8 py-3 px-4 rounded-xl hover:bg-orange-100 hover:text-orange-700 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-house w-5 h-5"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+              <span class="font-medium" data-i18n="nav_home">Inici</span>
+            </a>
+          </li>
+          <li>
+            <a href="deck-selector.html" class="flex items-center gap-3 h-8 py-3 px-4 rounded-xl bg-orange-100 text-orange-700 shadow-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-play w-5 h-5"><polygon points="6 3 20 12 6 21 6 3"></polygon></svg>
+              <span class="font-medium" data-i18n="nav_play">Jugar</span>
+            </a>
+          </li>
+          <li>
+            <a href="shop.html" class="flex items-center gap-3 h-8 py-3 px-4 rounded-xl hover:bg-orange-100 hover:text-orange-700 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shopping-bag w-5 h-5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path><path d="M3 6h18"></path><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+              <span class="font-medium" data-i18n="nav_shop">Botiga</span>
+            </a>
+          </li>
+          <li>
+            <a href="profile.html" class="flex items-center gap-3 h-8 py-3 px-4 rounded-xl hover:bg-orange-100 hover:text-orange-700 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user w-5 h-5"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              <span class="font-medium" data-i18n="nav_profile">Perfil</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <div class="p-4 border-t border-orange-200">
+        <select id="lang-select" class="w-full border border-orange-200 rounded-lg p-2">
+          <option value="ca">Català</option>
+          <option value="en">English</option>
+        </select>
+      </div>
+    </div>
+    <main class="flex-1 flex flex-col p-4 md:p-8">
+      <div class="max-w-screen-2xl w-full mx-auto">
+    <div class="text-center mb-8">
+      <div class="w-20 h-20 bg-gradient-to-br from-orange-400 to-red-500 rounded-full mx-auto flex items-center justify-center shadow-lg mb-6">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10 text-white"><path d="M17 21a1 1 0 0 0 1-1v-5.35c0-.457.316-.844.727-1.041a4 4 0 0 0-2.134-7.589 5 5 0 0 0-9.186 0 4 4 0 0 0-2.134 7.588c.411.198.727.585.727 1.041V20a1 1 0 0 0 1 1Z"></path><path d="M6 17h12"></path></svg>
+      </div>
+      <h2 class="text-3xl font-bold text-gray-900 mb-4">Escull la teva Baralla</h2>
+      <p class="text-lg text-gray-600 max-w-2xl mx-auto">Cada baralla té una temàtica única amb ingredients específics i estratègies diferents. Escull saviament per maximitzar els teus punts de sabor!</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="relative overflow-hidden cursor-pointer hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-transparent hover:border-blue-300 rounded-lg p-6">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-400 to-blue-600 opacity-10 rounded-full transform translate-x-8 -translate-y-8"></div>
+        <div class="flex items-center justify-between mb-3">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center shadow-lg">
+            <span class="text-white text-xl">🍴</span>
+          </div>
+          <span class="px-2 py-0.5 rounded-full text-sm font-semibold text-blue-700 border border-blue-700">Clàssic</span>
+        </div>
+        <h3 class="text-xl font-bold text-blue-700 mb-2">Clàssic</h3>
+        <p class="text-gray-600 text-sm mb-4">Combinacions tradicionals i segures que puntuen per familiaritat cultural</p>
+        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Exemples de combinacions:</p>
+        <div class="space-y-1 mb-4">
+          <div class="text-xs text-gray-600 bg-white/50 px-2 py-1 rounded">Tomàquet + Mozzarella</div>
+          <div class="text-xs text-gray-600 bg-white/50 px-2 py-1 rounded">Pa + Oli d'oliva</div>
+          <div class="text-xs text-gray-600 bg-white/50 px-2 py-1 rounded">Pasta + Parmesà</div>
+        </div>
+        <button data-deck-id="classic" class="w-full bg-gradient-to-r from-blue-400 to-blue-600 hover:shadow-lg transform hover:scale-105 transition-all duration-200 text-white font-semibold py-2 rounded-lg">Seleccionar Clàssic</button>
+      </div>
+
+      <div class="relative overflow-hidden cursor-pointer hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-red-50 to-orange-100 border-2 border-transparent hover:border-red-300 rounded-lg p-6">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-red-400 to-orange-600 opacity-10 rounded-full transform translate-x-8 -translate-y-8"></div>
+        <div class="flex items-center justify-between mb-3">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-red-400 to-orange-600 flex items-center justify-center shadow-lg">
+            <span class="text-white text-xl">🔥</span>
+          </div>
+          <span class="px-2 py-0.5 rounded-full text-sm font-semibold text-red-700 border border-red-700">Picant-Dolç</span>
+        </div>
+        <h3 class="text-xl font-bold text-red-700 mb-2">Picant-Dolç</h3>
+        <p class="text-gray-600 text-sm mb-4">Combinacions explosives de sabors oposats per obtenir grans puntuacions</p>
+        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Exemples de combinacions:</p>
+        <div class="space-y-1 mb-4">
+          <div class="text-xs text-gray-600 bg-white/50 px-2 py-1 rounded">Xili + Mel</div>
+          <div class="text-xs text-gray-600 bg-white/50 px-2 py-1 rounded">Mango + Piment</div>
+          <div class="text-xs text-gray-600 bg-white/50 px-2 py-1 rounded">Xocolata + Cayena</div>
+        </div>
+        <button data-deck-id="picant_dolc" class="w-full bg-gradient-to-r from-red-400 to-orange-600 hover:shadow-lg transform hover:scale-105 transition-all duration-200 text-white font-semibold py-2 rounded-lg">Seleccionar Picant-Dolç</button>
+      </div>
+
+      <div class="relative overflow-hidden cursor-pointer hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-green-50 to-emerald-100 border-2 border-transparent hover:border-green-300 rounded-lg p-6">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-green-400 to-emerald-600 opacity-10 rounded-full transform translate-x-8 -translate-y-8"></div>
+        <div class="flex items-center justify-between mb-3">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center shadow-lg">
+            <span class="text-white text-xl">❤️</span>
+          </div>
+          <span class="px-2 py-0.5 rounded-full text-sm font-semibold text-green-700 border border-green-700">Saludable</span>
+        </div>
+        <h3 class="text-xl font-bold text-green-700 mb-2">Saludable</h3>
+        <p class="text-gray-600 text-sm mb-4">Ingredients naturals i poc processats. Es premien les combinacions equilibrades</p>
+        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Exemples de combinacions:</p>
+        <div class="space-y-1 mb-4">
+          <div class="text-xs text-gray-600 bg-white/50 px-2 py-1 rounded">Alvocat + Quinoa</div>
+          <div class="text-xs text-gray-600 bg-white/50 px-2 py-1 rounded">Espinacs + Nous</div>
+          <div class="text-xs text-gray-600 bg-white/50 px-2 py-1 rounded">Broccoli + Llima</div>
+        </div>
+        <button data-deck-id="saludable" class="w-full bg-gradient-to-r from-green-400 to-emerald-600 hover:shadow-lg transform hover:scale-105 transition-all duration-200 text-white font-semibold py-2 rounded-lg">Seleccionar Saludable</button>
+      </div>
+
+      <div class="relative overflow-hidden cursor-pointer hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-purple-50 to-indigo-100 border-2 border-transparent hover:border-purple-300 rounded-lg p-6">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-purple-400 to-indigo-600 opacity-10 rounded-full transform translate-x-8 -translate-y-8"></div>
+        <div class="flex items-center justify-between mb-3">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-400 to-indigo-600 flex items-center justify-center shadow-lg">
+            <span class="text-white text-xl">✨</span>
+          </div>
+          <span class="px-2 py-0.5 rounded-full text-sm font-semibold text-purple-700 border border-purple-700">Umami</span>
+        </div>
+        <h3 class="text-xl font-bold text-purple-700 mb-2">Umami</h3>
+        <p class="text-gray-600 text-sm mb-4">Ingredients rics en umami i fermentats per aconseguir sinergies profundes</p>
+        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Exemples de combinacions:</p>
+        <div class="space-y-1 mb-4">
+          <div class="text-xs text-gray-600 bg-white/50 px-2 py-1 rounded">Miso + Shiitake</div>
+          <div class="text-xs text-gray-600 bg-white/50 px-2 py-1 rounded">Parmesà + Anxoves</div>
+          <div class="text-xs text-gray-600 bg-white/50 px-2 py-1 rounded">Kombu + Soja</div>
+        </div>
+        <button data-deck-id="umami" class="w-full bg-gradient-to-r from-purple-400 to-indigo-600 hover:shadow-lg transform hover:scale-105 transition-all duration-200 text-white font-semibold py-2 rounded-lg">Seleccionar Umami</button>
+      </div>
+
+      <div class="relative overflow-hidden cursor-pointer hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-pink-50 to-rose-100 border-2 border-transparent hover:border-pink-300 rounded-lg p-6">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-pink-400 to-rose-600 opacity-10 rounded-full transform translate-x-8 -translate-y-8"></div>
+        <div class="flex items-center justify-between mb-3">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-pink-400 to-rose-600 flex items-center justify-center shadow-lg">
+            <span class="text-white text-xl">👁️</span>
+          </div>
+          <span class="px-2 py-0.5 rounded-full text-sm font-semibold text-pink-700 border border-pink-700">Sensorial</span>
+        </div>
+        <h3 class="text-xl font-bold text-pink-700 mb-2">Sensorial</h3>
+        <p class="text-gray-600 text-sm mb-4">Guanya punts a través de contrastos visuals, de textura o de temperatura</p>
+        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Exemples de combinacions:</p>
+        <div class="space-y-1 mb-4">
+          <div class="text-xs text-gray-600 bg-white/50 px-2 py-1 rounded">Nous + Mel</div>
+          <div class="text-xs text-gray-600 bg-white/50 px-2 py-1 rounded">Gel + Cafè calent</div>
+          <div class="text-xs text-gray-600 bg-white/50 px-2 py-1 rounded">Cruixent + Suau</div>
+        </div>
+        <button data-deck-id="sensorial" class="w-full bg-gradient-to-r from-pink-400 to-rose-600 hover:shadow-lg transform hover:scale-105 transition-all duration-200 text-white font-semibold py-2 rounded-lg">Seleccionar Sensorial</button>
+      </div>
+    </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    document.querySelectorAll('[data-deck-id]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.deckId;
+        localStorage.setItem('selectedDeck', id);
+        window.location.href = 'loading.html?next=game.html';
+      });
+    });
+  </script>
+  <script src="i18n.js"></script>
+</body>
+</html>

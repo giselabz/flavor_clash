@@ -1,130 +1,163 @@
-
-
-
-
-
-<!-- /public/register.html -->
 <!doctype html>
 <html lang="ca">
 <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Registrar-se · Flavor Clash</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .animated-bg {
+      background-size: 200% 200%;
+      animation: gradientShift 15s ease infinite;
+    }
+  </style>
   <script type="importmap">
     { "imports": { "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@2" } }
   </script>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Registrar-se · Flavor Clash</title>
-  <link rel="stylesheet" href="style.css">
-  <style>
-    .auth-card{max-width:520px;margin:6vh auto;background:#fff;border-radius:16px;box-shadow:0 8px 30px #0001;padding:28px;}
-    .auth-card h1{margin:0 0 12px 0}
-    .field{display:flex;flex-direction:column;gap:6px;margin:10px 0}
-    .field label{font-weight:600}
-    .actions{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-top:14px}
-    .btn{border:1px solid #00000022;background:#fff;border-radius:10px;padding:10px 14px;cursor:pointer}
-    .btn.primary{background:#ffefe0}
-    .error{color:#b00020;margin-top:8px;min-height:20px}
-    .muted{opacity:.7}
-  </style>
 </head>
-<body>
-  <nav style="display:flex;justify-content:space-between;align-items:center;padding:18px 24px">
-    <a href="index.html" style="text-decoration:none;font-weight:700">🍽️ Flavor Clash</a>
-    <div class="muted">Ja tens compte? <a href="login.html">Inicia sessió</a></div>
+<body class="min-h-screen bg-gradient-to-br from-orange-50 via-pink-50 to-red-50 animated-bg flex flex-col">
+  <nav class="flex items-center justify-between p-6">
+    <a href="index.html" class="flex items-center gap-2">
+      <div class="w-10 h-10 bg-gradient-to-br from-orange-400 to-red-500 rounded-lg flex items-center justify-center shadow-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chef-hat w-6 h-6 text-white"><path d="M17 21a1 1 0 0 0 1-1v-5.35c0-.457.316-.844.727-1.041a4 4 0 0 0-2.134-7.589 5 5 0 0 0-9.186 0 4 4 0 0 0-2.134 7.588c.411.198.727.585.727 1.041V20a1 1 0 0 0 1 1Z"/><path d="M6 17h12"/></svg>
+      </div>
+      <span class="text-xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">Flavor Clash</span>
+    </a>
+    <div class="flex items-center gap-4 text-sm text-gray-600">
+      <div>
+        <span data-i18n="register_have_account">Ja tens compte?</span>
+        <a href="login.html" class="text-orange-600 hover:underline" data-i18n="register_login">Inicia sessió</a>
+      </div>
+      <select id="lang-select" class="border border-orange-200 rounded-lg p-1">
+        <option value="ca">Català</option>
+        <option value="en">English</option>
+      </select>
+    </div>
   </nav>
-  <main class="auth-card">
-    <h1>Crea el teu compte</h1>
-    <p class="muted">Registra't amb email i contrasenya. Pots afegir nom i avatar (opcional).</p>
-    <form id="registerForm">
-      <div class="field">
-        <label for="registerName">Nom</label>
-        <input id="registerName" type="text" placeholder="Nom (opcional)" />
-      </div>
-      <div class="field">
-        <label for="registerEmail">Email *</label>
-        <input id="registerEmail" type="email" required placeholder="tu@exemple.com" />
-      </div>
-      <div class="field">
-        <label for="registerPassword">Contrasenya *</label>
-        <input id="registerPassword" type="password" required minlength="6" placeholder="••••••" />
-      </div>
-      <div class="field">
-        <label for="registerAvatar">Avatar URL</label>
-        <input id="registerAvatar" type="url" placeholder="https://..." />
-      </div>
-      <div class="actions">
-        <button type="submit" class="btn primary">Crear compte</button>
-        <a class="btn" href="index.html">Cancel·lar</a>
-      </div>
-      <div id="registerError" class="error"></div>
-    </form>
+
+  <main class="flex flex-1 items-center justify-center p-4">
+    <div class="w-full max-w-md bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-8">
+      <h1 class="text-2xl font-bold text-center text-gray-900 mb-2" data-i18n="register_title">Crea el teu compte</h1>
+      <p class="text-center text-gray-600 mb-6" data-i18n="register_intro">Registra't amb email i contrasenya i tria un avatar.</p>
+      <form id="registerForm" class="space-y-4">
+        <div>
+          <label for="registerName" class="block text-sm font-medium text-gray-700 mb-1" data-i18n="register_name">Nom</label>
+          <input id="registerName" type="text" placeholder="Nom (opcional)" class="w-full border border-gray-300 rounded-lg p-2" />
+        </div>
+        <div>
+          <label for="registerEmail" class="block text-sm font-medium text-gray-700 mb-1" data-i18n="register_email">Email *</label>
+          <input id="registerEmail" type="email" required placeholder="tu@exemple.com" class="w-full border border-gray-300 rounded-lg p-2" />
+        </div>
+        <div>
+          <label for="registerPassword" class="block text-sm font-medium text-gray-700 mb-1" data-i18n="register_password">Contrasenya *</label>
+          <input id="registerPassword" type="password" required minlength="6" placeholder="••••••" class="w-full border border-gray-300 rounded-lg p-2" />
+        </div>
+        <div>
+          <p class="block text-sm font-medium text-gray-700 mb-1" data-i18n="register_avatar">Tria un avatar</p>
+          <div id="avatarGrid" class="grid grid-cols-5 gap-2 mb-2"></div>
+          <input type="hidden" id="registerAvatar" value="avatars/tomato.svg" />
+        </div>
+        <div id="registerError" class="text-red-600 text-sm min-h-[1rem]"></div>
+        <button type="submit" class="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-semibold py-2 rounded-lg shadow" data-i18n="register_submit">Crear compte</button>
+        <a href="index.html" class="block w-full text-center border border-gray-300 py-2 rounded-lg bg-white hover:bg-gray-50" data-i18n="register_cancel">Cancel·lar</a>
+      </form>
+    </div>
   </main>
 
-<script type="module">
-  import { supabase } from './supabaseClient.js';
+  <script type="module">
+    import { supabase } from './supabaseClient.js';
 
-  const form = document.getElementById('registerForm');
-  const errEl = document.getElementById('registerError');
+    const form = document.getElementById('registerForm');
+    const errEl = document.getElementById('registerError');
 
-  // Mapea errores de Supabase a mensajes claros
-  function pretty(err) {
-    const m = (err?.message || '').toLowerCase();
-    if (err?.status === 429 || m.includes('rate')) return 'Límite de intentos: prueba en unos minutos.';
-    if (m.includes('already registered')) return 'Ese correo ya está registrado. Inicia sesión.';
-    if (m.includes('invalid email')) return 'El email no es válido.';
-    if (m.includes('password')) return 'La contraseña no cumple los requisitos.';
-    return err?.message || 'Error inesperado en el registro.';
-  }
-
-  // Ping a PostgREST para ver /rest/v1 en logs (opcional)
-  (async () => {
-    const { error } = await supabase.from('cards').select('id').limit(1);
-    console.log('[register] ping cards:', error ?? 'ok');
-  })();
-
-  // Asegura fila en public.users por si el trigger no está
-  async function ensureUserRow() {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return;
-    const { data: existing } = await supabase
-      .from('users').select('id').eq('id', user.id).maybeSingle();
-    if (!existing) {
-      await supabase.from('users').insert({
-        id: user.id,
-        name: user.user_metadata?.name || user.email?.split('@')[0] || 'Player',
-        avatar_url: user.user_metadata?.avatar_url || null
-      });
+    function pretty(err) {
+      const m = (err?.message || '').toLowerCase();
+      if (err?.status === 429 || m.includes('rate')) return 'Límite de intentos: prueba en unos minutos.';
+      if (m.includes('already registered')) return 'Ese correo ya está registrado. Inicia sesión.';
+      if (m.includes('invalid email')) return 'El email no es válido.';
+      if (m.includes('password')) return 'La contraseña no cumple los requisitos.';
+      return err?.message || 'Error inesperado en el registro.';
     }
-  }
 
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    errEl.textContent = '';
+    (async () => {
+      const { error } = await supabase.from('cards').select('id').limit(1);
+      console.log('[register] ping cards:', error ?? 'ok');
+    })();
 
-    const name = document.getElementById('registerName').value.trim() || null;
-    const email = document.getElementById('registerEmail').value.trim();
-    const password = document.getElementById('registerPassword').value;
-    const avatar = document.getElementById('registerAvatar').value.trim() || null;
-
-    try {
-      console.log('[register] calling supabase.auth.signUp');
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: { data: { name, avatar_url: avatar } }
+    const avatars = [
+      { src: 'avatars/tomato.svg', alt: 'Tomàquet' },
+      { src: 'avatars/avocado.svg', alt: 'Alvocat' },
+      { src: 'avatars/garlic.svg', alt: 'All' },
+      { src: 'avatars/carrot.svg', alt: 'Pastanaga' },
+      { src: 'avatars/bread.svg', alt: 'Pa' },
+      { src: 'avatars/chef.svg', alt: 'Xef' },
+      { src: 'avatars/corn.svg', alt: 'Blat de moro' },
+      { src: 'avatars/lemon.svg', alt: 'Llimona' },
+      { src: 'avatars/chili.svg', alt: 'Pebre' },
+      { src: 'avatars/strawberry.svg', alt: 'Maduixa' }
+    ];
+    const grid = document.getElementById('avatarGrid');
+    let selectedAvatar = document.getElementById('registerAvatar').value;
+    avatars.forEach(a => {
+      const img = document.createElement('img');
+      img.src = a.src;
+      img.alt = a.alt;
+      img.dataset.src = a.src;
+      img.className = 'w-16 h-16 p-1 rounded-full cursor-pointer border-2 border-transparent hover:border-orange-300';
+      if (a.src === selectedAvatar) img.classList.add('border-orange-500');
+      img.addEventListener('click', () => {
+        selectedAvatar = a.src;
+        document.getElementById('registerAvatar').value = selectedAvatar;
+        grid.querySelectorAll('img').forEach(i => i.classList.remove('border-orange-500'));
+        img.classList.add('border-orange-500');
       });
-      console.log('[register] signUp result:', { data, error });
-      if (error) throw error;
+      grid.appendChild(img);
+    });
 
-      try { await ensureUserRow(); } catch {}
-
-      // Redirige al principal
-      window.location.href = 'mainMenu.html';
-    } catch (err) {
-      console.error('[register] signUp error:', err);
-      errEl.textContent = pretty(err);
+    async function ensureUserRow() {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+      const { data: existing } = await supabase.from('users').select('id').eq('id', user.id).maybeSingle();
+      if (!existing) {
+        await supabase.from('users').insert({
+          id: user.id,
+          name: user.user_metadata?.name || user.email?.split('@')[0] || 'Player',
+          avatar: user.user_metadata?.avatar || null
+        });
+      }
     }
-  });
-</script>
 
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errEl.textContent = '';
+
+      const name = document.getElementById('registerName').value.trim() || null;
+      const email = document.getElementById('registerEmail').value.trim();
+      const password = document.getElementById('registerPassword').value;
+      const avatar = document.getElementById('registerAvatar').value;
+
+      try {
+        console.log('[register] calling supabase.auth.signUp');
+        const { data, error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: { data: { name, avatar } }
+        });
+        console.log('[register] signUp result:', { data, error });
+        if (error) throw error;
+        try { await ensureUserRow(); } catch {}
+        window.location.href = 'mainMenu.html';
+      } catch (err) {
+        console.error('[register] signUp error:', err);
+        errEl.textContent = pretty(err);
+      }
+    });
+  </script>
+  <script src="i18n.js"></script>
 </body>
 </html>

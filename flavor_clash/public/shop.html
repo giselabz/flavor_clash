@@ -1,37 +1,72 @@
-<!-- /public/shop.html -->
 <!doctype html>
 <html lang="ca">
 <head>
   <meta charset="utf-8" />
   <title>Flavor Clash · Tenda</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="style.css" />
-  <style>
-    body{font:14px/1.4 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial;background:#fff8ef;}
-    .wrap{max-width:980px;margin:0 auto;padding:18px}
-    .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-    .card{background:#fff;border:1px solid #0002;border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:8px}
-    .row{display:flex;gap:10px;align-items:center;justify-content:space-between}
-    .btn{border:1px solid #0002;background:#fff;border-radius:10px;padding:8px 12px;cursor:pointer}
-    .btn.primary{background:#ffe6c7}
-    .muted{opacity:.7}
-    .err{margin:10px 0;padding:10px 12px;border:1px solid #f003;background:#ffecec;color:#900;border-radius:8px;display:none}
-    @media (max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
-    @media (max-width:540px){.grid{grid-template-columns:1fr}}
-  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="ingredient-card.css" />
 </head>
-<body>
-  <div class="wrap">
-    <div id="banner" class="err"></div>
-
-    <div class="row" style="margin-bottom:12px">
-      <a class="btn" href="mainMenu.html">← Menú</a>
-      <div class="muted">Saldo: <b id="points">—</b> pts</div>
+<body class="min-h-screen bg-gradient-to-br from-orange-50 to-red-50">
+  <div class="flex w-full min-h-svh" style="--sidebar-width:16rem;">
+    <div class="hidden md:flex flex-col w-[--sidebar-width] border-r border-orange-200 bg-white/95 backdrop-blur-sm">
+      <div class="flex items-center gap-3 p-6 border-b border-orange-200">
+        <div class="w-12 h-12 bg-gradient-to-br from-orange-400 to-red-500 rounded-xl flex items-center justify-center shadow-lg">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chef-hat w-7 h-7 text-white"><path d="M17 21a1 1 0 0 0 1-1v-5.35c0-.457.316-.844.727-1.041a4 4 0 0 0-2.134-7.589 5 5 0 0 0-9.186 0 4 4 0 0 0-2.134 7.588c.411.198.727.585.727 1.041V20a1 1 0 0 0 1 1Z"></path><path d="M6 17h12"></path></svg>
+        </div>
+        <div>
+          <h2 class="text-xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">Flavor Clash</h2>
+          <p class="text-sm text-orange-600 font-medium">L'Art del Maridatge</p>
+        </div>
+      </div>
+      <nav class="p-4 flex-1 overflow-auto">
+        <ul class="flex flex-col gap-2 text-sm">
+          <li>
+            <a href="index.html" class="flex items-center gap-3 h-8 py-3 px-4 rounded-xl hover:bg-orange-100 hover:text-orange-700 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-house w-5 h-5"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+              <span class="font-medium" data-i18n="nav_home">Inici</span>
+            </a>
+          </li>
+          <li>
+            <a href="loading.html?next=deck-selector.html" class="flex items-center gap-3 h-8 py-3 px-4 rounded-xl hover:bg-orange-100 hover:text-orange-700 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-play w-5 h-5"><polygon points="6 3 20 12 6 21 6 3"></polygon></svg>
+              <span class="font-medium" data-i18n="nav_play">Jugar</span>
+            </a>
+          </li>
+          <li>
+            <a href="shop.html" class="flex items-center gap-3 h-8 py-3 px-4 rounded-xl bg-orange-100 text-orange-700 shadow-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shopping-bag w-5 h-5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path><path d="M3 6h18"></path><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+              <span class="font-medium" data-i18n="nav_shop">Botiga</span>
+            </a>
+          </li>
+          <li>
+            <a href="profile.html" class="flex items-center gap-3 h-8 py-3 px-4 rounded-xl hover:bg-orange-100 hover:text-orange-700 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user w-5 h-5"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              <span class="font-medium" data-i18n="nav_profile">Perfil</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <div class="p-4 border-t border-orange-200">
+        <select id="lang-select" class="w-full border border-orange-200 rounded-lg p-2">
+          <option value="ca">Català</option>
+          <option value="en">English</option>
+        </select>
+      </div>
     </div>
+    <main class="flex-1 flex flex-col p-4 md:p-8">
+      <div class="max-w-screen-2xl w-full mx-auto">
+        <div id="banner" class="hidden mb-4 rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-700"></div>
 
-    <h2>Cartes disponibles</h2>
-    <p class="muted">Preu base: 5 pts per carta (demo).</p>
-    <div id="list" class="grid"></div>
+        <div class="flex items-center justify-between mb-6">
+          <div class="text-gray-600">Saldo: <b id="points">—</b> pts</div>
+        </div>
+
+        <h2 class="text-2xl font-bold text-green-700 mb-2" data-i18n="shop_title">Cartes disponibles</h2>
+    <p class="text-gray-600 mb-4">Preu base: 5 pts per carta (demo).</p>
+    <div id="list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+      </div>
+    </main>
   </div>
 
   <script type="module">
@@ -41,14 +76,14 @@
     import UserService from './api/UserService.js';
 
     const PRICE = 5;
-    const $ = s=>document.querySelector(s);
+    const $ = s => document.querySelector(s);
     const banner = $('#banner');
     const pointsEl = $('#points');
     const listEl = $('#list');
 
     function showError(msg){
       banner.textContent = msg;
-      banner.style.display = 'block';
+      banner.classList.remove('hidden');
       console.error(msg);
     }
 
@@ -60,30 +95,44 @@
         const me = await UserService.getMyProfile();
         pointsEl.textContent = me?.flavor_points ?? '0';
       } catch (e) {
-        // Si falla la policy de users, que se vea claro
         showError('No s’ha pogut llegir el saldo (taula users). ' + (e?.message || e));
         pointsEl.textContent = '0';
       }
     }
 
+    function getTheme(card){
+      const tags = card.tags || [];
+      if(tags.includes('spicy') || tags.includes('spicy-sweet')) return 'theme-spicy';
+      if(tags.includes('healthy')) return 'theme-healthy';
+      if(tags.includes('umami') || tags.includes('fermented')) return 'theme-umami';
+      if(tags.includes('sensorial')) return 'theme-sensorial';
+      return 'theme-classic';
+    }
+
     function renderCard(c) {
-      const el = document.createElement('div');
-      el.className = 'card';
+      const el = document.createElement('article');
+      el.className = `card ${getTheme(c)}`;
       const icon = c.icon_url
-        ? `<img src="${c.icon_url}" onerror="this.style.display='none'" style="width:54px;height:54px;object-fit:cover;border-radius:10px;border:1px solid #0001;">`
-        : `<div style="width:54px;height:54px;display:grid;place-items:center;border:1px solid #0001;border-radius:10px">🍽️</div>`;
+        ? `<img src="${c.icon_url}" onerror="this.style.display='none'" alt="${c.name}">`
+        : '<span>🍽️</span>';
+      const tagsHtml = [...(c.flavor||[]), ...(c.texture||[])]
+        .map(v=>`<span class="tag">${v}</span>`).join('');
       el.innerHTML = `
+        <div class="rays"></div>
+        <div class="frame"></div>
+        <div class="corner tl"></div><div class="corner tr"></div>
+        <div class="corner bl"></div><div class="corner br"></div>
+        <div class="edge"></div>
+        <div class="hero"><div class="hero-ring">${icon}</div></div>
+        <h2 class="title">${c.name}</h2>
+        <div class="tags">${tagsHtml}</div>
+        <div class="foot"><div class="rows"><div class="row">
+          <span class="pill">Sabor: ${(c.flavor||[]).join(', ')}</span>
+          <span class="pill">Categoria: ${(c.category||[]).join(', ')}</span>
+        </div></div>
         <div class="row">
-          <div style="display:flex;gap:10px;align-items:center">
-            ${icon}
-            <div>
-              <div style="font-weight:700">${c.name}</div>
-              <div class="muted" style="font-size:12px">${(c.category||[]).join(', ')}</div>
-            </div>
-          </div>
-          <button class="btn primary" data-buy>Comprar · ${PRICE} pts</button>
-        </div>
-        <div class="muted" style="font-size:12px">Sabor: ${(c.flavor||[]).join(', ')} · Textura: ${(c.texture||[]).join(', ')}</div>
+          <button class="buy-btn pill" data-buy>Comprar · ${PRICE} pts</button>
+        </div></div>
       `;
       el.querySelector('[data-buy]').onclick = async () => {
         try {
@@ -99,7 +148,6 @@
 
     async function init() {
       await requireAuth('login.html');
-
       await refreshPoints();
 
       const { data, error } = await supabase.from('cards').select('*').order('name');
@@ -112,5 +160,6 @@
     }
     init();
   </script>
+  <script src="i18n.js"></script>
 </body>
 </html>
