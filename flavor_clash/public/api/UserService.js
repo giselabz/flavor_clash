@@ -4,6 +4,9 @@ const UserService = {
     const { data, error } = await supabase.auth.signUp({ email, password, options:{ data:{ name, avatar_url: avatarUrl } } });
     if (error) throw error;
     const user = data.user;
+    if (data.session) {
+      try { localStorage.setItem('sb_session', JSON.stringify(data.session)); } catch {}
+    }
     if (user) {
       const { error: insertError } = await supabase
         .from('users')
@@ -14,11 +17,29 @@ const UserService = {
   },
   async signIn(email, password) {
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) throw error; return data;
+    if (error) throw error;
+    if (data.session) {
+      try { localStorage.setItem('sb_session', JSON.stringify(data.session)); } catch {}
+    }
+    return data;
   },
-  async signOut() { const { error } = await supabase.auth.signOut(); if (error) throw error; },
+  async signOut() {
+    const { error } = await supabase.auth.signOut();
+    try { localStorage.removeItem('sb_session'); } catch {}
+    if (error) throw error;
+  },
   onAuthChange(cb){ return supabase.auth.onAuthStateChange((_e, s)=>cb(s)); },
-  async getSession(){ const { data:{ session }, error } = await supabase.auth.getSession(); if (error) throw error; return session; },
+  async getSession(){
+    const { data:{ session }, error } = await supabase.auth.getSession();
+    if (error) throw error;
+    if (session) return session;
+    try {
+      const stored = localStorage.getItem('sb_session');
+      return stored ? JSON.parse(stored) : null;
+    } catch {
+      return null;
+    }
+  },
   async getMyProfile(){
     const { data:{ user }, error:e1 } = await supabase.auth.getUser(); if (e1) throw e1; if (!user) return null;
     const { data, error } = await supabase.from('users').select('*').eq('id', user.id).single();

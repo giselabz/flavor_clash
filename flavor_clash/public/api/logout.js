@@ -10,7 +10,10 @@ export async function doLogout(redirect = 'login.html') {
     console.error('[logout] exception:', e);
   }
   // Por si acaso hay algo cacheado
-  try { localStorage.removeItem('supabase.auth.token'); } catch {}
+  try {
+    localStorage.removeItem('supabase.auth.token');
+    localStorage.removeItem('sb_session');
+  } catch {}
   location.replace(redirect);
 }
 
