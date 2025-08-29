@@ -222,21 +222,28 @@
 
     saveBtn.addEventListener('click', async () => {
       let avatarPath = currentAvatarPath;
+
       if (avatarSelect.value.startsWith('avatars/')) {
+        // Predefined avatar selected; no upload required
         avatarPath = avatarSelect.value;
-      }
-      if (selectedFile) {
+        selectedFile = null;
+        avatarUploadBtn.textContent = 'Pujar imatge';
+      } else if (selectedFile) {
+        // Custom image chosen; upload to Supabase
         avatarPath = await AvatarService.uploadAvatar(selectedFile).catch(console.error) || avatarPath;
         selectedFile = null;
         avatarUploadBtn.textContent = 'Pujar imatge';
       }
+
       const updates = {
         favorite_deck: deckSelect.value,
         avatar_url: avatarPath
       };
       await UserService.updateMyProfile(updates).catch(console.error);
       currentAvatarPath = avatarPath;
-      const display = await AvatarService.getAvatarUrl(avatarPath).catch(() => avatarPath);
+      const display = avatarPath.startsWith('avatars/')
+        ? avatarPath
+        : await AvatarService.getAvatarUrl(avatarPath).catch(() => avatarPath);
       avatarImg.src = display;
       editSection.classList.add('hidden');
     });
