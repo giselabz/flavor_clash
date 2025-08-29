@@ -2,7 +2,7 @@
 import { supabase } from './supabaseClient.js';
 import { requireAuth } from './session.js';
 import GameSessionService from './api/GameSessionService.js';
-import { scoreCombination, explainCombination } from './api/scoring.js';
+import { explainCombination } from './api/scoring.js';
 
 const state = {
   session: null,
@@ -153,7 +153,14 @@ async function servePlate() {
     alert('Afegeix almenys 2 cartes al plat per puntuar.');
     return;
   }
-  const delta = scoreCombination(state.plate);
+  const { data, error } = await supabase.functions.invoke('calcular_puntuacio', {
+    body: { plate: state.plate },
+  });
+  if (error) {
+    alert('Error al calcular la puntuació');
+    return;
+  }
+  const delta = data.score;
   const info = explainCombination(state.plate);
   state.score += delta;
   state.turn += 1;
