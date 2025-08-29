@@ -16,9 +16,6 @@
       animation: gradientShift 15s ease infinite;
     }
   </style>
-  <script type="importmap">
-    { "imports": { "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@2" } }
-  </script>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-orange-50 via-pink-50 to-red-50 animated-bg flex flex-col">
   <nav class="flex items-center justify-between p-6">
@@ -70,7 +67,10 @@
   </main>
 
   <script type="module">
-    import { supabase } from './supabaseClient.js';
+    import UserService from './api/UserService.js';
+    import { redirectIfAuthed } from './session.js';
+
+    await redirectIfAuthed();
 
     const form = document.getElementById('registerForm');
     const errEl = document.getElementById('registerError');
@@ -83,11 +83,6 @@
       if (m.includes('password')) return 'La contraseña no cumple los requisitos.';
       return err?.message || 'Error inesperado en el registro.';
     }
-
-    (async () => {
-      const { error } = await supabase.from('cards').select('id').limit(1);
-      console.log('[register] ping cards:', error ?? 'ok');
-    })();
 
     const avatars = [
       { src: 'avatars/tomato_avatar.png', alt: 'Tomàquet' },
@@ -112,19 +107,6 @@
       grid.appendChild(img);
     });
 
-    async function ensureUserRow() {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
-      const { data: existing } = await supabase.from('users').select('id').eq('id', user.id).maybeSingle();
-      if (!existing) {
-        await supabase.from('users').insert({
-          id: user.id,
-          name: user.user_metadata?.name || user.email?.split('@')[0] || 'Player',
-          avatar_url: user.user_metadata?.avatar_url || null
-        });
-      }
-    }
-
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       errEl.textContent = '';
@@ -135,18 +117,9 @@
       const avatar = document.getElementById('registerAvatar').value;
 
       try {
-        console.log('[register] calling supabase.auth.signUp');
-        const { data, error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: { data: { name, avatar_url: avatar } }
-        });
-        console.log('[register] signUp result:', { data, error });
-        if (error) throw error;
-        try { await ensureUserRow(); } catch {}
+        await UserService.signUp(email, password, name, avatar);
         window.location.href = 'mainMenu.html';
       } catch (err) {
-        console.error('[register] signUp error:', err);
         errEl.textContent = pretty(err);
       }
     });
