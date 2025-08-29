@@ -1,5 +1,5 @@
 // /logout.js
-import { supabase } from './supabaseClient.js';
+import { supabase } from '../supabaseClient.js';
 
 // Llama a Supabase + limpia y redirige
 export async function doLogout(redirect = 'login.html') {
