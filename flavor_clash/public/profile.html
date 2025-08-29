@@ -74,7 +74,8 @@
           <div>
             <label class="block text-sm text-gray-700 mb-1">Avatar</label>
             <select id="avatarSelect" class="w-full border border-gray-300 rounded p-2"></select>
-            <input type="file" id="avatarFile" accept="image/*" class="w-full border border-gray-300 rounded p-2 mt-2" />
+            <button id="avatarUploadBtn" type="button" class="w-full border border-gray-300 rounded p-2 mt-2 text-left" data-i18n="profile_upload_btn">Pujar imatge</button>
+            <input type="file" id="avatarFile" accept="image/*" class="hidden" />
           </div>
           <div>
             <label class="block text-sm text-gray-700 mb-1">Baralla Favorita</label>
@@ -158,6 +159,7 @@
     const editBtn = document.getElementById('editBtn');
     const editSection = document.getElementById('editSection');
     const avatarSelect = document.getElementById('avatarSelect');
+    const avatarUploadBtn = document.getElementById('avatarUploadBtn');
     const avatarFile = document.getElementById('avatarFile');
     const deckSelect = document.getElementById('deckSelect');
     const saveBtn = document.getElementById('saveBtn');
@@ -201,10 +203,13 @@
     deckSelect.value = user.favorite_deck || 'classic';
     let selectedFile = null;
 
+    avatarUploadBtn.addEventListener('click', () => avatarFile.click());
+
     avatarFile.addEventListener('change', () => {
       const file = avatarFile.files[0];
       if (!file) return;
       selectedFile = file;
+      avatarUploadBtn.textContent = file.name;
       avatarImg.src = URL.createObjectURL(file);
     });
 
@@ -217,6 +222,7 @@
       if (selectedFile) {
         avatarPath = await AvatarService.uploadAvatar(selectedFile).catch(console.error) || avatarPath;
         selectedFile = null;
+        avatarUploadBtn.textContent = 'Pujar imatge';
       }
       const updates = {
         favorite_deck: deckSelect.value,
