@@ -60,7 +60,7 @@
         <div>
           <p class="block text-sm font-medium text-gray-700 mb-1" data-i18n="register_avatar">Tria un avatar</p>
           <div id="avatarGrid" class="grid grid-cols-5 gap-2 mb-2"></div>
-          <input type="hidden" id="registerAvatar" value="avatars/tomato.svg" />
+          <input type="hidden" id="registerAvatar" value="avatars/tomato_avatar.png" />
         </div>
         <div id="registerError" class="text-red-600 text-sm min-h-[1rem]"></div>
         <button type="submit" class="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-semibold py-2 rounded-lg shadow" data-i18n="register_submit">Crear compte</button>
@@ -90,16 +90,9 @@
     })();
 
     const avatars = [
-      { src: 'avatars/tomato.svg', alt: 'Tomàquet' },
-      { src: 'avatars/avocado.svg', alt: 'Alvocat' },
-      { src: 'avatars/garlic.svg', alt: 'All' },
-      { src: 'avatars/carrot.svg', alt: 'Pastanaga' },
-      { src: 'avatars/bread.svg', alt: 'Pa' },
-      { src: 'avatars/chef.svg', alt: 'Xef' },
-      { src: 'avatars/corn.svg', alt: 'Blat de moro' },
-      { src: 'avatars/lemon.svg', alt: 'Llimona' },
-      { src: 'avatars/chili.svg', alt: 'Pebre' },
-      { src: 'avatars/strawberry.svg', alt: 'Maduixa' }
+      { src: 'avatars/tomato_avatar.png', alt: 'Tomàquet' },
+      { src: 'avatars/avocado_avatar.png', alt: 'Alvocat' },
+      { src: 'avatars/strawberry_avatar.png', alt: 'Maduixa' }
     ];
     const grid = document.getElementById('avatarGrid');
     let selectedAvatar = document.getElementById('registerAvatar').value;
