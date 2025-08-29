@@ -19,6 +19,11 @@ const UserService = {
   async updateMyProfile(updates){
     const { data:{ user }, error:e1 } = await supabase.auth.getUser(); if (e1) throw e1; if (!user) throw new Error('No session');
     const { data, error } = await supabase.from('users').update(updates).eq('id', user.id).select().single();
-    if (error) throw error; return data;
+    if (error) throw error;
+    if (updates.avatar_url) {
+      const { error: authError } = await supabase.auth.updateUser({ data: { avatar_url: updates.avatar_url } });
+      if (authError) console.error(authError);
+    }
+    return data;
   }
 }; export default UserService;

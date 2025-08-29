@@ -8,12 +8,13 @@ const AvatarService = {
     if (authError) throw authError;
     if (!user) throw new Error('No session');
     const ext = file.name.split('.').pop();
-    const filePath = `${user.id}/avatar.${ext}`;
-    const { error } = await supabase.storage.from(BUCKET).upload(filePath, file, {
+    const filePath = `${user.id}/${Date.now()}.${ext}`;
+    const { data, error } = await supabase.storage.from(BUCKET).upload(filePath, file, {
       upsert: true,
+      contentType: file.type
     });
     if (error) throw error;
-    return filePath;
+    return data.path;
   },
 
   async getAvatarUrl(path) {

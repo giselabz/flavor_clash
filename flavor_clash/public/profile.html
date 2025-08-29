@@ -199,16 +199,13 @@
     });
     avatarSelect.value = (user.avatar_url && user.avatar_url.startsWith('avatars/')) ? user.avatar_url : 'avatars/tomato_avatar.png';
     deckSelect.value = user.favorite_deck || 'classic';
-    let uploadedAvatarPath = null;
+    let selectedFile = null;
 
-    avatarFile.addEventListener('change', async () => {
+    avatarFile.addEventListener('change', () => {
       const file = avatarFile.files[0];
       if (!file) return;
-      uploadedAvatarPath = await AvatarService.uploadAvatar(file).catch(console.error);
-      if (uploadedAvatarPath) {
-        const url = await AvatarService.getAvatarUrl(uploadedAvatarPath).catch(console.error);
-        if (url) avatarImg.src = url;
-      }
+      selectedFile = file;
+      avatarImg.src = URL.createObjectURL(file);
     });
 
     editBtn.addEventListener('click', () => {
@@ -216,12 +213,17 @@
     });
 
     saveBtn.addEventListener('click', async () => {
+      let avatarPath = avatarSelect.value;
+      if (selectedFile) {
+        avatarPath = await AvatarService.uploadAvatar(selectedFile).catch(console.error) || avatarPath;
+        selectedFile = null;
+      }
       const updates = {
         favorite_deck: deckSelect.value,
-        avatar_url: uploadedAvatarPath ? uploadedAvatarPath : avatarSelect.value
+        avatar_url: avatarPath
       };
       await UserService.updateMyProfile(updates).catch(console.error);
-      const display = await AvatarService.getAvatarUrl(updates.avatar_url).catch(() => updates.avatar_url);
+      const display = await AvatarService.getAvatarUrl(avatarPath).catch(() => avatarPath);
       avatarImg.src = display;
       editSection.classList.add('hidden');
     });
