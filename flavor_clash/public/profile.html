@@ -74,6 +74,7 @@
           <div>
             <label class="block text-sm text-gray-700 mb-1">Avatar</label>
             <select id="avatarSelect" class="w-full border border-gray-300 rounded p-2"></select>
+            <input type="file" id="avatarFile" accept="image/*" class="w-full border border-gray-300 rounded p-2 mt-2" />
           </div>
           <div>
             <label class="block text-sm text-gray-700 mb-1">Baralla Favorita</label>
@@ -128,6 +129,7 @@
   <script type="module">
     import { requireAuth } from './session.js';
     import UserService from './api/UserService.js';
+    import AvatarService from './api/AvatarService.js';
     await requireAuth();
 
     const avatars = [
@@ -156,6 +158,7 @@
     const editBtn = document.getElementById('editBtn');
     const editSection = document.getElementById('editSection');
     const avatarSelect = document.getElementById('avatarSelect');
+    const avatarFile = document.getElementById('avatarFile');
     const deckSelect = document.getElementById('deckSelect');
     const saveBtn = document.getElementById('saveBtn');
 
@@ -168,7 +171,15 @@
     }
 
     profileName.textContent = user.name || 'Usuari';
-    avatarImg.src = user.avatar || 'avatars/tomato_avatar.png';
+    let avatarUrl = 'avatars/tomato_avatar.png';
+    if (user.avatar_url) {
+      if (user.avatar_url.startsWith('avatars/')) {
+        avatarUrl = user.avatar_url;
+      } else {
+        avatarUrl = await AvatarService.getAvatarUrl(user.avatar_url).catch(() => avatarUrl);
+      }
+    }
+    avatarImg.src = avatarUrl;
     pointsEl.textContent = user.flavor_points || 0;
     dishesEl.textContent = user.plats_creats || 0;
     matchesEl.textContent = user.maridatges || 0;
@@ -186,8 +197,19 @@
       opt.textContent = d.nom;
       deckSelect.appendChild(opt);
     });
-    avatarSelect.value = user.avatar || 'avatars/tomato_avatar.png';
+    avatarSelect.value = (user.avatar_url && user.avatar_url.startsWith('avatars/')) ? user.avatar_url : 'avatars/tomato_avatar.png';
     deckSelect.value = user.favorite_deck || 'classic';
+    let uploadedAvatarPath = null;
+
+    avatarFile.addEventListener('change', async () => {
+      const file = avatarFile.files[0];
+      if (!file) return;
+      uploadedAvatarPath = await AvatarService.uploadAvatar(file).catch(console.error);
+      if (uploadedAvatarPath) {
+        const url = await AvatarService.getAvatarUrl(uploadedAvatarPath).catch(console.error);
+        if (url) avatarImg.src = url;
+      }
+    });
 
     editBtn.addEventListener('click', () => {
       editSection.classList.toggle('hidden');
@@ -195,11 +217,12 @@
 
     saveBtn.addEventListener('click', async () => {
       const updates = {
-        avatar: avatarSelect.value,
-        favorite_deck: deckSelect.value
+        favorite_deck: deckSelect.value,
+        avatar_url: uploadedAvatarPath ? uploadedAvatarPath : avatarSelect.value
       };
       await UserService.updateMyProfile(updates).catch(console.error);
-      avatarImg.src = updates.avatar;
+      const display = await AvatarService.getAvatarUrl(updates.avatar_url).catch(() => updates.avatar_url);
+      avatarImg.src = display;
       editSection.classList.add('hidden');
     });
 
