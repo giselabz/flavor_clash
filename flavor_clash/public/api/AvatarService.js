@@ -1,20 +1,29 @@
 import { supabase } from '../supabaseClient.js';
 
 const BUCKET = 'avatars';
+const UPLOAD_ENDPOINT = 'https://dowrmefskcvrqgjiavtf.storage.supabase.co/storage/v1/s3';
 
 const AvatarService = {
   async uploadAvatar(file) {
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
-    if (authError) throw authError;
-    if (!user) throw new Error('No session');
+    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+    if (sessionError) throw sessionError;
+    if (!session) throw new Error('No session');
     const ext = file.name.split('.').pop();
-    const filePath = `${user.id}/${Date.now()}.${ext}`;
-    const { data, error } = await supabase.storage.from(BUCKET).upload(filePath, file, {
-      upsert: true,
-      contentType: file.type
+    const filePath = `${session.user.id}/${Date.now()}.${ext}`;
+    const url = `${UPLOAD_ENDPOINT}/${BUCKET}/${filePath}`;
+    const resp = await fetch(url, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${session.access_token}`,
+        'x-upsert': 'true',
+        'Content-Type': file.type
+      },
+      body: file
     });
-    if (error) throw error;
-    return data.path;
+    if (!resp.ok) {
+      throw new Error(await resp.text());
+    }
+    return filePath;
   },
 
   async getAvatarUrl(path) {
