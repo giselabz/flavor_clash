@@ -1,36 +1,48 @@
+// /services/AvatarService.js
 import { supabase } from '../supabaseClient.js';
 
-const BUCKET = 'avatars';
-const UPLOAD_ENDPOINT = 'https://dowrmefskcvrqgjiavtf.storage.supabase.co/storage/v1/s3';
+const BUCKET = 'Avatars';
 
 const AvatarService = {
   async uploadAvatar(file) {
+    // 1) Comprobar sesión
     const { data: { session }, error: sessionError } = await supabase.auth.getSession();
     if (sessionError) throw sessionError;
     if (!session) throw new Error('No session');
-    const ext = file.name.split('.').pop();
+
+    // 2) Ruta "carpeta por usuario" + timestamp
+    const ext = file.name.split('.').pop()?.toLowerCase() || 'bin';
     const filePath = `${session.user.id}/${Date.now()}.${ext}`;
-    const url = `${UPLOAD_ENDPOINT}/${BUCKET}/${filePath}`;
-    const resp = await fetch(url, {
-      method: 'PUT',
-      headers: {
-        Authorization: `Bearer ${session.access_token}`,
-        'x-upsert': 'true',
-        'Content-Type': file.type
-      },
-      body: file
-    });
-    if (!resp.ok) {
-      throw new Error(await resp.text());
-    }
-    return filePath;
+    debugger;
+
+    // 3) Subir con supabase-js (cliente)
+    const { error: uploadError } = await supabase
+      .storage
+      .from(BUCKET)
+      .upload(filePath, file, {
+        upsert: true,
+        contentType: file.type || 'application/octet-stream',
+        cacheControl: '3600',
+      });
+
+    if (uploadError) throw uploadError;
+
+    return filePath; // guarda este path en tu tabla (p.ej. users.avatar_path)
   },
 
   async getAvatarUrl(path) {
     if (!path) return null;
-    // if path is relative to local assets, return as is
-    if (path.startsWith('avatars/')) return path;
-    const { data, error } = await supabase.storage.from(BUCKET).createSignedUrl(path, 60);
+
+    // Si usas bucket público, mejor:
+    // const { data } = supabase.storage.from(BUCKET).getPublicUrl(path);
+    // return data.publicUrl;
+
+    // Si el bucket es privado, usa URL firmada:
+    const { data, error } = await supabase
+      .storage
+      .from(BUCKET)
+      .createSignedUrl(path, 60); // 60s
+
     if (error) throw error;
     return data.signedUrl;
   }

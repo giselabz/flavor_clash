@@ -182,7 +182,8 @@
     if (currentAvatarPath.startsWith('avatars/')) {
       avatarUrl = currentAvatarPath;
     } else if (user.avatar_url) {
-      avatarUrl = await AvatarService.getAvatarUrl(currentAvatarPath).catch(() => avatarUrl);
+      const key = currentAvatarPath.replace(/^avatars\//i, '').replace(/^Avatars\//, '');
+      avatarUrl = await AvatarService.getAvatarUrl(key).catch(() => avatarUrl);
     }
     avatarImg.src = avatarUrl;
     pointsEl.textContent = user.flavor_points || 0;

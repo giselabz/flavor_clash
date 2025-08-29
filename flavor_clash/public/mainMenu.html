@@ -190,5 +190,9 @@
 </div>
   <script type="module" src="api/logout.js"></script>
   <script src="i18n.js"></script>
+  <script type="module">
+    import { requireAuth } from './session.js';
+    await requireAuth();
+  </script>
 </body>
 </html>
