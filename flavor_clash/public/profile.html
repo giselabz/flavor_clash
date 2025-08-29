@@ -167,6 +167,7 @@
     const avatarFile = document.getElementById('avatarFile');
     const deckSelect = document.getElementById('deckSelect');
     const saveBtn = document.getElementById('saveBtn');
+    let currentAvatarPath = user.avatar_url || 'avatars/tomato_avatar.png';
 
     function getLevel(p) {
       if (p >= 1000) return 'Mestre Xef';
@@ -178,12 +179,10 @@
 
     profileName.textContent = user.name || 'Usuari';
     let avatarUrl = 'avatars/tomato_avatar.png';
-    if (user.avatar_url) {
-      if (user.avatar_url.startsWith('avatars/')) {
-        avatarUrl = user.avatar_url;
-      } else {
-        avatarUrl = await AvatarService.getAvatarUrl(user.avatar_url).catch(() => avatarUrl);
-      }
+    if (currentAvatarPath.startsWith('avatars/')) {
+      avatarUrl = currentAvatarPath;
+    } else if (user.avatar_url) {
+      avatarUrl = await AvatarService.getAvatarUrl(currentAvatarPath).catch(() => avatarUrl);
     }
     avatarImg.src = avatarUrl;
     pointsEl.textContent = user.flavor_points || 0;
@@ -203,7 +202,7 @@
       opt.textContent = d.nom;
       deckSelect.appendChild(opt);
     });
-    avatarSelect.value = (user.avatar_url && user.avatar_url.startsWith('avatars/')) ? user.avatar_url : 'avatars/tomato_avatar.png';
+    avatarSelect.value = currentAvatarPath.startsWith('avatars/') ? currentAvatarPath : 'avatars/tomato_avatar.png';
     deckSelect.value = user.favorite_deck || 'classic';
     let selectedFile = null;
 
@@ -222,7 +221,10 @@
     });
 
     saveBtn.addEventListener('click', async () => {
-      let avatarPath = avatarSelect.value;
+      let avatarPath = currentAvatarPath;
+      if (avatarSelect.value.startsWith('avatars/')) {
+        avatarPath = avatarSelect.value;
+      }
       if (selectedFile) {
         avatarPath = await AvatarService.uploadAvatar(selectedFile).catch(console.error) || avatarPath;
         selectedFile = null;
@@ -233,6 +235,7 @@
         avatar_url: avatarPath
       };
       await UserService.updateMyProfile(updates).catch(console.error);
+      currentAvatarPath = avatarPath;
       const display = await AvatarService.getAvatarUrl(avatarPath).catch(() => avatarPath);
       avatarImg.src = display;
       editSection.classList.add('hidden');
