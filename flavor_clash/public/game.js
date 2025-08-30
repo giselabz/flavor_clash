@@ -128,8 +128,9 @@ function renderCard(c) {
     e.dataTransfer.setData('text/plain', c.id);
   });
   el.onclick = () => addToPlateFromHand(c.id);
-  const icon = c.icon_url
-    ? `<img src="${c.icon_url}" onerror="this.style.display='none'" alt="${c.name}">`
+  const imgUrl = c.image_url || c.icon_url;
+  const icon = imgUrl
+    ? `<img src="${imgUrl}" onerror="this.style.display='none'" alt="${c.name}">`
     : '<span>🍽️</span>';
   const tagsHtml = [...(c.flavor || []), ...(c.texture || [])]
     .map((t) => `<span class="tag">${t}</span>`)
@@ -140,7 +141,7 @@ function renderCard(c) {
     <div class="corner tl"></div><div class="corner tr"></div>
     <div class="corner bl"></div><div class="corner br"></div>
     <div class="edge"></div>
-    <div class="hero"><div class="hero-ring">${icon}</div></div>
+    <div class="hero">${icon}</div>
     <h2 class="title">${c.name}</h2>
     <div class="tags">${tagsHtml}</div>
     <div class="foot"><div class="rows"><div class="row">
