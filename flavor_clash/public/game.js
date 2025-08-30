@@ -2,6 +2,7 @@
 import { supabase } from './supabaseClient.js';
 import { requireAuth } from './session.js';
 import GameSessionService from './api/GameSessionService.js';
+import MatchService from './api/MatchService.js';
 import { scoreCombination, explainCombination } from './api/scoring.js';
 
 const MAX_PLATES = 5;
@@ -26,6 +27,11 @@ const state = {
   timeLeft: TIME_LIMIT,
   timer: null,
   finished: false,
+
+  // métricas que enviaremos a Supabase
+  platesServed: 0,
+  pairingsMade: 0,
+  startTs: null,
 };
 
 const FLAVOR_MAP = {
@@ -40,6 +46,24 @@ const FLAVOR_MAP = {
 };
 
 const normFlavor = (f = '') => FLAVOR_MAP[f.toLowerCase()] || f.toLowerCase();
+
+// Conteo simple de maridajes dentro de un plato servido
+function countPairings(served = []) {
+  const fl = served.flatMap((c) => (c.flavor || []).map(normFlavor));
+  let pairs = 0;
+  const has = (f) => fl.includes(f);
+
+  // sinergias típicas
+  if (has('sweet') && has('sour')) pairs++;
+  if (has('sweet') && has('salty')) pairs++;
+  if (has('salty') && has('umami')) pairs++;
+  if (has('spicy') && has('sweet')) pairs++;
+  if (has('bitter') && has('sweet')) pairs++;
+
+  // bonus por tamaño del plato (a partir de 3 ingredientes)
+  pairs += Math.max(0, served.length - 2);
+  return pairs;
+}
 
 const $ = (s) => document.querySelector(s);
 
@@ -171,13 +195,13 @@ function renderObjectives() {
 function checkObjectives(served) {
   if (!served || !served.length) return;
 
-  // Objective 1: at least 3 different ingredients
+  // Obj 1: 3 ingredientes distintos
   if (!state.objectives[0].completed) {
     const unique = new Set(served.map((c) => c.id || c.name));
     if (unique.size >= 3) state.objectives[0].completed = true;
   }
 
-  // Objective 2: sweet + sour combo
+  // Obj 2: sweet + sour
   if (!state.objectives[1].completed) {
     const flavors = served.flatMap((c) => (c.flavor || []).map((f) => normFlavor(f)));
     if (flavors.includes('sweet') && flavors.includes('sour')) {
@@ -185,7 +209,7 @@ function checkObjectives(served) {
     }
   }
 
-  // Objective 3: no processed ingredients
+  // Obj 3: sin procesados
   if (!state.objectives[2].completed) {
     const hasProcessed = served.some((c) =>
       (c.tags || []).some((t) => {
@@ -331,6 +355,11 @@ async function servePlate() {
   state.turn += 1;
   state.discardPile.push(...served);
   state.plate = [];
+
+  // estadísticas de partida
+  state.platesServed += 1;
+  state.pairingsMade += countPairings(served);
+
   renderPlate();
   checkObjectives(served);
   if (info) {
@@ -384,7 +413,7 @@ function checkEndConditions() {
     finalizeGame();
     return true;
   }
-  if (state.turn > MAX_PLATES) {
+  if (state.platesServed > MAX_PLATES) {
     finalizeGame();
     return true;
   }
@@ -396,6 +425,41 @@ function checkEndConditions() {
 }
 
 async function endMatch() {
+  // construir payload de resultados
+  const durationSecs = Math.max(1, Math.round((Date.now() - (state.startTs || Date.now())) / 1000));
+  const result = {
+    score: state.score,
+    dishesCreated: state.platesServed,
+    pairingsMade: state.pairingsMade,
+    deckId: state.deckId,
+    durationSecs,
+    meta: {
+      bestServe: state.bestServe,
+      objectives: state.objectives.map(o => ({ text: o.text, points: o.points, completed: o.completed })),
+    }
+  };
+
+  // registrar en Supabase (match_history + sumar contadores)
+  try {
+    await MatchService.recordMatch(result);
+  } catch (e) {
+    console.error('No s’ha pogut registrar la partida a Supabase:', e);
+    // fallback local: guardamos para no perderla
+    const local = JSON.parse(localStorage.getItem('matchHistory') || '[]');
+    local.unshift({
+      date: new Date().toISOString(),
+      score: result.score,
+      dishesCreated: result.dishesCreated,
+      pairingsMade: result.pairingsMade,
+      deckId: result.deckId,
+      durationSecs: result.durationSecs,
+      meta: result.meta,
+      offline: true
+    });
+    localStorage.setItem('matchHistory', JSON.stringify(local));
+  }
+
+  // cerrar game_session si procede
   if (state.session) {
     try {
       await GameSessionService.update(state.session.id, {
@@ -407,6 +471,8 @@ async function endMatch() {
       console.warn(e);
     }
   }
+
+  // volver al menú
   window.location.href = 'mainMenu.html';
 }
 
@@ -445,6 +511,7 @@ async function init() {
     alert("No s'ha pogut crear la sessió de joc. Revisa RLS de game_sessions.");
   }
 
+  state.startTs = Date.now();
   renderObjectives();
   dealHand();
   renderPlate();

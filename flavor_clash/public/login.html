@@ -58,6 +58,9 @@
 
   <script type="module">
     import UserService from './api/UserService.js';
+    import { redirectIfAuthed } from './session.js';
+
+    await redirectIfAuthed();
 
     const form = document.getElementById('loginForm');
     const errEl = document.getElementById('loginError');

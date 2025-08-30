@@ -5,13 +5,21 @@
   <title>Flavor Clash · Perfil</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .skeleton{ position:relative; overflow:hidden; background:#e5e7eb; }
+    .skeleton::after{ content:""; position:absolute; inset:0; transform:translateX(-100%);
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,.4), transparent);
+      animation:shimmer 1.2s infinite; }
+    @keyframes shimmer{ 100%{ transform:translateX(100%);} }
+  </style>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-orange-50 to-red-50">
   <div class="flex w-full min-h-svh" style="--sidebar-width:16rem;">
+    <!-- Sidebar -->
     <div class="hidden md:flex flex-col w-[--sidebar-width] border-r border-orange-200 bg-white/95 backdrop-blur-sm">
       <div class="flex items-center gap-3 p-6 border-b border-orange-200">
         <div class="w-12 h-12 bg-gradient-to-br from-orange-400 to-red-500 rounded-xl flex items-center justify-center shadow-lg">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chef-hat w-7 h-7 text-white"><path d="M17 21a1 1 0 0 0 1-1v-5.35c0-.457.316-.844.727-1.041a4 4 0 0 0-2.134-7.589 5 5 0 0 0-9.186 0 4 4 0 0 0-2.134 7.588c.411.198.727.585.727 1.041V20a1 1 0 0 0 1 1Z"></path><path d="M6 17h12"></path></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-white" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21a1 1 0 0 0 1-1v-5.35c0-.457.316-.844.727-1.041a4 4 0 0 0-2.134-7.589 5 5 0 0 0-9.186 0 4 4 0 0 0-2.134 7.588c.411.198.727.585.727 1.041V20a1 1 0 0 0 1 1Z"/><path d="M6 17h12"/></svg>
         </div>
         <div>
           <h2 class="text-xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">Flavor Clash</h2>
@@ -20,114 +28,95 @@
       </div>
       <nav class="p-4 flex-1 overflow-auto">
         <ul class="flex flex-col gap-2 text-sm">
-          <li>
-            <a href="index.html" class="flex items-center gap-3 h-8 py-3 px-4 rounded-xl hover:bg-orange-100 hover:text-orange-700 transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-house w-5 h-5"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
-              <span class="font-medium" data-i18n="nav_home">Inici</span>
-            </a>
-          </li>
-          <li>
-            <a href="loading.html?next=deck-selector.html" class="flex items-center gap-3 h-8 py-3 px-4 rounded-xl hover:bg-orange-100 hover:text-orange-700 transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-play w-5 h-5"><polygon points="6 3 20 12 6 21 6 3"></polygon></svg>
-              <span class="font-medium" data-i18n="nav_play">Jugar</span>
-            </a>
-          </li>
-          <li>
-            <a href="shop.html" class="flex items-center gap-3 h-8 py-3 px-4 rounded-xl hover:bg-orange-100 hover:text-orange-700 transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shopping-bag w-5 h-5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path><path d="M3 6h18"></path><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
-              <span class="font-medium" data-i18n="nav_shop">Botiga</span>
-            </a>
-          </li>
-          <li>
-            <a href="profile.html" class="flex items-center gap-3 h-8 py-3 px-4 rounded-xl bg-orange-100 text-orange-700 shadow-sm">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user w-5 h-5"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-              <span class="font-medium" data-i18n="nav_profile">Perfil</span>
-            </a>
-          </li>
+          <li><a href="index.html" class="flex items-center gap-3 h-8 py-3 px-4 rounded-xl hover:bg-orange-100 hover:text-orange-700"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg> <span class="font-medium">Inici</span></a></li>
+          <li><a href="loading.html?next=deck-selector.html" class="flex items-center gap-3 h-8 py-3 px-4 rounded-xl hover:bg-orange-100 hover:text-orange-700"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"><polygon points="6 3 20 12 6 21 6 3"/></svg> <span class="font-medium">Jugar</span></a></li>
+          <li><a href="shop.html" class="flex items-center gap-3 h-8 py-3 px-4 rounded-xl hover:bg-orange-100 hover:text-orange-700"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg> <span class="font-medium">Botiga</span></a></li>
+          <li><a href="profile.html" class="flex items-center gap-3 h-8 py-3 px-4 rounded-xl bg-orange-100 text-orange-700 shadow-sm"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> <span class="font-medium">Perfil</span></a></li>
         </ul>
       </nav>
       <div class="p-4 border-t border-orange-200">
-        <select id="lang-select" class="w-full border border-orange-200 rounded-lg p-2">
-          <option value="ca">Català</option>
-          <option value="en">English</option>
-        </select>
+        <button data-logout class="w-full flex items-center justify-center gap-2 p-2 rounded-lg text-gray-500 hover:bg-gray-100 hover:text-gray-700"><svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg> <span>Tanca sessió</span></button>
       </div>
     </div>
+
+    <!-- Main -->
     <main class="flex-1 flex flex-col p-4 md:p-8">
       <div class="max-w-screen-2xl w-full mx-auto">
         <div class="flex items-center justify-between mb-8">
-          <h1 class="text-3xl font-bold text-gray-900" data-i18n="profile_title">El Meu Perfil</h1>
-          <button id="editBtn" class="border border-blue-200 text-blue-700 hover:bg-blue-50 px-4 py-2 rounded-lg">
-            Editar Perfil
-          </button>
+          <h1 class="text-3xl font-bold text-gray-900">El Meu Perfil</h1>
+          <button id="editBtn" class="border border-blue-200 text-blue-700 hover:bg-blue-50 px-4 py-2 rounded-lg">Editar Perfil</button>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <div class="lg:col-span-1 space-y-6">
-        <div class="bg-gradient-to-br from-blue-50 to-indigo-100 border border-blue-200 rounded-lg p-6 text-center">
-          <img id="avatarImg" src="avatars/tomato_avatar.png" alt="avatar" class="w-24 h-24 mx-auto mb-4"/>
-          <h2 id="profileName" class="text-xl font-bold text-gray-900 mb-2">Usuari</h2>
-          <span id="levelBadge" class="inline-block bg-blue-200 text-blue-800 px-2 py-1 rounded-full text-sm">Xef Novell</span>
-        </div>
-
-        <div id="editSection" class="hidden bg-white/80 backdrop-blur-sm border border-blue-200 rounded-lg p-6 space-y-4">
-          <div>
-            <label class="block text-sm text-gray-700 mb-1">Avatar</label>
-            <select id="avatarSelect" class="w-full border border-gray-300 rounded p-2"></select>
-          </div>
-          <div>
-            <label class="block text-sm text-gray-700 mb-1">Baralla Favorita</label>
-            <select id="deckSelect" class="w-full border border-gray-300 rounded p-2"></select>
-          </div>
-          <button id="saveBtn" class="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-medium py-2 rounded-lg">
-            Guardar Canvis
-          </button>
-        </div>
-
-        <div class="space-y-3">
-          <div class="bg-white/80 backdrop-blur-sm border border-orange-200 rounded-lg p-4 flex items-center gap-3">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trophy w-6 h-6 text-orange-500"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
-            <div>
-              <p id="points" class="text-2xl font-bold">0</p>
-              <p class="text-sm text-gray-600">Punts Totals</p>
+          <!-- Columna perfil -->
+          <div class="lg:col-span-1 space-y-6">
+            <div class="bg-gradient-to-br from-blue-50 to-indigo-100 border border-blue-200 rounded-lg p-6 text-center">
+              <div class="mx-auto w-24 h-24 rounded-full overflow-hidden skeleton mb-4" id="avatarSkeleton"></div>
+              <img id="avatarImg" src="avatars/tomato_avatar.png" alt="avatar" class="w-24 h-24 mx-auto mb-4 hidden"/>
+              <h2 id="profileName" class="text-xl font-bold text-gray-900 mb-2">Usuari</h2>
+              <span id="levelBadge" class="inline-block bg-blue-200 text-blue-800 px-2 py-1 rounded-full text-sm">Xef Novell</span>
             </div>
-          </div>
 
-          <div class="bg-white/80 backdrop-blur-sm border border-green-200 rounded-lg p-4 flex items-center gap-3">
+            <div id="editSection" class="hidden bg-white/80 backdrop-blur-sm border border-blue-200 rounded-lg p-6 space-y-4">
+              <div>
+                <label class="block text-sm text-gray-700 mb-1">Avatar</label>
+                <select id="avatarSelect" class="w-full border border-gray-300 rounded p-2"></select>
+                <button id="avatarUploadBtn" type="button" class="w-full border border-gray-300 rounded p-2 mt-2 text-left">Pujar imatge</button>
+                <input type="file" id="avatarFile" accept="image/*" class="hidden" />
+              </div>
+              <div>
+                <label class="block text-sm text-gray-700 mb-1">Baralla Favorita</label>
+                <select id="deckSelect" class="w-full border border-gray-300 rounded p-2"></select>
+              </div>
+              <button id="saveBtn" class="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-medium py-2 rounded-lg">Guardar Canvis</button>
+            </div>
+
+            <div class="space-y-3">
+              <div class="bg-white/80 border border-orange-200 rounded-lg p-4 flex items-center gap-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trophy w-6 h-6 text-orange-500"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+                <div><p id="points" class="text-2xl font-bold">0</p><p class="text-sm text-gray-600">Punts Totals</p></div>
+              </div>
+              <div class="bg-white/80 border border-green-200 rounded-lg p-4 flex items-center gap-3">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chef-hat w-6 h-6 text-green-500"><path d="M17 21a1 1 0 0 0 1-1v-5.35c0-.457.316-.844.727-1.041a4 4 0 0 0-2.134-7.589 5 5 0 0 0-9.186 0 4 4 0 0 0-2.134 7.588c.411.198.727.585.727 1.041V20a1 1 0 0 0 1 1Z"/><path d="M6 17h12"/></svg>
-            <div>
-              <p id="dishes" class="text-2xl font-bold">0</p>
-              <p class="text-sm text-gray-600">Plats Creats</p>
-            </div>
-          </div>
-
-          <div class="bg-white/80 backdrop-blur-sm border border-purple-200 rounded-lg p-4 flex items-center gap-3">
+                <div><p id="dishes" class="text-2xl font-bold">0</p><p class="text-sm text-gray-600">Plats Creats</p></div>
+              </div>
+              <div class="bg-white/80 border border-purple-200 rounded-lg p-4 flex items-center gap-3">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-target w-6 h-6 text-purple-500"><path d="M22 12a10 10 0 1 1-10-10"/><path d="M22 12h-4"/><path d="M12 2v4"/><path d="M12 12l3 3"/></svg>
-            <div>
-              <p id="matches" class="text-2xl font-bold">0</p>
-              <p class="text-sm text-gray-600">Maridatges</p>
+                <div><p id="matches" class="text-2xl font-bold">0</p><p class="text-sm text-gray-600">Maridatges</p></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Historial -->
+          <div class="lg:col-span-2">
+            <div class="bg-white/80 border border-blue-200 rounded-lg p-6 h-full">
+              <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+                Historial de Partides
+              </h3>
+              <div id="history" class="text-center text-gray-500 py-12">
+                <!-- skeleton de historial -->
+                <div class="space-y-3" id="historySkeleton">
+                  <div class="h-16 rounded-lg skeleton"></div>
+                  <div class="h-16 rounded-lg skeleton"></div>
+                  <div class="h-16 rounded-lg skeleton"></div>
+                </div>
+                <div id="historyList" class="hidden"></div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-
-      <div class="lg:col-span-2">
-        <div class="bg-white/80 backdrop-blur-sm border border-blue-200 rounded-lg p-6 h-full">
-          <h3 class="text-xl font-bold mb-4 flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar w-5 h-5 text-blue-500"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>Historial de Partides</h3>
-          <div id="history" class="text-center text-gray-500 py-12">
-            <p class="mb-4">Encara no has jugat cap partida</p>
-            <a href="loading.html?next=deck-selector.html" class="inline-flex items-center gap-2 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-medium px-4 py-2 rounded-lg shadow">Jugar Ara</a>
-          </div>
-        </div>
-      </div>
-    </div>
       </div>
     </main>
   </div>
 
+  <!-- Scripts -->
   <script type="module">
     import { requireAuth } from './session.js';
     import UserService from './api/UserService.js';
+    import AvatarService from './api/AvatarService.js';
+    import MatchService from './api/MatchService.js';
+
     await requireAuth();
 
     const avatars = [
@@ -145,10 +134,10 @@
       { id: 'sensorial', nom: 'Sensorial' }
     ];
 
-    const user = await UserService.getMyProfile().catch(() => ({}));
-
+    // Elements
     const profileName = document.getElementById('profileName');
     const avatarImg = document.getElementById('avatarImg');
+    const avatarSkeleton = document.getElementById('avatarSkeleton');
     const pointsEl = document.getElementById('points');
     const dishesEl = document.getElementById('dishes');
     const matchesEl = document.getElementById('matches');
@@ -156,65 +145,182 @@
     const editBtn = document.getElementById('editBtn');
     const editSection = document.getElementById('editSection');
     const avatarSelect = document.getElementById('avatarSelect');
+    const avatarUploadBtn = document.getElementById('avatarUploadBtn');
+    const avatarFile = document.getElementById('avatarFile');
     const deckSelect = document.getElementById('deckSelect');
     const saveBtn = document.getElementById('saveBtn');
 
-    function getLevel(p) {
-      if (p >= 1000) return 'Mestre Xef';
-      if (p >= 500) return 'Xef Expert';
-      if (p >= 250) return 'Xef Experimentat';
-      if (p >= 100) return 'Xef Prometedor';
-      return 'Xef Novell';
-    }
+    // Pintar opciones (no bloquea nada)
+    avatars.forEach(a => { const opt = document.createElement('option'); opt.value = a.src; opt.textContent = a.nom; avatarSelect.appendChild(opt); });
+    decks.forEach(d => { const opt = document.createElement('option'); opt.value = d.id; opt.textContent = d.nom; deckSelect.appendChild(opt); });
 
-    profileName.textContent = user.name || 'Usuari';
-    avatarImg.src = user.avatar || 'avatars/tomato_avatar.png';
-    pointsEl.textContent = user.flavor_points || 0;
-    dishesEl.textContent = user.plats_creats || 0;
-    matchesEl.textContent = user.maridatges || 0;
-    levelBadge.textContent = getLevel(user.flavor_points || 0);
+    // Cargar perfil e historial en paralelo
+    const loadProfile = (async () => {
+      const user = await UserService.getMyProfile().catch(() => ({}));
+      profileName.textContent = user.name || 'Usuari';
 
-    avatars.forEach(a => {
-      const opt = document.createElement('option');
-      opt.value = a.src;
-      opt.textContent = a.nom;
-      avatarSelect.appendChild(opt);
-    });
-    decks.forEach(d => {
-      const opt = document.createElement('option');
-      opt.value = d.id;
-      opt.textContent = d.nom;
-      deckSelect.appendChild(opt);
-    });
-    avatarSelect.value = user.avatar || 'avatars/tomato_avatar.png';
-    deckSelect.value = user.favorite_deck || 'classic';
+      // Stats
+      const fp = user.flavor_points ?? 0;
+      const pc = user.plats_creats ?? 0;
+      const md = user.maridatges ?? 0;
+      pointsEl.textContent = fp;
+      dishesEl.textContent = pc;
+      matchesEl.textContent = md;
 
-    editBtn.addEventListener('click', () => {
-      editSection.classList.toggle('hidden');
-    });
+      function getLevel(p){ if(p>=1000)return'Mestre Xef'; if(p>=500)return'Xef Expert'; if(p>=250)return'Xef Experimentat'; if(p>=100)return'Xef Prometedor'; return'Xef Novell';}
+      levelBadge.textContent = getLevel(fp);
 
-    saveBtn.addEventListener('click', async () => {
-      const updates = {
-        avatar: avatarSelect.value,
-        favorite_deck: deckSelect.value
-      };
-      await UserService.updateMyProfile(updates).catch(console.error);
-      avatarImg.src = updates.avatar;
-      editSection.classList.add('hidden');
-    });
+      // Avatar
+      const currentAvatarPath = user.avatar_url || 'avatars/tomato_avatar.png';
+      avatarSelect.value = currentAvatarPath.startsWith('avatars/') ? currentAvatarPath : 'avatars/tomato_avatar.png';
+      deckSelect.value = user.favorite_deck || 'classic';
+
+      // Primero, muestra skeleton → luego resolvemos URL firmada sin bloquear
+      (async () => {
+        let url = currentAvatarPath;
+        if (!currentAvatarPath.startsWith('avatars/')) {
+          try { url = await AvatarService.getAvatarUrl(currentAvatarPath); }
+          catch { url = 'avatars/tomato_avatar.png'; }
+        }
+        avatarImg.src = url;
+        avatarSkeleton.classList.add('hidden');
+        avatarImg.classList.remove('hidden');
+      })();
+
+      // Handlers editar
+      let selectedFile = null;
+      avatarUploadBtn.addEventListener('click', () => avatarFile.click());
+      avatarFile.addEventListener('change', () => {
+        const file = avatarFile.files[0];
+        if (!file) return;
+        selectedFile = file;
+        avatarUploadBtn.textContent = file.name;
+        avatarImg.src = URL.createObjectURL(file);
+        avatarSkeleton.classList.add('hidden');
+        avatarImg.classList.remove('hidden');
+        avatarSelect.value = 'custom';
+      });
+      editBtn.addEventListener('click', () => { editSection.classList.toggle('hidden'); });
+
+      saveBtn.addEventListener('click', async () => {
+        saveBtn.disabled = true;
+        try {
+          let newAvatarPath = currentAvatarPath;
+
+          if (avatarSelect.value.startsWith('avatars/')) {
+            newAvatarPath = avatarSelect.value;
+            selectedFile = null;
+            avatarUploadBtn.textContent = 'Pujar imatge';
+          } else if (selectedFile) {
+            const key = await AvatarService.uploadAvatar(selectedFile);
+            newAvatarPath = key;
+            selectedFile = null;
+            avatarUploadBtn.textContent = 'Pujar imatge';
+          }
+
+          await UserService.updateMyProfile({
+            favorite_deck: deckSelect.value,
+            avatar_url: newAvatarPath,
+          });
+
+          // refrescar avatar (con caché)
+          const displayUrl = newAvatarPath.startsWith('avatars/')
+            ? newAvatarPath
+            : await AvatarService.getAvatarUrl(newAvatarPath);
+          avatarImg.src = displayUrl || 'avatars/tomato_avatar.png';
+          editSection.classList.add('hidden');
+        } catch (e) {
+          console.error(e);
+          alert('No s\'ha pogut guardar el perfil. Torna-ho a intentar.');
+        } finally {
+          saveBtn.disabled = false;
+        }
+      });
+    })();
 
     const historyEl = document.getElementById('history');
-    const history = JSON.parse(localStorage.getItem('matchHistory') || '[]');
-    if (history.length) {
-      historyEl.innerHTML = '';
-      history.forEach(h => {
-        const div = document.createElement('div');
-        div.className = 'border border-gray-200 rounded-lg p-4 text-left mb-4';
-        div.innerHTML = `<div class="flex justify-between mb-2"><span class="font-semibold">Partida</span><span class="text-sm text-gray-600">${h.date || ''}</span></div><div class="text-sm">Punts: ${h.score || 0}</div>`;
-        historyEl.appendChild(div);
-      });
+    const historySkeleton = document.getElementById('historySkeleton');
+    const historyList = document.getElementById('historyList');
+
+    async function renderHistory() {
+      try {
+        const matches = await MatchService.getMyRecentMatches(10);
+        historySkeleton.classList.add('hidden');
+        historyList.classList.remove('hidden');
+
+        if (!matches || matches.length === 0) {
+          historyList.innerHTML = `
+            <p class="mb-4 text-gray-500">Encara no has jugat cap partida</p>
+            <a href="loading.html?next=deck-selector.html"
+               class="inline-flex items-center gap-2 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-medium px-4 py-2 rounded-lg shadow">
+              Jugar Ara
+            </a>`;
+          return;
+        }
+
+        historyList.innerHTML = '';
+        matches.forEach(m => {
+          const div = document.createElement('div');
+          div.className = 'border border-gray-200 rounded-lg p-4 text-left mb-4 bg-white/80';
+          const date = new Date(m.played_at).toLocaleString();
+          div.innerHTML = `
+            <div class="flex justify-between mb-2">
+              <span class="font-semibold">Partida</span>
+              <span class="text-sm text-gray-600">${date}</span>
+            </div>
+            <div class="text-sm">Punts: <strong>${m.score}</strong></div>
+            <div class="text-sm">Plats: ${m.dishes_created} · Maridatges: ${m.pairings_made}</div>
+            ${m.deck_id ? `<div class="text-xs text-gray-500 mt-1">Baralla: ${m.deck_id}</div>` : ''}`;
+          historyList.appendChild(div);
+        });
+      } catch (e) {
+        console.warn('Historial remot no disponible, uso localStorage:', e);
+        historySkeleton.classList.add('hidden');
+        historyList.classList.remove('hidden');
+
+        const local = JSON.parse(localStorage.getItem('matchHistory') || '[]');
+        if (!local.length) {
+          historyList.innerHTML = `
+            <p class="mb-4 text-gray-500">Encara no has jugat cap partida</p>
+            <a href="loading.html?next=deck-selector.html"
+               class="inline-flex items-center gap-2 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-medium px-4 py-2 rounded-lg shadow">
+              Jugar Ara
+            </a>`;
+          return;
+        }
+        historyList.innerHTML = '';
+        local.forEach(h => {
+          const div = document.createElement('div');
+          div.className = 'border border-gray-200 rounded-lg p-4 text-left mb-4 bg-white/80';
+          div.innerHTML = `
+            <div class="flex justify-between mb-2">
+              <span class="font-semibold">Partida (local)</span>
+              <span class="text-sm text-gray-600">${h.date || ''}</span>
+            </div>
+            <div class="text-sm">Punts: <strong>${h.score || 0}</strong></div>
+            <div class="text-sm">Plats: ${h.dishesCreated || h.dishes || 0} · Maridatges: ${h.pairingsMade || h.pairings || 0}</div>`;
+          historyList.appendChild(div);
+        });
+      }
     }
+
+    // Lazy-load del historial cuando entra en viewport
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (e.isIntersecting) {
+          io.disconnect();
+          renderHistory();
+          break;
+        }
+      }
+    }, { rootMargin: '100px' });
+    io.observe(historyEl);
+
+    // Espera a perfil, pero sin bloquear el historial (ya se lazy-carga)
+    await loadProfile;
   </script>
-  <script src="i18n.js"></script>
+
+  <script type="module" src="api/logout.js"></script>
+  <script src="i18n.js" defer></script>
 </body>
 </html>

@@ -1,24 +1,81 @@
+// /api/UserService.js
 import { supabase } from '../supabaseClient.js';
+
 const UserService = {
-  async signUp(email, password, name, avatar) {
-    const { data, error } = await supabase.auth.signUp({ email, password, options:{ data:{ name, avatar } } });
-    if (error) throw error; return data;
+  async signUp(email, password, name, avatarUrl) {
+    const { data, error } = await supabase.auth.signUp({
+      email, password,
+      options: { data: { name, avatar_url: avatarUrl } }
+    });
+    if (error) throw error;
+    const user = data.user;
+    if (data.session) { try { localStorage.setItem('sb_session', JSON.stringify(data.session)); } catch {} }
+    if (user) {
+      const { error: insertError } = await supabase
+        .from('users')
+        .insert({ id: user.id, name, avatar_url: avatarUrl });
+      if (insertError) console.error(insertError);
+    }
+    return data;
   },
+
   async signIn(email, password) {
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) throw error; return data;
+    if (error) throw error;
+    if (data.session) { try { localStorage.setItem('sb_session', JSON.stringify(data.session)); } catch {} }
+    return data;
   },
-  async signOut() { const { error } = await supabase.auth.signOut(); if (error) throw error; },
-  onAuthChange(cb){ return supabase.auth.onAuthStateChange((_e, s)=>cb(s)); },
-  async getSession(){ const { data:{ session }, error } = await supabase.auth.getSession(); if (error) throw error; return session; },
-  async getMyProfile(){
-    const { data:{ user }, error:e1 } = await supabase.auth.getUser(); if (e1) throw e1; if (!user) return null;
-    const { data, error } = await supabase.from('users').select('*').eq('id', user.id).single();
-    if (error) throw error; return data;
+
+  async signOut() {
+    const { error } = await supabase.auth.signOut();
+    try { localStorage.removeItem('sb_session'); } catch {}
+    if (error) throw error;
   },
-  async updateMyProfile(updates){
-    const { data:{ user }, error:e1 } = await supabase.auth.getUser(); if (e1) throw e1; if (!user) throw new Error('No session');
-    const { data, error } = await supabase.from('users').update(updates).eq('id', user.id).select().single();
-    if (error) throw error; return data;
+
+  onAuthChange(cb) { return supabase.auth.onAuthStateChange((_e, s) => cb(s)); },
+
+  async getSession() {
+    const { data: { session }, error } = await supabase.auth.getSession();
+    if (error) throw error;
+    if (session) return session;
+    try {
+      const stored = localStorage.getItem('sb_session');
+      return stored ? JSON.parse(stored) : null;
+    } catch { return null; }
+  },
+
+  async getMyProfile() {
+    const { data: { user }, error: e1 } = await supabase.auth.getUser();
+    if (e1) throw e1; if (!user) return null;
+    const { data, error } = await supabase
+      .from('users')
+      .select('name, avatar_url, flavor_points, plats_creats, maridatges, favorite_deck')
+      .eq('id', user.id)
+      .single();
+    if (error) throw error;
+    return data;
+  },
+
+  async updateMyProfile(updates) {
+    const { data: { user }, error: e1 } = await supabase.auth.getUser();
+    if (e1) throw e1; if (!user) throw new Error('No session');
+
+    const payload = { id: user.id, ...updates };
+
+    const { data, error } = await supabase
+      .from('users')
+      .upsert(payload, { onConflict: 'id' })
+      .select('name, avatar_url, flavor_points, plats_creats, maridatges, favorite_deck')
+      .single();
+
+    if (error) throw error;
+
+    if (updates.avatar_url) {
+      const { error: authError } = await supabase.auth.updateUser({ data: { avatar_url: updates.avatar_url } });
+      if (authError) console.error(authError);
+    }
+    return data;
   }
-}; export default UserService;
+};
+
+export default UserService;

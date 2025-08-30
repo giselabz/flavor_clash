@@ -24,5 +24,9 @@
     </div>
     <script src="user.js" defer></script>
     <script src="script.js" defer></script>
+    <script type="module">
+      import { requireAuth } from './session.js';
+      await requireAuth();
+    </script>
 </body>
 </html>

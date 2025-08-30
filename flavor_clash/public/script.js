@@ -64,7 +64,7 @@ if (window.location.pathname.endsWith('game.html')) {
 }
 
 // --- Referencias globales a elementos de formulario ---
-let loginForm, registerForm, mainMenu, editProfileForm;
+let loginForm, registerForm, mainMenu;
 
 // --- Helpers DOM ---
 function hideAllSections() {
@@ -89,7 +89,6 @@ function showLogin() {
     loginForm.style.display = '';
     registerForm.style.display = 'none';
     mainMenu.style.display = 'none';
-    editProfileForm.style.display = 'none';
     document.getElementById('loginError').textContent = '';
 }
 
@@ -97,7 +96,6 @@ function showRegister() {
     loginForm.style.display = 'none';
     registerForm.style.display = '';
     mainMenu.style.display = 'none';
-    editProfileForm.style.display = 'none';
     document.getElementById('registerError').textContent = '';
 }
 
@@ -105,7 +103,6 @@ function showMainMenu(user) {
     loginForm.style.display = 'none';
     registerForm.style.display = 'none';
     mainMenu.style.display = '';
-    editProfileForm.style.display = 'none';
     document.getElementById('profileName').textContent = user.name;
     const avatar = document.getElementById('profileAvatar');
     if (user.avatar) {
@@ -115,16 +112,6 @@ function showMainMenu(user) {
         avatar.style.display = 'none';
     }
     document.getElementById('progressInfo').textContent = user.progress ? `Progrés: ${user.progress}` : '';
-}
-
-function showEditProfile(user) {
-    loginForm.style.display = 'none';
-    registerForm.style.display = 'none';
-    mainMenu.style.display = 'none';
-    editProfileForm.style.display = '';
-    document.getElementById('editName').value = user.name;
-    document.getElementById('editAvatar').value = user.avatar || '';
-    document.getElementById('editError').textContent = '';
 }
 
 // --- Inicialización al cargar ---
