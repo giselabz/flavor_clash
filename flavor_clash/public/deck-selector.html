@@ -167,7 +167,10 @@
     </main>
   </div>
 
-  <script>
+  <script type="module">
+    import { requireAuth } from './session.js';
+    await requireAuth();
+
     document.querySelectorAll('[data-deck-id]').forEach(btn => {
       btn.addEventListener('click', () => {
         const id = btn.dataset.deckId;
